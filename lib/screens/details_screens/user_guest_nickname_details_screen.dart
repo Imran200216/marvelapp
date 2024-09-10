@@ -32,7 +32,7 @@ class UserGuestNicknameDetailsScreen extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: "Poppins",
                   fontSize: size.width * 0.060,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w600,
                   color: AppColors.secondaryColor,
                 ),
               ),
