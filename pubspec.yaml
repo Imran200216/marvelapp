@@ -52,7 +52,6 @@ dependencies:
   carousel_slider: ^5.0.0
   lottie: ^3.1.2
   model_viewer_plus: ^1.8.0
-  animated_text_kit: ^4.2.2
   timeline_tile: ^2.0.0
 
 

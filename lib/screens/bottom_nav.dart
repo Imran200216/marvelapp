@@ -16,7 +16,7 @@ class BottomNavBar extends StatelessWidget {
     const HomeScreen(),
 
     /// super hero screen
-    const SuperHeroScreen(),
+    SuperHeroScreen(),
 
     /// Profile Screen
     const ProfileScreen(),

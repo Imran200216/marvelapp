@@ -25,7 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getMarvelMovies();
   }
@@ -56,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Add Cool Nick names\nfor your profile",
+                      "Marvel movie list &\nCool facts",
                       style: TextStyle(
                         fontFamily: "Poppins",
                         fontSize: size.width * 0.060,

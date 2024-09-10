@@ -1,4 +1,3 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -82,19 +81,13 @@ class SuperHeroScreen extends StatelessWidget {
                       ),
                       endChild: Padding(
                         padding: const EdgeInsets.all(12.0),
-                        child: DefaultTextStyle(
+                        child: Text(
+                          "Spider-Man",
                           style: TextStyle(
-                            color: AppColors.secondaryColor,
                             fontFamily: "Poppins",
-                            fontSize: MediaQuery.of(context).size.width * 0.080,
                             fontWeight: FontWeight.w700,
-                          ),
-                          child: AnimatedTextKit(
-                            animatedTexts: [
-                              WavyAnimatedText('Spider-Man'),
-                              WavyAnimatedText('Peter Parker'),
-                            ],
-                            isRepeatingAnimation: true,
+                            color: AppColors.secondaryColor,
+                            fontSize: MediaQuery.of(context).size.width * 0.064,
                           ),
                         ),
                       ),
