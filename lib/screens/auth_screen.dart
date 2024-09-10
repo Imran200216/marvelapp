@@ -5,7 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:marvelapp/constants/colors.dart';
-import 'package:marvelapp/screens/dummy_screen.dart';
+import 'package:marvelapp/screens/details_screens/user_email_avatar_details_screen.dart';
+import 'package:marvelapp/screens/details_screens/user_guest_avatar_details_screen.dart';
 
 import 'package:neopop/widgets/buttons/neopop_button/neopop_button.dart';
 
@@ -79,9 +80,16 @@ class AuthScreen extends StatelessWidget {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.06,
                   ),
+
+                  /// sign in with email btn
                   NeoPopButton(
                     color: Colors.black,
-                    onTapUp: () => HapticFeedback.vibrate(),
+                    onTapUp: () {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const UserEmailAvatarDetailsScreen();
+                      }));
+                    },
                     onTapDown: () => HapticFeedback.vibrate(),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -116,12 +124,14 @@ class AuthScreen extends StatelessWidget {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.06,
                   ),
+
+                  /// sign in with guest btn
                   NeoPopButton(
                     color: Colors.black,
                     onTapUp: () {
-                      Navigator.push(context,
+                      Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) {
-                        return const DummyScreen();
+                        return const UserGuestAvatarDetailsScreen();
                       }));
                     },
                     onTapDown: () => HapticFeedback.vibrate(),
