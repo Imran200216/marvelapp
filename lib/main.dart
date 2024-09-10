@@ -1,5 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:marvelapp/constants/colors.dart';
+import 'package:marvelapp/firebase_options.dart';
 import 'package:marvelapp/provider/bottom_nav_provider.dart';
 import 'package:marvelapp/provider/get_started_provider.dart';
 import 'package:marvelapp/provider/internet_checker_provider.dart';
@@ -7,7 +9,11 @@ import 'package:marvelapp/provider/internet_checker_provider.dart';
 import 'package:marvelapp/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
