@@ -28,15 +28,33 @@ class ForgetPasswordScreen extends StatelessWidget {
                 bottom: 30,
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Forget Password!",
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      fontSize: MediaQuery.of(context).size.width * 0.050,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.secondaryColor,
-                    ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.arrow_back_ios,
+                          color: AppColors.secondaryColor,
+                          size: 24,
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.001,
+                      ),
+                      Text(
+                        "Forget Password",
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontSize: MediaQuery.of(context).size.width * 0.050,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.secondaryColor,
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.03,

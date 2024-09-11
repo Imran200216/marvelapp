@@ -6,6 +6,8 @@ import 'package:marvelapp/provider/authentication_providers/email_auth_provider.
 import 'package:marvelapp/provider/authentication_providers/guest_auth_provider.dart';
 import 'package:marvelapp/provider/bottom_nav_provider.dart';
 import 'package:marvelapp/provider/get_started_provider.dart';
+import 'package:marvelapp/provider/user_details_provider/email_user_details_provider.dart';
+import 'package:marvelapp/provider/user_details_provider/guest_user_details_provider.dart';
 import 'package:marvelapp/provider/internet_checker_provider.dart';
 import 'package:marvelapp/provider/password_visibility_provider.dart';
 
@@ -17,6 +19,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(const MyApp());
 }
 
@@ -55,6 +58,16 @@ class MyApp extends StatelessWidget {
         /// password visibility provider
         ChangeNotifierProvider(
           create: (_) => PasswordVisibilityProvider(),
+        ),
+
+        /// guest user details provider
+        ChangeNotifierProvider(
+          create: (_) => GuestUserDetailsProvider(),
+        ),
+
+        /// email user details provider
+        ChangeNotifierProvider(
+          create: (_) => EmailUserDetailsProvider(),
         ),
       ],
       builder: (context, child) {

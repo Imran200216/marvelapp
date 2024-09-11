@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/provider/authentication_providers/email_auth_provider.dart';
@@ -48,17 +49,21 @@ class EmailLoginScreen extends StatelessWidget {
                   ),
 
                   /// email field
-                  const CustomTextField(
+                  CustomTextField(
+                    textEditingController:
+                        emailAuthProvider.loginEmailController,
                     keyboardType: TextInputType.emailAddress,
                     prefixIcon: Icons.email,
                     hintText: 'Email address',
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.03,
+                    height: MediaQuery.of(context).size.height * 0.06,
                   ),
 
                   /// password field
-                  const CustomPasswordTextField(
+                  CustomPasswordTextField(
+                    textEditingController:
+                        emailAuthProvider.loginPasswordController,
                     keyboardType: TextInputType.visiblePassword,
                     hintText: "Password",
                     fieldKey: "passwordField",
@@ -78,7 +83,7 @@ class EmailLoginScreen extends StatelessWidget {
                           }));
                         },
                         child: Text(
-                          "Forget password",
+                          "Forget password?",
                           style: TextStyle(
                             fontFamily: "Poppins",
                             fontWeight: FontWeight.w600,
@@ -92,16 +97,23 @@ class EmailLoginScreen extends StatelessWidget {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.20,
                   ),
-                  CustomNeoPopButton(
-                    buttonColor: AppColors.secondaryColor,
-                    svgColor: AppColors.primaryColor,
-                    svgAssetPath: "assets/images/svg/login-icon.svg",
-                    buttonText: "Login",
-                    onTapUp: () {
-                      /// email login
-                      emailAuthProvider.loginWithEmailPassword(context);
-                    },
-                  ),
+                  emailAuthProvider.isLoading
+                      ? Center(
+                        child: LoadingAnimationWidget.threeArchedCircle(
+                            color: AppColors.secondaryColor,
+                            size: 40,
+                          ),
+                      )
+                      : CustomNeoPopButton(
+                          buttonColor: AppColors.secondaryColor,
+                          svgColor: AppColors.primaryColor,
+                          svgAssetPath: "assets/images/svg/login-icon.svg",
+                          buttonText: "Login",
+                          onTapUp: () {
+                            /// email login
+                            emailAuthProvider.loginWithEmailPassword(context);
+                          },
+                        ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.02,
                   ),

@@ -1,25 +1,31 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:marvelapp/constants/colors.dart';
+import 'package:marvelapp/provider/user_details_provider/guest_user_details_provider.dart';
 import 'package:marvelapp/screens/details_screens/user_guest_nickname_details_screen.dart';
 import 'package:neopop/widgets/buttons/neopop_button/neopop_button.dart';
+import 'package:provider/provider.dart';
 
 class UserGuestAvatarDetailsScreen extends StatelessWidget {
   const UserGuestAvatarDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Getting the size of the screen
     final size = MediaQuery.of(context).size;
-    final List<String> imageList = [
-      'https://imgs.search.brave.com/yFLPbMIn1BcTxuf2Sqm0lzSzvXIsfTju2QOAnbQ-buk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzAwLzQzLzkwLzM3/LzM2MF9GXzQzOTAz/NzMyX1gxWjJnenk0/OTdhaXNnTUU2MmNy/bVUwMFNmOHNtUDU5/LmpwZw',
-      'https://imgs.search.brave.com/MZJ3Rh6-84l52fdAbb9EePP-s8OJWzl2iT7IF0Gc1Nc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9idXJz/dC5zaG9waWZ5Y2Ru/LmNvbS9waG90b3Mv/dGhhaWxhbmQtYmVh/Y2guanBnP3dpZHRo/PTEwMDAmZm9ybWF0/PXBqcGcmZXhpZj0w/JmlwdGM9MA',
-      'https://imgs.search.brave.com/yFLPbMIn1BcTxuf2Sqm0lzSzvXIsfTju2QOAnbQ-buk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzAwLzQzLzkwLzM3/LzM2MF9GXzQzOTAz/NzMyX1gxWjJnenk0/OTdhaXNnTUU2MmNy/bVUwMFNmOHNtUDU5/LmpwZw',
-      'https://imgs.search.brave.com/MZJ3Rh6-84l52fdAbb9EePP-s8OJWzl2iT7IF0Gc1Nc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9idXJz/dC5zaG9waWZ5Y2Ru/LmNvbS9waG90b3Mv/dGhhaWxhbmQtYmVh/Y2guanBnP3dpZHRo/PTEwMDAmZm9ybWF0/PXBqcGcmZXhpZj0w/JmlwdGM9MA',
-    ];
+
+    // Fetch avatars from provider
+    final userGuestDetailsProvider =
+        Provider.of<GuestUserDetailsProvider>(context);
+
+    // Trigger fetch if imageUrls is empty
+    if (userGuestDetailsProvider.imageUrls.isEmpty) {
+      userGuestDetailsProvider.fetchAvatars();
+    }
 
     return SafeArea(
       child: Scaffold(
@@ -71,29 +77,49 @@ class UserGuestAvatarDetailsScreen extends StatelessWidget {
                 height: size.height * 0.05,
               ),
 
-              /// cool avatars from database
-              CarouselSlider(
-                options: CarouselOptions(
-                  height: size.height * 0.30,
-                  autoPlay: true,
-                  enlargeCenterPage: true,
-                  aspectRatio: 16 / 9,
-                  autoPlayInterval: const Duration(seconds: 3),
-                  viewportFraction: 0.8,
-                ),
-                items: imageList
-                    .map((item) => Container(
-                          margin: const EdgeInsets.all(5.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            image: DecorationImage(
-                              image: NetworkImage(item),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ))
-                    .toList(),
-              ),
+              /// cool avatars from Firebase Storage
+              userGuestDetailsProvider.imageUrls.isEmpty
+                  ? Center(
+                      child: LoadingAnimationWidget.dotsTriangle(
+                        color: AppColors.primaryColor,
+                        size: 40,
+                      ),
+                    )
+                  : CarouselSlider(
+                      options: CarouselOptions(
+                        height: size.height * 0.30,
+                        autoPlay: true,
+                        enlargeCenterPage: true,
+                        aspectRatio: 16 / 9,
+                        autoPlayInterval: const Duration(seconds: 3),
+                        viewportFraction: 0.8,
+                      ),
+                      items: userGuestDetailsProvider.imageUrls
+                          .map((item) => Container(
+                                margin: const EdgeInsets.all(5.0),
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: ClipOval(
+                                  child: CachedNetworkImage(
+                                    imageUrl: item,
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) => Center(
+                                      child:
+                                          LoadingAnimationWidget.dotsTriangle(
+                                        color: AppColors.primaryColor,
+                                        size: 40,
+                                      ),
+                                    ),
+                                    errorWidget: (context, url, error) => Icon(
+                                      Icons.error,
+                                      color: AppColors.primaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ))
+                          .toList(),
+                    ),
               SizedBox(
                 height: size.height * 0.08,
               ),

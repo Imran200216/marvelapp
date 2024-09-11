@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:marvelapp/screens/bottom_nav.dart';
 import 'package:marvelapp/screens/get_started_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -13,17 +16,36 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    _checkUserStatus();
+  }
 
-    // Start a timer of 5 seconds
+  Future<void> _checkUserStatus() async {
+    // Retrieve SharedPreferences instance
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Check if the user is signed in as a guest or with email
+    final bool isSignedInAsGuest = prefs.getBool('isSignedInAsGuest') ?? false;
+    final bool isSignedIn = prefs.getBool('isLoggedIn') ?? false;
+
+    final user = FirebaseAuth.instance.currentUser;
+
+    // Determine where to navigate
     Timer(const Duration(seconds: 3), () {
-      // After 5 seconds, navigate to the HomeScreen (or any screen)
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              const GetStartedScreen(), // Change to your target screen
-        ),
-      );
+      if (isSignedInAsGuest || (user != null && isSignedIn)) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BottomNavBar(),
+          ),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const GetStartedScreen(),
+          ),
+        );
+      }
     });
   }
 

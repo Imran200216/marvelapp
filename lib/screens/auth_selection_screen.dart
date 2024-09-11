@@ -107,16 +107,24 @@ class AuthSelectionScreen extends StatelessWidget {
                       ),
 
                       /// sign in with guest btn
-                      CustomNeoPopButton(
-                        buttonColor: AppColors.primaryColor,
-                        svgColor: AppColors.secondaryColor,
-                        svgAssetPath: "assets/images/svg/guest-auth-icon.svg",
-                        buttonText: "Sign in with Guest",
-                        onTapUp: () {
-                          /// sign in with guest
-                          guestAuthProvider.signInWithGuest(context);
-                        },
-                      ),
+                      guestAuthProvider.isLoading
+                          ? Center(
+                              child: LoadingAnimationWidget.threeArchedCircle(
+                                color: AppColors.primaryColor,
+                                size: 40,
+                              ),
+                            )
+                          : CustomNeoPopButton(
+                              buttonColor: AppColors.primaryColor,
+                              svgColor: AppColors.secondaryColor,
+                              svgAssetPath:
+                                  "assets/images/svg/guest-auth-icon.svg",
+                              buttonText: "Sign in with Guest",
+                              onTapUp: () {
+                                /// sign in with guest
+                                guestAuthProvider.signInWithGuest(context);
+                              },
+                            ),
                     ],
                   ),
                 ),

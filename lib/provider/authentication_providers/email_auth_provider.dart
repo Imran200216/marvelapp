@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:marvelapp/modals/user_modal.dart';
 import 'package:marvelapp/screens/bottom_nav.dart';
+import 'package:marvelapp/screens/details_screens/user_email_avatar_details_screen.dart';
 import 'package:marvelapp/screens/get_started_screen.dart';
 import 'package:marvelapp/widgets/toast_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,6 +37,12 @@ class EmailAuthenticationProvider extends ChangeNotifier {
     await prefs.setBool('isLoggedIn', isLoggedIn);
   }
 
+  bool isValidEmail(String email) {
+    String pattern = r'^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$';
+    RegExp regex = RegExp(pattern);
+    return regex.hasMatch(email);
+  }
+
   // Function to register with email and password
   Future<void> registerWithEmailPassword(BuildContext context) async {
     final String name = nameController.text.trim();
@@ -49,6 +56,13 @@ class EmailAuthenticationProvider extends ChangeNotifier {
         password.isEmpty ||
         confirmPassword.isEmpty) {
       _errorMessage = "Please fill out all fields";
+      ToastHelper.showErrorToast(context: context, message: _errorMessage);
+      notifyListeners();
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      _errorMessage = "Invalid email format";
       ToastHelper.showErrorToast(context: context, message: _errorMessage);
       notifyListeners();
       return;
@@ -76,7 +90,6 @@ class EmailAuthenticationProvider extends ChangeNotifier {
       if (emailUser != null) {
         await emailUser.updateDisplayName(name);
 
-        // Create a UserModal instance
         UserModal emailModalUser = UserModal(
           uid: emailUser.uid,
           userName: name,
@@ -84,7 +97,6 @@ class EmailAuthenticationProvider extends ChangeNotifier {
           userPhotoURL: emailUser.photoURL,
         );
 
-        // Store the user data in Firestore
         await _firestore.collection('userByEmailAuth').doc(emailUser.uid).set(
               emailModalUser.toJson(),
             );
@@ -100,7 +112,9 @@ class EmailAuthenticationProvider extends ChangeNotifier {
             context: context, message: "Registration Successful!");
 
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => BottomNavBar()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => const UserEmailAvatarDetailsScreen()));
       }
     } on FirebaseAuthException catch (e) {
       _errorMessage = e.message ?? "An error occurred";
@@ -117,6 +131,13 @@ class EmailAuthenticationProvider extends ChangeNotifier {
 
     if (email.isEmpty || password.isEmpty) {
       _errorMessage = "Please fill out all fields";
+      ToastHelper.showErrorToast(context: context, message: _errorMessage);
+      notifyListeners();
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      _errorMessage = "Invalid email format";
       ToastHelper.showErrorToast(context: context, message: _errorMessage);
       notifyListeners();
       return;

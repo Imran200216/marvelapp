@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/provider/authentication_providers/email_auth_provider.dart';
 import 'package:marvelapp/screens/email_auth_screen/email_login_screen.dart';
@@ -46,9 +47,10 @@ class EmailRegisterScreen extends StatelessWidget {
                   ),
 
                   /// username field
-                  const CustomTextField(
+                  CustomTextField(
+                    textEditingController: emailAuthProvider.nameController,
                     keyboardType: TextInputType.emailAddress,
-                    prefixIcon: Icons.email,
+                    prefixIcon: Icons.person,
                     hintText: 'Username',
                   ),
                   SizedBox(
@@ -56,7 +58,9 @@ class EmailRegisterScreen extends StatelessWidget {
                   ),
 
                   /// email field
-                  const CustomTextField(
+                  CustomTextField(
+                    textEditingController:
+                        emailAuthProvider.registerEmailController,
                     keyboardType: TextInputType.emailAddress,
                     prefixIcon: Icons.email,
                     hintText: 'Email address',
@@ -66,7 +70,9 @@ class EmailRegisterScreen extends StatelessWidget {
                   ),
 
                   /// password field
-                  const CustomPasswordTextField(
+                  CustomPasswordTextField(
+                    textEditingController:
+                        emailAuthProvider.registerPasswordController,
                     keyboardType: TextInputType.visiblePassword,
                     hintText: "Password",
                     fieldKey: "passwordFieldRegister",
@@ -77,7 +83,9 @@ class EmailRegisterScreen extends StatelessWidget {
                   ),
 
                   /// confirm password field
-                  const CustomPasswordTextField(
+                  CustomPasswordTextField(
+                    textEditingController:
+                        emailAuthProvider.registerConfirmPasswordController,
                     keyboardType: TextInputType.visiblePassword,
                     hintText: "Confirm Password",
                     fieldKey: "passwordFieldRegister",
@@ -86,16 +94,25 @@ class EmailRegisterScreen extends StatelessWidget {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.20,
                   ),
-                  CustomNeoPopButton(
-                    buttonColor: AppColors.secondaryColor,
-                    svgColor: AppColors.primaryColor,
-                    svgAssetPath: "assets/images/svg/login-icon.svg",
-                    buttonText: "Register",
-                    onTapUp: () {
-                      /// email register
-                      emailAuthProvider.registerWithEmailPassword(context);
-                    },
-                  ),
+
+                  emailAuthProvider.isLoading
+                      ? Center(
+                          child: LoadingAnimationWidget.threeArchedCircle(
+                            color: AppColors.secondaryColor,
+                            size: 40,
+                          ),
+                        )
+                      : CustomNeoPopButton(
+                          buttonColor: AppColors.secondaryColor,
+                          svgColor: AppColors.primaryColor,
+                          svgAssetPath: "assets/images/svg/login-icon.svg",
+                          buttonText: "Register",
+                          onTapUp: () {
+                            /// email register
+                            emailAuthProvider
+                                .registerWithEmailPassword(context);
+                          },
+                        ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.02,
                   ),
