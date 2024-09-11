@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:marvelapp/modals/mcu_modals.dart';
+import 'package:marvelapp/modals/mcu_modal.dart';
 
 class DummyScreen extends StatefulWidget {
   const DummyScreen({super.key});

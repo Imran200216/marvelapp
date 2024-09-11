@@ -8,7 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lottie/lottie.dart';
 import 'package:marvelapp/constants/colors.dart';
-import 'package:marvelapp/modals/mcu_modals.dart';
+import 'package:marvelapp/modals/mcu_modal.dart';
+
 import 'package:marvelapp/provider/internet_checker_provider.dart';
 import 'package:provider/provider.dart';
 

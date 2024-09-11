@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/provider/get_started_provider.dart';
-import 'package:marvelapp/screens/auth_screen.dart';
+import 'package:marvelapp/screens/auth_selection_screen.dart';
+
 import 'package:marvelapp/screens/get_started_screens/get_started_screen1.dart';
 import 'package:marvelapp/screens/get_started_screens/get_started_screen2.dart';
 import 'package:marvelapp/screens/get_started_screens/get_started_screen3.dart';
@@ -52,7 +53,7 @@ class GetStartedScreen extends StatelessWidget {
                       if (getStartedProvider.currentPage == 2) {
                         Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (context) {
-                          return const AuthScreen();
+                          return const AuthSelectionScreen();
                         }));
                       } else {
                         getStartedProvider.nextPage();
