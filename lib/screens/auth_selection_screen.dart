@@ -91,7 +91,7 @@ class AuthSelectionScreen extends StatelessWidget {
                       /// login in with email btn
                       CustomNeoPopButton(
                         buttonColor: AppColors.primaryColor,
-                        textColor: AppColors.secondaryColor,
+                        svgColor: AppColors.secondaryColor,
                         svgAssetPath: "assets/images/svg/mail-auth-icon.svg",
                         buttonText: "Sign in with Email",
                         onTapUp: () {
@@ -109,7 +109,7 @@ class AuthSelectionScreen extends StatelessWidget {
                       /// sign in with guest btn
                       CustomNeoPopButton(
                         buttonColor: AppColors.primaryColor,
-                        textColor: AppColors.secondaryColor,
+                        svgColor: AppColors.secondaryColor,
                         svgAssetPath: "assets/images/svg/guest-auth-icon.svg",
                         buttonText: "Sign in with Guest",
                         onTapUp: () {

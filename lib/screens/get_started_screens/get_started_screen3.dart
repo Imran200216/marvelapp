@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:marvelapp/constants/colors.dart';
 
-
 class GetStartedScreen3 extends StatelessWidget {
   const GetStartedScreen3({super.key});
 
@@ -26,7 +25,10 @@ class GetStartedScreen3 extends StatelessWidget {
                 size: 40,
               ),
             ),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
+            errorWidget: (context, url, error) => Icon(
+              Icons.error,
+              color: AppColors.primaryColor,
+            ),
             fit: BoxFit.cover,
           ),
         ),

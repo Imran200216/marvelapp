@@ -5,7 +5,7 @@ import 'package:neopop/widgets/buttons/neopop_button/neopop_button.dart';
 
 class CustomNeoPopButton extends StatelessWidget {
   final Color buttonColor;
-  final Color textColor;
+  final Color svgColor;
   final String svgAssetPath;
   final String buttonText;
   final VoidCallback onTapUp;
@@ -14,7 +14,7 @@ class CustomNeoPopButton extends StatelessWidget {
   const CustomNeoPopButton({
     super.key,
     required this.buttonColor,
-    required this.textColor,
+    required this.svgColor,
     required this.svgAssetPath,
     required this.buttonText,
     required this.onTapUp,
@@ -39,7 +39,7 @@ class CustomNeoPopButton extends StatelessWidget {
               svgAssetPath,
               height: MediaQuery.of(context).size.height * 0.030,
               width: MediaQuery.of(context).size.width * 0.030,
-              color: textColor,
+              color: svgColor,
               fit: BoxFit.cover,
             ),
             SizedBox(
@@ -48,7 +48,7 @@ class CustomNeoPopButton extends StatelessWidget {
             Text(
               buttonText,
               style: TextStyle(
-                color: textColor,
+                color: svgColor,
                 fontWeight: FontWeight.w600,
                 fontSize: MediaQuery.of(context).size.width * 0.038,
                 fontFamily: "Poppins",

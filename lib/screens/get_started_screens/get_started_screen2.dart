@@ -25,7 +25,10 @@ class GetStartedScreen2 extends StatelessWidget {
                 size: 40,
               ),
             ),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
+            errorWidget: (context, url, error) => Icon(
+              Icons.error,
+              color: AppColors.primaryColor,
+            ),
             fit: BoxFit.cover,
           ),
         ),

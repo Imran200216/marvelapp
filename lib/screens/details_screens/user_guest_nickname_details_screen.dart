@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/screens/bottom_nav.dart';
+import 'package:marvelapp/widgets/custom_textfield.dart';
 
 import 'package:neopop/widgets/buttons/neopop_button/neopop_button.dart';
 
@@ -40,28 +41,10 @@ class UserGuestNicknameDetailsScreen extends StatelessWidget {
                 height: size.height * 0.05,
               ),
 
-              TextField(
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4.0),
-                    borderSide: BorderSide.none,
-                  ),
-                  hintText: 'Enter your text here',
-                  hintStyle: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.subTitleColor,
-                    fontSize: 14,
-                    fontFamily: "Poppins",
-                  ),
-                ),
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.primaryColor,
-                  fontSize: 14,
-                  fontFamily: "Poppins",
-                ),
+              const CustomTextField(
+                keyboardType: TextInputType.text,
+                prefixIcon: Icons.person,
+                hintText: 'Enter your text here',
               ),
 
               SizedBox(

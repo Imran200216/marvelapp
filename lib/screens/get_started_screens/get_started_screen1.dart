@@ -30,7 +30,7 @@ class GetStartedScreen1 extends StatelessWidget {
             ),
             errorWidget: (context, url, error) => Icon(
               Icons.error,
-              color: AppColors.secondaryColor,
+              color: AppColors.primaryColor,
             ),
             fit: BoxFit.cover,
           ),

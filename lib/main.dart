@@ -7,6 +7,7 @@ import 'package:marvelapp/provider/authentication_providers/guest_auth_provider.
 import 'package:marvelapp/provider/bottom_nav_provider.dart';
 import 'package:marvelapp/provider/get_started_provider.dart';
 import 'package:marvelapp/provider/internet_checker_provider.dart';
+import 'package:marvelapp/provider/password_visibility_provider.dart';
 
 import 'package:marvelapp/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
@@ -49,6 +50,11 @@ class MyApp extends StatelessWidget {
         /// auth provider (email provider)
         ChangeNotifierProvider(
           create: (_) => EmailAuthenticationProvider(),
+        ),
+
+        /// password visibility provider
+        ChangeNotifierProvider(
+          create: (_) => PasswordVisibilityProvider(),
         ),
       ],
       builder: (context, child) {
