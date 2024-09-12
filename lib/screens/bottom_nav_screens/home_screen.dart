@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: AppColors.primaryColor,
         body: Consumer<InternetCheckerProvider>(
           builder: (
             context,
