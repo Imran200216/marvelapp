@@ -6,6 +6,7 @@ import 'package:marvelapp/provider/authentication_providers/email_auth_provider.
 import 'package:marvelapp/provider/authentication_providers/guest_auth_provider.dart';
 import 'package:marvelapp/provider/bottom_nav_provider.dart';
 import 'package:marvelapp/provider/get_started_provider.dart';
+import 'package:marvelapp/provider/super_hero_character_db_provider.dart';
 import 'package:marvelapp/provider/user_details_provider/email_user_details_provider.dart';
 import 'package:marvelapp/provider/user_details_provider/guest_user_details_provider.dart';
 import 'package:marvelapp/provider/internet_checker_provider.dart';
@@ -68,6 +69,11 @@ class MyApp extends StatelessWidget {
         /// email user details provider
         ChangeNotifierProvider(
           create: (_) => EmailUserDetailsProvider(),
+        ),
+
+        /// super hero character db provider
+        ChangeNotifierProvider(
+          create: (_) => SuperHeroCharacterDBProvider(),
         ),
       ],
       builder: (context, child) {
