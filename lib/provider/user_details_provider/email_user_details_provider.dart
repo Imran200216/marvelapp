@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:marvelapp/screens/bottom_nav.dart';
 import 'package:marvelapp/widgets/toast_helper.dart';
 
 class EmailUserDetailsProvider extends ChangeNotifier {
@@ -87,6 +88,11 @@ class EmailUserDetailsProvider extends ChangeNotifier {
             context: context,
             message: "Nickname updated successfully!",
           );
+
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) {
+            return BottomNavBar();
+          }));
         });
 
         // Fetch updated data to reflect it in the UI
