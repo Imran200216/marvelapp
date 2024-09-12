@@ -8,6 +8,7 @@ import 'package:marvelapp/provider/authentication_providers/guest_auth_provider.
 import 'package:marvelapp/provider/user_details_provider/email_user_details_provider.dart';
 import 'package:marvelapp/provider/user_details_provider/guest_user_details_provider.dart';
 import 'package:marvelapp/screens/profile_edit_screens/profile_avatar_edit_email_screen.dart';
+import 'package:marvelapp/screens/profile_edit_screens/profile_avatar_edit_guest_screen.dart';
 
 import 'package:marvelapp/widgets/custom_listile.dart';
 import 'package:marvelapp/widgets/toast_helper.dart';
@@ -81,7 +82,12 @@ class ProfileScreen extends StatelessWidget {
                               bottom: 0,
                               right: 0,
                               child: InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return const ProfileAvatarEditGuestScreen();
+                                  }));
+                                },
                                 child: Container(
                                   height: 50,
                                   width: 50,
