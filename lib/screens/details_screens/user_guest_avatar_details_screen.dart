@@ -1,14 +1,11 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/provider/user_details_provider/guest_user_details_provider.dart';
 import 'package:marvelapp/screens/details_screens/user_guest_nickname_details_screen.dart';
-import 'package:neopop/widgets/buttons/neopop_button/neopop_button.dart';
+import 'package:marvelapp/widgets/custom_neopop_btn.dart';
 import 'package:provider/provider.dart';
 
 class UserGuestAvatarDetailsScreen extends StatelessWidget {
@@ -30,6 +27,24 @@ class UserGuestAvatarDetailsScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.primaryColor,
+        bottomSheet: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.zero,
+              color: AppColors.primaryColor,
+            ),
+            child: CustomNeoPopButton(
+              buttonColor: AppColors.secondaryColor,
+              svgColor: AppColors.primaryColor,
+              svgAssetPath: 'assets/images/svg/next-icon.svg',
+              buttonText: 'Next',
+              onTapUp: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) {
+                  return const UserGuestNicknameDetailsScreen();
+                }));
+              },
+            )),
         body: Container(
           margin: const EdgeInsets.only(
             left: 20,
@@ -52,6 +67,7 @@ class UserGuestAvatarDetailsScreen extends StatelessWidget {
               SizedBox(
                 height: size.height * 0.05,
               ),
+              // Display selected avatar in dotted border
               Center(
                 child: DottedBorder(
                   borderType: BorderType.Circle,
@@ -61,12 +77,16 @@ class UserGuestAvatarDetailsScreen extends StatelessWidget {
                   child: Container(
                     width: size.width * 0.42,
                     height: size.width * 0.42,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                        image: AssetImage(
-                          "assets/images/png/avatar-bg-img.png",
-                        ),
+                        image:
+                            userGuestDetailsProvider.selectedAvatarURL != null
+                                ? CachedNetworkImageProvider(
+                                    userGuestDetailsProvider.selectedAvatarURL!)
+                                : const AssetImage(
+                                    "assets/images/png/avatar-bg-img.png",
+                                  ) as ImageProvider,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -77,7 +97,7 @@ class UserGuestAvatarDetailsScreen extends StatelessWidget {
                 height: size.height * 0.05,
               ),
 
-              /// cool avatars from Firebase Storage
+              /// Grid view for cool avatars
               userGuestDetailsProvider.imageUrls.isEmpty
                   ? Center(
                       child: LoadingAnimationWidget.dotsTriangle(
@@ -85,85 +105,54 @@ class UserGuestAvatarDetailsScreen extends StatelessWidget {
                         size: 40,
                       ),
                     )
-                  : CarouselSlider(
-                      options: CarouselOptions(
-                        height: size.height * 0.30,
-                        autoPlay: true,
-                        enlargeCenterPage: true,
-                        aspectRatio: 16 / 9,
-                        autoPlayInterval: const Duration(seconds: 3),
-                        viewportFraction: 0.8,
-                      ),
-                      items: userGuestDetailsProvider.imageUrls
-                          .map((item) => Container(
-                                margin: const EdgeInsets.all(5.0),
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                child: ClipOval(
-                                  child: CachedNetworkImage(
-                                    imageUrl: item,
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) => Center(
-                                      child:
-                                          LoadingAnimationWidget.dotsTriangle(
-                                        color: AppColors.primaryColor,
-                                        size: 40,
-                                      ),
-                                    ),
-                                    errorWidget: (context, url, error) => Icon(
-                                      Icons.error,
-                                      color: AppColors.primaryColor,
+                  : Expanded(
+                      child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                          childAspectRatio: 1,
+                        ),
+                        itemCount: userGuestDetailsProvider.imageUrls.length,
+                        itemBuilder: (context, index) {
+                          final avatarUrl =
+                              userGuestDetailsProvider.imageUrls[index];
+
+                          return InkWell(
+                            onTap: () {
+                              // Update the selected avatar in provider and Firebase
+                              userGuestDetailsProvider.setSelectedAvatar(
+                                  avatarUrl, context);
+                            },
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                              child: ClipOval(
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                      userGuestDetailsProvider.imageUrls[index],
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) => Center(
+                                    child: LoadingAnimationWidget.dotsTriangle(
+                                      color: AppColors.secondaryColor,
+                                      size: 40,
                                     ),
                                   ),
+                                  errorWidget: (context, url, error) => Icon(
+                                    Icons.error,
+                                    color: AppColors.secondaryColor,
+                                  ),
                                 ),
-                              ))
-                          .toList(),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
               SizedBox(
                 height: size.height * 0.08,
-              ),
-
-              /// avatar next btn
-              NeoPopButton(
-                color: AppColors.secondaryColor,
-                onTapUp: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) {
-                    return const UserGuestNicknameDetailsScreen();
-                  }));
-                },
-                onTapDown: () => HapticFeedback.vibrate(),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 15,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        "assets/images/svg/next-icon.svg",
-                        height: MediaQuery.of(context).size.height * 0.030,
-                        width: MediaQuery.of(context).size.width * 0.030,
-                        color: AppColors.primaryColor,
-                        fit: BoxFit.cover,
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.04,
-                      ),
-                      Text(
-                        "Next",
-                        style: TextStyle(
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.w600,
-                          fontSize: MediaQuery.of(context).size.width * 0.038,
-                          fontFamily: "Poppins",
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ),
             ],
           ),

@@ -43,7 +43,7 @@ class GuestAuthenticationProvider extends ChangeNotifier {
 
         /// Add guest user to Fire store using UserModal's toJson method
         await FirebaseFirestore.instance
-            .collection('usersByGuestAuth')
+            .collection('userByGuestAuth')
             .doc(user.uid)
             .set(guestModalUser.toJson());
 

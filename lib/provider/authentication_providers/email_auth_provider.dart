@@ -206,4 +206,6 @@ class EmailAuthenticationProvider extends ChangeNotifier {
           message: "Failed to send reset link. Try again later.");
     }
   }
+
+
 }
