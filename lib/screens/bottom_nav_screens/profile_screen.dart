@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/provider/authentication_providers/email_auth_provider.dart';
 import 'package:marvelapp/provider/authentication_providers/guest_auth_provider.dart';
 import 'package:marvelapp/provider/user_details_provider/email_user_details_provider.dart';
 import 'package:marvelapp/provider/user_details_provider/guest_user_details_provider.dart';
+import 'package:marvelapp/screens/profile_edit_screens/profile_avatar_edit_email_screen.dart';
+
 import 'package:marvelapp/widgets/custom_listile.dart';
 import 'package:marvelapp/widgets/toast_helper.dart';
 import 'package:provider/provider.dart';
@@ -58,33 +61,94 @@ class ProfileScreen extends StatelessWidget {
                   /// Profile picture
 
                   user!.isAnonymous
-                      ? Container(
-                          height: MediaQuery.of(context).size.height * 0.16,
-                          width: MediaQuery.of(context).size.height * 0.16,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: CachedNetworkImageProvider(
-                                guestUserProvider.avatarPhotoURL ??
-                                    "https://example.com/default-avatar.png",
+                      ? Stack(
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height * 0.16,
+                              width: MediaQuery.of(context).size.height * 0.16,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: CachedNetworkImageProvider(
+                                    guestUserProvider.avatarPhotoURL ??
+                                        "https://example.com/default-avatar.png",
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                              fit: BoxFit.cover,
                             ),
-                          ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.editContainerBgColor,
+                                  ),
+                                  child: Center(
+                                    child: SvgPicture.asset(
+                                      "assets/images/svg/edit-outlined-icon.svg",
+                                      height: 30,
+                                      width: 30,
+                                      fit: BoxFit.cover,
+                                      color: AppColors.secondaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         )
-                      : Container(
-                          height: MediaQuery.of(context).size.height * 0.16,
-                          width: MediaQuery.of(context).size.height * 0.16,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: CachedNetworkImageProvider(
-                                emailUserProvider.avatarPhotoURL ??
-                                    "https://imgs.search.brave.com/hjo8zDIxlTqf_jwu_RxiKpSQpyauoiJ7Pbx8m7HVNfg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/ZnJlZS1waG90by91/c2VyLXByb2ZpbGUt/aWNvbi1mcm9udC1z/aWRlLXdpdGgtd2hp/dGUtYmFja2dyb3Vu/ZF8xODcyOTktNDAw/MTAuanBnP3NpemU9/NjI2JmV4dD1qcGc",
+                      : Stack(
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height * 0.16,
+                              width: MediaQuery.of(context).size.height * 0.16,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: CachedNetworkImageProvider(
+                                    emailUserProvider.avatarPhotoURL ??
+                                        "https://imgs.search.brave.com/hjo8zDIxlTqf_jwu_RxiKpSQpyauoiJ7Pbx8m7HVNfg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/ZnJlZS1waG90by91/c2VyLXByb2ZpbGUt/aWNvbi1mcm9udC1z/aWRlLXdpdGgtd2hp/dGUtYmFja2dyb3Vu/ZF8xODcyOTktNDAw/MTAuanBnP3NpemU9/NjI2JmV4dD1qcGc",
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                              fit: BoxFit.cover,
                             ),
-                          ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return const ProfileAvatarEditEmailScreen();
+                                  }));
+                                },
+                                child: Container(
+                                  height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.editContainerBgColor,
+                                  ),
+                                  child: Center(
+                                    child: SvgPicture.asset(
+                                      "assets/images/svg/edit-outlined-icon.svg",
+                                      height: 30,
+                                      width: 30,
+                                      fit: BoxFit.cover,
+                                      color: AppColors.secondaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
 
                   SizedBox(
@@ -128,6 +192,8 @@ class ProfileScreen extends StatelessWidget {
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.04,
                             ),
+
+                            /// name
                             user!.isAnonymous
                                 ? const SizedBox()
                                 : CustomListile(
@@ -139,6 +205,8 @@ class ProfileScreen extends StatelessWidget {
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.02,
                             ),
+
+                            /// nick name
                             user.isAnonymous
                                 ? CustomListile(
                                     svgAssetLeading:
@@ -159,6 +227,8 @@ class ProfileScreen extends StatelessWidget {
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.02,
                             ),
+
+                            /// email address
                             user.isAnonymous
                                 ? const SizedBox()
                                 : CustomListile(
@@ -171,6 +241,8 @@ class ProfileScreen extends StatelessWidget {
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.02,
                             ),
+
+                            /// sign out
                             CustomListile(
                               svgAssetLeading:
                                   "assets/images/svg/signout-icon.svg",

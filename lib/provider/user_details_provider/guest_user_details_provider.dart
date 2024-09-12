@@ -7,12 +7,20 @@ import 'package:marvelapp/widgets/toast_helper.dart';
 
 class GuestUserDetailsProvider extends ChangeNotifier {
   List<String> _imageUrls = [];
+  String? _nickname;
+  String? _avatarPhotoURL;
   String? selectedAvatarURL;
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  // Getters for external access to nickname and avatar URL
+  String? get nickname => _nickname;
+
+  String? get avatarPhotoURL => _avatarPhotoURL;
+
   List<String> get imageUrls => _imageUrls;
 
+  // Fetch avatars from Firebase Storage
   Future<void> fetchAvatars() async {
     try {
       final storageRef = FirebaseStorage.instance.ref().child('avatars');
@@ -22,109 +30,104 @@ class GuestUserDetailsProvider extends ChangeNotifier {
       );
 
       _imageUrls = urls;
-      notifyListeners();
+      notifyListeners(); // Notify listeners to update the UI
     } catch (e) {
       print('Failed to load avatars: $e');
     }
   }
 
-  // Method to set the selected avatar and update Firebase
+  // Set selected avatar and update in Firestore
   Future<void> setSelectedAvatar(String avatarUrl, BuildContext context) async {
     selectedAvatarURL = avatarUrl;
-    notifyListeners(); // Notify listeners to update the UI
+    notifyListeners(); // Update the UI immediately
 
-    // Get the current user's UID
     final User? user = FirebaseAuth.instance.currentUser;
 
-    if (user != null) {
-      // This can be either an anonymous user or a registered user
+    if (user != null && user.isAnonymous) {
       String uid = user.uid;
 
-      // Update the avatarPhotoURL field in Fire store using the UID as the document ID
-      await _firestore
-          .collection('userByGuestAuth')
-          .doc(uid)
-          .update({'avatarPhotoURL': avatarUrl}).then((value) {
-        /// success toast
-        ToastHelper.showSuccessToast(
+      try {
+        await _firestore.collection('userByGuestAuth').doc(uid).update({
+          'avatarPhotoURL': avatarUrl,
+        }).then((value) {
+          ToastHelper.showSuccessToast(
+            context: context,
+            message: "Avatar updated successfully!",
+          );
+        });
+
+        // Refetch guest details after update to reflect changes
+        await fetchGuestUserDetails();
+      } catch (e) {
+        ToastHelper.showErrorToast(
           context: context,
-          message: "Avatar added successfully!",
+          message: "Failed to update avatar.",
         );
-      });
+        print('Error updating avatar: $e');
+      }
     } else {
-      // Handle the case where the user is not authenticated
-      // Show a toast message if the nickname is empty
       ToastHelper.showErrorToast(
         context: context,
-        message: "Avatar should be added!",
+        message: "No user signed in.",
       );
-      print('No user is signed in');
+      print('No user signed in');
     }
-    notifyListeners();
   }
 
-  // Controller for the nickname TextField
+  // Controller for nickname TextField
   final TextEditingController nicknameControllerByGuest =
       TextEditingController();
 
-  // Method to set the nickname and update Firestore
+  // Set nickname and update in Firestore
   Future<void> setNickname(BuildContext context) async {
     final nickName = nicknameControllerByGuest.text.trim();
 
-    // Validate if nickname is empty
+    // Validate nickname
     if (nickName.isEmpty) {
-      // Show a toast message if the nickname is empty
       ToastHelper.showErrorToast(
         context: context,
         message: "Nickname cannot be empty!",
       );
-
       return;
     }
 
-    // Ensure the nickname is not empty
-    if (nickName.isNotEmpty) {
-      final User? user = FirebaseAuth.instance.currentUser;
+    final User? user = FirebaseAuth.instance.currentUser;
 
-      if (user != null) {
-        String uid = user.uid;
+    if (user != null && user.isAnonymous) {
+      String uid = user.uid;
 
-        // Update the nickName field in Firestore using the UID
-        await _firestore
-            .collection('userByGuestAuth')
-            .doc(uid) // Use the user's UID
-            .update({'nickName': nickName});
+      try {
+        await _firestore.collection('userByGuestAuth').doc(uid).update({
+          'nickName': nickName,
+        }).then((value) {
+          ToastHelper.showSuccessToast(
+            context: context,
+            message: "Nickname updated successfully!",
+          );
+        });
 
-        /// success toast
-        ToastHelper.showSuccessToast(
-          context: context,
-          message: "Nickname added successfully!",
-        );
+        // Refetch guest details after update to reflect changes
+        await fetchGuestUserDetails();
 
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) {
           return BottomNavBar();
         }));
-
-        notifyListeners(); // Notify listeners in case of changes
-      } else {
+      } catch (e) {
         ToastHelper.showErrorToast(
           context: context,
-          message: "Nickname cannot be empty!",
+          message: "Failed to update nickname.",
         );
-        print('No user is signed in');
+        print('Error updating nickname: $e');
       }
     } else {
-      print('Nickname is empty');
+      ToastHelper.showErrorToast(
+        context: context,
+        message: "No user signed in.",
+      );
+      print('No user signed in');
     }
   }
-
-  String? _nickname;
-  String? _avatarPhotoURL;
-
-  String? get nickname => _nickname;
-
-  String? get avatarPhotoURL => _avatarPhotoURL;
 
   // Fetch guest user details from Firestore
   Future<void> fetchGuestUserDetails() async {
@@ -140,7 +143,8 @@ class GuestUserDetailsProvider extends ChangeNotifier {
         if (userDoc.exists) {
           _nickname = userDoc['nickName'] ?? 'No nickname';
           _avatarPhotoURL = userDoc['avatarPhotoURL'] ??
-              'https://example.com/default-avatar.png'; // Add a default URL
+              'https://example.com/default-avatar.png'; // Fallback URL
+          notifyListeners(); // Notify UI of data change
         } else {
           print('Guest user document does not exist');
         }
@@ -148,7 +152,5 @@ class GuestUserDetailsProvider extends ChangeNotifier {
         print('Failed to fetch guest user details: $e');
       }
     }
-
-    notifyListeners();
   }
 }

@@ -7,4 +7,5 @@ class AppColors {
   static Color timeLineBgColor = const Color(0xFF1A1D23);
   static Color successToastColor = const Color(0xFF02A75A);
   static Color failureToastColor = const Color(0xFFD92F54);
+  static Color editContainerBgColor = const Color(0xFF181B1D);
 }
