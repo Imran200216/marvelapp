@@ -1,15 +1,25 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:marvelapp/constants/colors.dart';
-import 'package:marvelapp/screens/character_model_screen.dart';
-import 'package:neopop/widgets/buttons/neopop_button/neopop_button.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 class SuperHeroDescriptionScreen extends StatelessWidget {
-  const SuperHeroDescriptionScreen({super.key});
+  final String characterName;
+  final String characterCoverUrl;
+  final String indicatorPhotoUrl;
+  final String characterPara1;
+  final String characterPara2;
+
+  const SuperHeroDescriptionScreen({
+    super.key,
+    required this.characterName,
+    required this.characterCoverUrl,
+    required this.indicatorPhotoUrl,
+    required this.characterPara1,
+    required this.characterPara2,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,17 +40,16 @@ class SuperHeroDescriptionScreen extends StatelessWidget {
                       borderRadius: BorderRadius.zero,
                     ),
                     child: CachedNetworkImage(
-                      imageUrl:
-                          "https://i.pinimg.com/736x/cd/0d/05/cd0d0588e15b584d146560573104bf74.jpg",
+                      imageUrl: characterCoverUrl,
                       placeholder: (context, url) => Center(
                         child: LoadingAnimationWidget.dotsTriangle(
-                          color: AppColors.primaryColor,
+                          color: AppColors.secondaryColor,
                           size: 40,
                         ),
                       ),
                       errorWidget: (context, url, error) => Icon(
                         Icons.error,
-                        color: AppColors.primaryColor,
+                        color: AppColors.secondaryColor,
                       ),
                       fit: BoxFit.cover,
                     ),
@@ -79,23 +88,33 @@ class SuperHeroDescriptionScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    /// character name
+                    /// Character name
                     TimelineTile(
                       alignment: TimelineAlign.start,
-                      // Aligns to start of the paragraph
                       lineXY: 0,
-                      // Align the timeline to the start
                       isFirst: true,
-
-                      indicatorStyle: const IndicatorStyle(
+                      indicatorStyle: IndicatorStyle(
                         width: 34,
                         height: 34,
                         indicator: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            "https://i.pinimg.com/564x/69/cc/c6/69ccc6d366ee195d4fec94f51a96539c.jpg",
+                          backgroundImage:
+                              CachedNetworkImageProvider(indicatorPhotoUrl),
+                          child: CachedNetworkImage(
+                            imageUrl: indicatorPhotoUrl,
+                            placeholder: (context, url) => Center(
+                              child: LoadingAnimationWidget.dotsTriangle(
+                                color: AppColors.secondaryColor,
+                                size: 34,
+                              ),
+                            ),
+                            errorWidget: (context, url, error) => Icon(
+                              Icons.error,
+                              color: AppColors.secondaryColor,
+                            ),
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        padding: EdgeInsets.all(4),
+                        padding: const EdgeInsets.all(4),
                       ),
                       beforeLineStyle: LineStyle(
                         color: AppColors.timeLineBgColor,
@@ -104,7 +123,7 @@ class SuperHeroDescriptionScreen extends StatelessWidget {
                       endChild: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Text(
-                          "Spider-Man",
+                          characterName,
                           style: TextStyle(
                             fontFamily: "Poppins",
                             fontWeight: FontWeight.w700,
@@ -118,18 +137,29 @@ class SuperHeroDescriptionScreen extends StatelessWidget {
                     /// Timeline Tile for the first paragraph
                     TimelineTile(
                       alignment: TimelineAlign.start,
-                      // Aligns to start of the paragraph
                       lineXY: 0,
-
-                      indicatorStyle: const IndicatorStyle(
+                      indicatorStyle: IndicatorStyle(
                         width: 34,
                         height: 34,
                         indicator: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            "https://i.pinimg.com/564x/69/cc/c6/69ccc6d366ee195d4fec94f51a96539c.jpg",
+                          backgroundImage:
+                              CachedNetworkImageProvider(indicatorPhotoUrl),
+                          child: CachedNetworkImage(
+                            imageUrl: indicatorPhotoUrl,
+                            placeholder: (context, url) => Center(
+                              child: LoadingAnimationWidget.dotsTriangle(
+                                color: AppColors.secondaryColor,
+                                size: 34,
+                              ),
+                            ),
+                            errorWidget: (context, url, error) => Icon(
+                              Icons.error,
+                              color: AppColors.secondaryColor,
+                            ),
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        padding: EdgeInsets.all(4),
+                        padding: const EdgeInsets.all(4),
                       ),
                       beforeLineStyle: LineStyle(
                         color: AppColors.timeLineBgColor,
@@ -138,9 +168,7 @@ class SuperHeroDescriptionScreen extends StatelessWidget {
                       endChild: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Text(
-                          '''
-Spider-Man, created by writer Stan Lee and artist Steve Ditko, made his debut in Amazing Fantasy #15 in 1962. His real identity is Peter Parker, a teenager living in New York City who gains superhuman abilities after being bitten by a radioactive spider. With powers including super strength, the ability to stick to walls, and a "spidey sense" that warns him of danger, Spider-Man is one of the most iconic and relatable superheroes.
-                          ''',
+                          characterPara1,
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             color: AppColors.subTitleColor,
@@ -154,19 +182,30 @@ Spider-Man, created by writer Stan Lee and artist Steve Ditko, made his debut in
                     /// Timeline Tile for the second paragraph
                     TimelineTile(
                       alignment: TimelineAlign.start,
-                      // Aligns to start of the paragraph
                       lineXY: 0,
-                      // Align the timeline to the start
                       isLast: true,
-                      indicatorStyle: const IndicatorStyle(
+                      indicatorStyle: IndicatorStyle(
                         width: 34,
                         height: 34,
                         indicator: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            "https://i.pinimg.com/564x/69/cc/c6/69ccc6d366ee195d4fec94f51a96539c.jpg",
+                          backgroundImage:
+                              CachedNetworkImageProvider(indicatorPhotoUrl),
+                          child: CachedNetworkImage(
+                            imageUrl: indicatorPhotoUrl,
+                            placeholder: (context, url) => Center(
+                              child: LoadingAnimationWidget.dotsTriangle(
+                                color: AppColors.secondaryColor,
+                                size: 34,
+                              ),
+                            ),
+                            errorWidget: (context, url, error) => Icon(
+                              Icons.error,
+                              color: AppColors.secondaryColor,
+                            ),
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        padding: EdgeInsets.all(4),
+                        padding: const EdgeInsets.all(4),
                       ),
                       beforeLineStyle: LineStyle(
                         color: AppColors.timeLineBgColor,
@@ -175,66 +214,12 @@ Spider-Man, created by writer Stan Lee and artist Steve Ditko, made his debut in
                       endChild: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Text(
-                          '''
-What sets Spider-Man apart is his famous moral lesson: "With great power comes great responsibility," instilled in him by his Uncle Ben's death. This philosophy drives his actions as a superhero, as he balances protecting his city with his personal life. His notable enemies include the Green Goblin, Doctor Octopus, and Venom, and he is a key member of the Marvel Universe, often teaming up with the Avengers.
-                          ''',
+                          characterPara2,
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontFamily: "Poppins",
                             color: AppColors.subTitleColor,
                             fontSize: MediaQuery.of(context).size.width * 0.038,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.03,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 10,
-                        right: 10,
-                      ),
-                      child: NeoPopButton(
-                        color: AppColors.secondaryColor,
-                        onTapUp: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return const CharacterModelScreen();
-                          }));
-                        },
-                        onTapDown: () => HapticFeedback.vibrate(),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 15,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                "assets/images/svg/super-hero-icon.svg",
-                                height:
-                                    MediaQuery.of(context).size.height * 0.030,
-                                width:
-                                    MediaQuery.of(context).size.width * 0.030,
-                                color: AppColors.primaryColor,
-                                fit: BoxFit.cover,
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.04,
-                              ),
-                              Text(
-                                "View 3d character model",
-                                style: TextStyle(
-                                  color: AppColors.primaryColor,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize:
-                                      MediaQuery.of(context).size.width * 0.038,
-                                  fontFamily: "Poppins",
-                                ),
-                              ),
-                            ],
                           ),
                         ),
                       ),

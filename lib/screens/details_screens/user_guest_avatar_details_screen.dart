@@ -84,15 +84,17 @@ class UserGuestAvatarDetailsScreen extends StatelessWidget {
                             userGuestDetailsProvider.selectedAvatarURL != null
                                 ? CachedNetworkImageProvider(
                                     userGuestDetailsProvider.selectedAvatarURL!)
-                                : const AssetImage(
-                                    "assets/images/png/avatar-bg-img.png",
-                                  ) as ImageProvider,
+                                : const CachedNetworkImageProvider(
+                                    "https://i.pinimg.com/564x/cb/24/dc/cb24dcc240159a21891028e1d2eaa002.jpg",
+                                  ),
+                        // Placeholder image URL
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
                 ),
               ),
+
               SizedBox(
                 height: size.height * 0.05,
               ),

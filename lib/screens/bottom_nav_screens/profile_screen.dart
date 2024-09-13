@@ -78,7 +78,7 @@ class ProfileScreen extends StatelessWidget {
                               child: ClipOval(
                                 child: CachedNetworkImage(
                                   imageUrl: guestUserProvider.avatarPhotoURL ??
-                                      "https://example.com/default-avatar.png",
+                                      "https://i.pinimg.com/564x/39/51/fa/3951fa4087ca2e4e75dd9a954722ed77.jpg",
                                   fit: BoxFit.cover,
                                   placeholder: (context, url) => Center(
                                     child: CircularProgressIndicator(

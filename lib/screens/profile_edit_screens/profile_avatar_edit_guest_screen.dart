@@ -90,13 +90,13 @@ class ProfileAvatarEditGuestScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                        image:
-                            userGuestDetailsProvider.selectedAvatarURL != null
-                                ? CachedNetworkImageProvider(
-                                    userGuestDetailsProvider.selectedAvatarURL!)
-                                : const AssetImage(
-                                    "assets/images/png/avatar-bg-img.png",
-                                  ) as ImageProvider,
+                        image: userGuestDetailsProvider.selectedAvatarURL !=
+                                null
+                            ? CachedNetworkImageProvider(
+                                userGuestDetailsProvider.selectedAvatarURL!)
+                            : const CachedNetworkImageProvider(
+                                "https://i.pinimg.com/564x/cb/24/dc/cb24dcc240159a21891028e1d2eaa002.jpg"),
+                        // Placeholder image URL
                         fit: BoxFit.cover,
                       ),
                     ),

@@ -81,13 +81,13 @@ class UserEmailAvatarDetailsScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                        image:
-                            userEmailDetailsProvider.selectedAvatarURL != null
-                                ? CachedNetworkImageProvider(
-                                    userEmailDetailsProvider.selectedAvatarURL!)
-                                : const AssetImage(
-                                    "assets/images/png/avatar-bg-img.png",
-                                  ) as ImageProvider,
+                        image: userEmailDetailsProvider.selectedAvatarURL !=
+                                null
+                            ? CachedNetworkImageProvider(
+                                userEmailDetailsProvider.selectedAvatarURL!)
+                            : const CachedNetworkImageProvider(
+                                "https://i.pinimg.com/564x/cb/24/dc/cb24dcc240159a21891028e1d2eaa002.jpg"),
+                        // Placeholder image URL
                         fit: BoxFit.cover,
                       ),
                     ),

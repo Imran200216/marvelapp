@@ -1,29 +1,30 @@
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class SuperHeroCharacterDBProvider extends ChangeNotifier {
-  List<String> _imageUrls = [];
+  List<Map<String, dynamic>> _superHeroes = [];
 
-  List<String> get imageUrls => _imageUrls;
+  List<Map<String, dynamic>> get superHeroes => _superHeroes;
 
-  // Fetch avatars from Firebase Storage
-  Future<void> fetchAvatars() async {
+  // Fetch superhero details from Fire store
+  Future<void> fetchSuperHeroes() async {
     try {
-      final storageRef = FirebaseStorage.instance.ref().child('superheros');
-      final listResult = await storageRef.listAll();
-      final urls = await Future.wait(
-        listResult.items.map((ref) => ref.getDownloadURL()),
-      );
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('superHeroCharacters')
+          .get();
 
-      _imageUrls = urls;
+      _superHeroes = querySnapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
+
       notifyListeners(); // Notify UI of changes
     } catch (e) {
-      print('Failed to load avatars: $e');
+      print('Failed to load superhero data: $e');
     }
   }
 
-  // Fetch data immediately when this provider is created
+  // Initialize the provider and seed data if necessary
   SuperHeroCharacterDBProvider() {
-    fetchAvatars();
+    fetchSuperHeroes(); // Fetch the existing or newly seeded data
   }
 }
