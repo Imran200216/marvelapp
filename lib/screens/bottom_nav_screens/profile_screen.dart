@@ -230,6 +230,7 @@ class ProfileScreen extends StatelessWidget {
                                         "assets/images/svg/profile-outlined-icon.svg",
                                     title: "Your name",
                                     subTitle: user.displayName ?? "No name",
+                                    trailing: const SizedBox(),
                                   ),
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.02,
@@ -266,6 +267,7 @@ class ProfileScreen extends StatelessWidget {
                                     title: "Email address",
                                     subTitle:
                                         user.email ?? "No one authenticated",
+                                    trailing: const SizedBox(),
                                   ),
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.02,
