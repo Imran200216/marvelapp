@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/provider/user_details_provider/guest_user_details_provider.dart';
-import 'package:marvelapp/screens/bottom_nav.dart';
+
 import 'package:marvelapp/widgets/custom_neopop_btn.dart';
 import 'package:marvelapp/widgets/custom_textfield.dart';
-import 'package:marvelapp/widgets/toast_helper.dart';
 
 import 'package:provider/provider.dart';
 

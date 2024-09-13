@@ -54,6 +54,7 @@ dependencies:
   timeline_tile: ^2.0.0
   cloud_firestore: ^5.4.1
   firebase_storage: ^12.3.0
+  package_info_plus: ^8.0.2
 
 
 

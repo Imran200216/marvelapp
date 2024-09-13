@@ -7,6 +7,7 @@ class CustomListile extends StatelessWidget {
   final String title;
   final String subTitle;
   final VoidCallback? onTap;
+  final Widget? trailing; // Optional trailing widget
 
   const CustomListile({
     super.key,
@@ -14,6 +15,7 @@ class CustomListile extends StatelessWidget {
     required this.title,
     required this.subTitle,
     this.onTap,
+    this.trailing, // Pass optional trailing widget here
   });
 
   @override
@@ -48,7 +50,8 @@ class CustomListile extends StatelessWidget {
           fontWeight: FontWeight.w600,
         ),
       ),
-      trailing: Icon(
+      // Use the trailing widget if provided, otherwise default to an Icon
+      trailing: trailing ?? Icon(
         Icons.arrow_forward_ios,
         size: screenWidth * 0.045,
         color: AppColors.secondaryColor,

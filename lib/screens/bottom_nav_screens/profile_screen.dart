@@ -3,10 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:marvelapp/constants/colors.dart';
+import 'package:marvelapp/provider/app_version_provider.dart';
 import 'package:marvelapp/provider/authentication_providers/email_auth_provider.dart';
 import 'package:marvelapp/provider/authentication_providers/guest_auth_provider.dart';
+
 import 'package:marvelapp/provider/user_details_provider/email_user_details_provider.dart';
 import 'package:marvelapp/provider/user_details_provider/guest_user_details_provider.dart';
+import 'package:marvelapp/screens/about_app_details_screen.dart';
 import 'package:marvelapp/screens/profile_edit_screens/profile_avatar_edit_email_screen.dart';
 import 'package:marvelapp/screens/profile_edit_screens/profile_avatar_edit_guest_screen.dart';
 
@@ -33,11 +36,13 @@ class ProfileScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.primaryColor,
-        body: Consumer2<GuestUserDetailsProvider, EmailUserDetailsProvider>(
+        body: Consumer3<GuestUserDetailsProvider, EmailUserDetailsProvider,
+            AppVersionProvider>(
           builder: (
             context,
             guestUserProvider,
             emailUserProvider,
+            appVersionProvider,
             child,
           ) {
             return Container(
@@ -67,14 +72,23 @@ class ProfileScreen extends StatelessWidget {
                             Container(
                               height: MediaQuery.of(context).size.height * 0.16,
                               width: MediaQuery.of(context).size.height * 0.16,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: CachedNetworkImageProvider(
-                                    guestUserProvider.avatarPhotoURL ??
-                                        "https://example.com/default-avatar.png",
-                                  ),
+                              ),
+                              child: ClipOval(
+                                child: CachedNetworkImage(
+                                  imageUrl: guestUserProvider.avatarPhotoURL ??
+                                      "https://example.com/default-avatar.png",
                                   fit: BoxFit.cover,
+                                  placeholder: (context, url) => Center(
+                                    child: CircularProgressIndicator(
+                                      color: AppColors.secondaryColor,
+                                    ),
+                                  ),
+                                  errorWidget: (context, url, error) => Icon(
+                                    Icons.error,
+                                    color: AppColors.secondaryColor,
+                                  ),
                                 ),
                               ),
                             ),
@@ -114,14 +128,23 @@ class ProfileScreen extends StatelessWidget {
                             Container(
                               height: MediaQuery.of(context).size.height * 0.16,
                               width: MediaQuery.of(context).size.height * 0.16,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: CachedNetworkImageProvider(
-                                    emailUserProvider.avatarPhotoURL ??
-                                        "https://imgs.search.brave.com/hjo8zDIxlTqf_jwu_RxiKpSQpyauoiJ7Pbx8m7HVNfg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/ZnJlZS1waG90by91/c2VyLXByb2ZpbGUt/aWNvbi1mcm9udC1z/aWRlLXdpdGgtd2hp/dGUtYmFja2dyb3Vu/ZF8xODcyOTktNDAw/MTAuanBnP3NpemU9/NjI2JmV4dD1qcGc",
-                                  ),
+                              ),
+                              child: ClipOval(
+                                child: CachedNetworkImage(
+                                  imageUrl: emailUserProvider.avatarPhotoURL ??
+                                      "https://imgs.search.brave.com/hjo8zDIxlTqf_jwu_RxiKpSQpyauoiJ7Pbx8m7HVNfg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/ZnJlZS1waG90by91/c2VyLXByb2ZpbGUt/aWNvbi1mcm9udC1z/aWRlLXdpdGgtd2hp/dGUtYmFja2dyb3Vu/ZF8xODcyOTktNDAw/MTAuanBnP3NpemU9/NjI2JmV4dD1qcGc",
                                   fit: BoxFit.cover,
+                                  placeholder: (context, url) => Center(
+                                    child: CircularProgressIndicator(
+                                      color: AppColors.secondaryColor,
+                                    ),
+                                  ),
+                                  errorWidget: (context, url, error) => Icon(
+                                    Icons.error,
+                                    color: AppColors.secondaryColor,
+                                  ),
                                 ),
                               ),
                             ),
@@ -200,7 +223,7 @@ class ProfileScreen extends StatelessWidget {
                             ),
 
                             /// name
-                            user!.isAnonymous
+                            user.isAnonymous
                                 ? const SizedBox()
                                 : CustomListile(
                                     svgAssetLeading:
@@ -220,7 +243,7 @@ class ProfileScreen extends StatelessWidget {
                                     title: "Your nickname",
                                     subTitle: guestUserProvider.nickname ??
                                         "No nickname",
-                                    onTap: () {},
+                                    trailing: const SizedBox(),
                                   )
                                 : CustomListile(
                                     svgAssetLeading:
@@ -228,7 +251,7 @@ class ProfileScreen extends StatelessWidget {
                                     title: "Your nickname",
                                     subTitle: emailUserProvider.nickname ??
                                         "No nickname",
-                                    onTap: () {},
+                                    trailing: const SizedBox(),
                                   ),
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.02,
@@ -244,6 +267,37 @@ class ProfileScreen extends StatelessWidget {
                                     subTitle:
                                         user.email ?? "No one authenticated",
                                   ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.02,
+                            ),
+
+                            /// app version
+                            CustomListile(
+                              svgAssetLeading:
+                                  "assets/images/svg/version-icon.svg",
+                              title: 'App Version',
+                              subTitle: appVersionProvider.appVersion,
+                              trailing: const SizedBox(),
+                            ),
+
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.02,
+                            ),
+
+                            /// about app
+                            CustomListile(
+                              svgAssetLeading:
+                                  "assets/images/svg/about-icon.svg",
+                              title: "About app",
+                              subTitle: "App Info",
+                              onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return const AboutAppDetailsScreen();
+                                }));
+                              },
+                            ),
+
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.02,
                             ),

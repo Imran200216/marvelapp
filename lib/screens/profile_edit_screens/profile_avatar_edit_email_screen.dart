@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/provider/user_details_provider/email_user_details_provider.dart';
+
 import 'package:marvelapp/widgets/custom_neopop_btn.dart';
 import 'package:provider/provider.dart';
 
@@ -36,7 +39,7 @@ class ProfileAvatarEditEmailScreen extends StatelessWidget {
               buttonColor: AppColors.secondaryColor,
               svgColor: AppColors.primaryColor,
               svgAssetPath: 'assets/images/svg/next-icon.svg',
-              buttonText: 'Ok',
+              buttonText: 'All set',
               onTapUp: () {
                 Navigator.pop(context);
               },
@@ -55,25 +58,15 @@ class ProfileAvatarEditEmailScreen extends StatelessWidget {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.042,  // 7% of screen height
-                  width: MediaQuery.of(context).size.height * 0.042,   // 7% of screen height
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColors.secondaryColor,
-                  ),
-                  child: Center(
-                    child: Icon(
-                      Icons.arrow_back_ios,
-                      size: MediaQuery.of(context).size.width * 0.05,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
+                child: SvgPicture.asset(
+                  "assets/images/svg/back-icon.svg",
+                  height: size.height * 0.05,
+                  width: size.width * 0.05,
+                  color: AppColors.secondaryColor,
                 ),
               ),
-              SizedBox(
-                height: size.height * 0.03,
-              ),
+              SizedBox(height: size.height * 0.03),
+
               Text(
                 "Add Cool Avatars\nfor your profile",
                 style: TextStyle(

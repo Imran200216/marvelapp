@@ -21,27 +21,49 @@ class SuperHeroDescriptionScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               /// Marvel character image
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.4,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.zero,
-                ),
-                child: CachedNetworkImage(
-                  imageUrl:
-                      "https://i.pinimg.com/736x/cd/0d/05/cd0d0588e15b584d146560573104bf74.jpg",
-                  placeholder: (context, url) => Center(
-                    child: LoadingAnimationWidget.dotsTriangle(
-                      color: AppColors.primaryColor,
-                      size: 40,
+              Stack(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.zero,
+                    ),
+                    child: CachedNetworkImage(
+                      imageUrl:
+                          "https://i.pinimg.com/736x/cd/0d/05/cd0d0588e15b584d146560573104bf74.jpg",
+                      placeholder: (context, url) => Center(
+                        child: LoadingAnimationWidget.dotsTriangle(
+                          color: AppColors.primaryColor,
+                          size: 40,
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => Icon(
+                        Icons.error,
+                        color: AppColors.primaryColor,
+                      ),
+                      fit: BoxFit.cover,
                     ),
                   ),
-                  errorWidget: (context, url, error) => Icon(
-                    Icons.error,
-                    color: AppColors.primaryColor,
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(
+                        left: 20,
+                        top: 16,
+                      ),
+                      child: SvgPicture.asset(
+                        "assets/images/svg/back-icon.svg",
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        width: MediaQuery.of(context).size.width * 0.05,
+                        fit: BoxFit.cover,
+                        color: AppColors.secondaryColor,
+                      ),
+                    ),
                   ),
-                  fit: BoxFit.cover,
-                ),
+                ],
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.03,
