@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:marvelapp/constants/colors.dart';
-import 'package:marvelapp/provider/super_hero_character_db_provider.dart';
-import 'package:marvelapp/screens/super_hero_description_screen.dart';
+import 'package:marvelapp/provider/db_provider/super_hero_character_db_provider.dart';
+import 'package:marvelapp/screens/description_screens/super_hero_description_screen.dart';
 import 'package:provider/provider.dart';
 
 class SuperHeroScreen extends StatelessWidget {
