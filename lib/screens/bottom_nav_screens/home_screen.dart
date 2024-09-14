@@ -1,4 +1,3 @@
-import 'package:animations/animations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -81,18 +80,16 @@ class HomeScreen extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final movie =
                               marvelMoviesProvider.mcuMoviesList[index];
-                          return OpenContainer(
-                            transitionType: ContainerTransitionType.fade,
-                            openBuilder: (context, _) =>
-                                MovieDescriptionScreen(movie: movie),
-                            closedElevation: 0,
-                            closedShape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            openColor: AppColors.primaryColor,
-                            closedColor: AppColors.primaryColor,
-                            closedBuilder: (context, openContainer) =>
-                                ClipRRect(
+                          return InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      MovieDescriptionScreen(movie: movie),
+                                ),
+                              );
+                            },
+                            child: ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: movie.coverUrl != null
                                   ? CachedNetworkImage(

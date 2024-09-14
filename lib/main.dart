@@ -10,6 +10,7 @@ import 'package:marvelapp/provider/db_provider/marvel_movie_db_provider.dart';
 import 'package:marvelapp/provider/get_started_provider.dart';
 
 import 'package:marvelapp/provider/db_provider/super_hero_character_db_provider.dart';
+import 'package:marvelapp/provider/trailer_download_provider.dart';
 import 'package:marvelapp/provider/user_details_provider/email_user_details_provider.dart';
 import 'package:marvelapp/provider/user_details_provider/guest_user_details_provider.dart';
 import 'package:marvelapp/provider/internet_checker_provider.dart';
@@ -32,7 +33,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
       providers: [
         /// get started provider
@@ -89,6 +89,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => MarvelMoviesProvider(),
         ),
+
+
       ],
       builder: (context, child) {
         return MaterialApp(
