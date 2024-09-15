@@ -3,7 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:marvelapp/constants/colors.dart';
-import 'package:marvelapp/provider/app_version_provider.dart';
+import 'package:marvelapp/provider/app_required_providers/app_version_provider.dart';
+
 import 'package:marvelapp/provider/authentication_providers/email_auth_provider.dart';
 import 'package:marvelapp/provider/authentication_providers/guest_auth_provider.dart';
 
@@ -235,7 +236,7 @@ class ProfileScreen extends StatelessWidget {
                                     trailing: const SizedBox(),
                                   ),
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.02,
+                              height: MediaQuery.of(context).size.height * 0.01,
                             ),
 
                             /// nick name
@@ -257,7 +258,7 @@ class ProfileScreen extends StatelessWidget {
                                     trailing: const SizedBox(),
                                   ),
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.02,
+                              height: MediaQuery.of(context).size.height * 0.01,
                             ),
 
                             /// email address
@@ -272,7 +273,7 @@ class ProfileScreen extends StatelessWidget {
                                     trailing: const SizedBox(),
                                   ),
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.02,
+                              height: MediaQuery.of(context).size.height * 0.01,
                             ),
 
                             /// app version
@@ -283,9 +284,8 @@ class ProfileScreen extends StatelessWidget {
                               subTitle: appVersionProvider.appVersion,
                               trailing: const SizedBox(),
                             ),
-
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.02,
+                              height: MediaQuery.of(context).size.height * 0.01,
                             ),
 
                             /// My Downloads
@@ -303,7 +303,7 @@ class ProfileScreen extends StatelessWidget {
                             ),
 
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.02,
+                              height: MediaQuery.of(context).size.height * 0.01,
                             ),
 
                             /// about app
@@ -321,7 +321,7 @@ class ProfileScreen extends StatelessWidget {
                             ),
 
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.02,
+                              height: MediaQuery.of(context).size.height * 0.01,
                             ),
 
                             /// sign out

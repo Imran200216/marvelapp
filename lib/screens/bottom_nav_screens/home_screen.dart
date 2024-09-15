@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:marvelapp/constants/colors.dart';
+import 'package:marvelapp/provider/app_required_providers/internet_checker_provider.dart';
 import 'package:marvelapp/provider/db_provider/marvel_movie_db_provider.dart';
 import 'package:marvelapp/screens/description_screens/movie_description_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:lottie/lottie.dart';
-import 'package:marvelapp/provider/internet_checker_provider.dart';
+
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -50,13 +51,42 @@ class HomeScreen extends StatelessWidget {
                       height: size.height * 0.06,
                     ),
                     if (!internetCheckerProvider.isNetworkConnected)
-                      Center(
-                        child: Lottie.asset(
-                          'assets/images/animation/network-error-animation.json',
-                          height: size.height * 0.5,
-                          width: size.width * 0.8,
-                          fit: BoxFit.cover,
-                        ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Lottie.asset(
+                            'assets/images/animation/robot-animation.json',
+                            height: size.height * 0.3,
+                            fit: BoxFit.cover,
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            "Connection error",
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: size.width * 0.050,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.secondaryColor,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            margin: const EdgeInsets.only(
+                              left: 12,
+                              right: 12,
+                            ),
+                            child: Text(
+                              textAlign: TextAlign.center,
+                              "It seems you aren't connected to the internet. Try checking your connection or switching between Wi-Fi adn cellular data.",
+                              style: TextStyle(
+                                fontFamily: "Poppins",
+                                fontSize: size.width * 0.036,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.subTitleColor,
+                              ),
+                            ),
+                          ),
+                        ],
                       )
                     else if (marvelMoviesProvider.isLoading)
                       Center(

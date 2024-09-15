@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:marvelapp/constants/colors.dart';
-import 'package:marvelapp/provider/bottom_nav_provider.dart';
+import 'package:marvelapp/provider/screens_providers/bottom_nav_provider.dart';
 import 'package:marvelapp/screens/bottom_nav_screens/home_screen.dart';
 import 'package:marvelapp/screens/bottom_nav_screens/profile_screen.dart';
 import 'package:marvelapp/screens/bottom_nav_screens/super_hero_screen.dart';

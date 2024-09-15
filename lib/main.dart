@@ -2,19 +2,24 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/firebase_options.dart';
-import 'package:marvelapp/provider/app_version_provider.dart';
+import 'package:marvelapp/provider/app_required_providers/app_version_provider.dart';
+import 'package:marvelapp/provider/app_required_providers/conversion_provider.dart';
+import 'package:marvelapp/provider/app_required_providers/internet_checker_provider.dart';
+import 'package:marvelapp/provider/app_required_providers/url_launcher_provider.dart';
+
 import 'package:marvelapp/provider/authentication_providers/email_auth_provider.dart';
 import 'package:marvelapp/provider/authentication_providers/guest_auth_provider.dart';
-import 'package:marvelapp/provider/bottom_nav_provider.dart';
+import 'package:marvelapp/provider/screens_providers/bottom_nav_provider.dart';
+
 import 'package:marvelapp/provider/db_provider/marvel_movie_db_provider.dart';
-import 'package:marvelapp/provider/get_started_provider.dart';
+import 'package:marvelapp/provider/screens_providers/get_started_provider.dart';
 
 import 'package:marvelapp/provider/db_provider/super_hero_character_db_provider.dart';
 
 import 'package:marvelapp/provider/user_details_provider/email_user_details_provider.dart';
 import 'package:marvelapp/provider/user_details_provider/guest_user_details_provider.dart';
-import 'package:marvelapp/provider/internet_checker_provider.dart';
-import 'package:marvelapp/provider/password_visibility_provider.dart';
+
+import 'package:marvelapp/provider/authentication_providers/password_visibility_provider.dart';
 
 import 'package:marvelapp/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
@@ -88,6 +93,16 @@ class MyApp extends StatelessWidget {
         /// marvel movie db provider
         ChangeNotifierProvider(
           create: (_) => MarvelMoviesProvider(),
+        ),
+
+        /// conversion provider
+        ChangeNotifierProvider(
+          create: (_) => ConversionProvider(),
+        ),
+
+        /// url launcher provider
+        ChangeNotifierProvider(
+          create: (_) => UrlLauncherProvider(),
         ),
       ],
       builder: (context, child) {

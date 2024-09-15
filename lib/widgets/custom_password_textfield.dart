@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:marvelapp/constants/colors.dart';
-import 'package:marvelapp/provider/password_visibility_provider.dart';
+import 'package:marvelapp/provider/authentication_providers/password_visibility_provider.dart';
 import 'package:provider/provider.dart';
 
 class CustomPasswordTextField extends StatelessWidget {
