@@ -27,24 +27,27 @@ class UserGuestAvatarDetailsScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.primaryColor,
-        bottomSheet: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.zero,
-              color: AppColors.primaryColor,
-            ),
-            child: CustomNeoPopButton(
-              buttonColor: AppColors.secondaryColor,
-              svgColor: AppColors.primaryColor,
-              svgAssetPath: 'assets/images/svg/next-icon.svg',
-              buttonText: 'Next',
-              onTapUp: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) {
-                  return const UserGuestNicknameDetailsScreen();
-                }));
-              },
-            )),
+        bottomSheet: userGuestDetailsProvider.isAvatarUpdated
+            ? Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.zero,
+                  color: AppColors.primaryColor,
+                ),
+                child: CustomNeoPopButton(
+                  buttonColor: AppColors.secondaryColor,
+                  svgColor: AppColors.primaryColor,
+                  svgAssetPath: 'assets/images/svg/next-icon.svg',
+                  buttonText: 'Next',
+                  onTapUp: () {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) {
+                      return const UserGuestNicknameDetailsScreen();
+                    }));
+                  },
+                ))
+            : const SizedBox(),
         body: Container(
           margin: const EdgeInsets.only(
             left: 20,
@@ -84,8 +87,8 @@ class UserGuestAvatarDetailsScreen extends StatelessWidget {
                             userGuestDetailsProvider.selectedAvatarURL != null
                                 ? CachedNetworkImageProvider(
                                     userGuestDetailsProvider.selectedAvatarURL!)
-                                : const CachedNetworkImageProvider(
-                                    "https://i.pinimg.com/564x/cb/24/dc/cb24dcc240159a21891028e1d2eaa002.jpg",
+                                : const AssetImage(
+                                    "assets/images/png/avatar-bg-img.png",
                                   ),
                         // Placeholder image URL
                         fit: BoxFit.cover,

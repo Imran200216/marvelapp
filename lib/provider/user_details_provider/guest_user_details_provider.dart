@@ -13,12 +13,18 @@ class GuestUserDetailsProvider extends ChangeNotifier {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Getters for external access to nickname and avatar URL
+  bool _isLoading = false; // Loading flag
+  bool get isLoading => _isLoading; // Getter to expose loading status
+
+  // Getters for nickname and avatar URL
   String? get nickname => _nickname;
 
   String? get avatarPhotoURL => _avatarPhotoURL;
 
   List<String> get imageUrls => _imageUrls;
+
+  bool _isAvatarUpdated = false; // Add this flag to track avatar update
+  bool get isAvatarUpdated => _isAvatarUpdated; // Expose this flag to UI
 
   // Fetch avatars from Firebase Storage
   Future<void> fetchAvatars() async {
@@ -50,14 +56,15 @@ class GuestUserDetailsProvider extends ChangeNotifier {
         await _firestore.collection('userByGuestAuth').doc(uid).update({
           'avatarPhotoURL': avatarUrl,
         }).then((value) {
+          _isAvatarUpdated = true;
+
           ToastHelper.showSuccessToast(
             context: context,
             message: "Avatar updated successfully!",
           );
-        });
 
-        // Refetch guest details after update to reflect changes
-        await fetchGuestUserDetails();
+          notifyListeners(); // Notify UI of update
+        });
       } catch (e) {
         ToastHelper.showErrorToast(
           context: context,
@@ -82,7 +89,6 @@ class GuestUserDetailsProvider extends ChangeNotifier {
   Future<void> setNickname(BuildContext context) async {
     final nickName = nicknameControllerByGuest.text.trim();
 
-    // Validate nickname
     if (nickName.isEmpty) {
       ToastHelper.showErrorToast(
         context: context,
@@ -90,6 +96,9 @@ class GuestUserDetailsProvider extends ChangeNotifier {
       );
       return;
     }
+
+    _isLoading = true; // Start loading
+    notifyListeners(); // Notify UI to show progress indicator
 
     final User? user = FirebaseAuth.instance.currentUser;
 
@@ -99,26 +108,30 @@ class GuestUserDetailsProvider extends ChangeNotifier {
       try {
         await _firestore.collection('userByGuestAuth').doc(uid).update({
           'nickName': nickName,
-        }).then((value) {
+        }).then((value) async {
           ToastHelper.showSuccessToast(
             context: context,
             message: "Nickname updated successfully!",
           );
+
+          // Refetch guest details after update to reflect changes
+          await fetchGuestUserDetails();
+
+          // Navigate to BottomNavBar
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) {
+            return BottomNavBar();
+          }));
         });
-
-        // Refetch guest details after update to reflect changes
-        await fetchGuestUserDetails();
-
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) {
-          return BottomNavBar();
-        }));
       } catch (e) {
         ToastHelper.showErrorToast(
           context: context,
           message: "Failed to update nickname.",
         );
         print('Error updating nickname: $e');
+      } finally {
+        _isLoading = false; // Stop loading
+        notifyListeners(); // Notify UI to hide progress indicator
       }
     } else {
       ToastHelper.showErrorToast(

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:marvelapp/screens/bottom_nav.dart';
+
 import 'package:marvelapp/widgets/toast_helper.dart';
 
 class EmailUserDetailsProvider extends ChangeNotifier {
@@ -20,7 +21,14 @@ class EmailUserDetailsProvider extends ChangeNotifier {
 
   String? get avatarPhotoURL => _avatarPhotoURL;
 
+  bool _isAvatarUpdated = false; // Add this flag to track avatar update
+  bool get isAvatarUpdated => _isAvatarUpdated; // Expose this flag to UI
+
+  bool _isLoading = false; // Loading state flag
+  bool get isLoading => _isLoading; // Expose loading state
+
   // Fetch avatars from Firebase Storage
+
   Future<void> fetchAvatars() async {
     try {
       final storageRef = FirebaseStorage.instance.ref().child('avatars');
@@ -30,16 +38,17 @@ class EmailUserDetailsProvider extends ChangeNotifier {
       );
 
       _imageUrls = urls;
-      notifyListeners(); // Notify UI of changes
+      notifyListeners();
     } catch (e) {
       print('Failed to load avatars: $e');
     }
   }
 
   // Set and update selected avatar in Firestore
+
   Future<void> setSelectedAvatar(String avatarUrl, BuildContext context) async {
     selectedAvatarURL = avatarUrl;
-    notifyListeners(); // Immediately notify UI about avatar change
+    notifyListeners(); // Notify UI about avatar change immediately
 
     final User? user = FirebaseAuth.instance.currentUser;
 
@@ -47,17 +56,27 @@ class EmailUserDetailsProvider extends ChangeNotifier {
       String uid = user.uid;
 
       // Update avatar in Firestore
-      await _firestore
-          .collection('userByEmailAuth')
-          .doc(uid)
-          .update({'avatarPhotoURL': avatarUrl}).then((value) {
+      await _firestore.collection('userByEmailAuth').doc(uid).update({
+        'avatarPhotoURL': avatarUrl,
+      }).then((value) async {
+        _isAvatarUpdated = true;
+
+        // Wait until the avatar is updated and the details are fetched before notifying the UI
+        await fetchEmailUserDetails();
+
+        // Display the success toast after everything is done
         ToastHelper.showSuccessToast(
           context: context,
           message: "Avatar added successfully!",
         );
-      });
 
-      fetchEmailUserDetails(); // Ensure updated data is fetched
+        notifyListeners(); // Now notify UI about avatar update
+      }).catchError((error) {
+        ToastHelper.showErrorToast(
+          context: context,
+          message: "Failed to update avatar: $error",
+        );
+      });
     } else {
       ToastHelper.showErrorToast(
         context: context,
@@ -79,35 +98,39 @@ class EmailUserDetailsProvider extends ChangeNotifier {
       if (user != null) {
         String uid = user.uid;
 
-        // Update the nickname in Firestore
-        await _firestore
-            .collection('userByEmailAuth')
-            .doc(uid)
-            .update({'nickName': nickName}).then((value) {
-          ToastHelper.showSuccessToast(
-            context: context,
-            message: "Nickname updated successfully!",
-          );
+        // Set loading state to true
+        _isLoading = true;
+        notifyListeners();
 
+        try {
+          // Update the nickname in Firestore
+          await _firestore
+              .collection('userByEmailAuth')
+              .doc(uid)
+              .update({'nickName': nickName});
+          ToastHelper.showSuccessToast(
+              context: context, message: "Nickname updated successfully!");
+
+          // Navigate to BottomNavBar
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
             return BottomNavBar();
           }));
-        });
-
-        // Fetch updated data to reflect it in the UI
-        fetchEmailUserDetails();
+        } catch (e) {
+          ToastHelper.showErrorToast(
+              context: context, message: "Failed to update nickname.");
+        } finally {
+          // Set loading state to false after the operation completes
+          _isLoading = false;
+          notifyListeners();
+        }
       } else {
         ToastHelper.showErrorToast(
-          context: context,
-          message: "No user signed in.",
-        );
+            context: context, message: "No user signed in.");
       }
     } else {
       ToastHelper.showErrorToast(
-        context: context,
-        message: "Nickname cannot be empty!",
-      );
+          context: context, message: "Nickname cannot be empty!");
     }
   }
 
@@ -126,7 +149,6 @@ class EmailUserDetailsProvider extends ChangeNotifier {
           _nickname = userDoc['nickName'] ?? 'No nickname';
           _avatarPhotoURL = userDoc['avatarPhotoURL'] ??
               'https://example.com/default-avatar.png';
-
           // Notify listeners after updating data
           notifyListeners();
         } else {

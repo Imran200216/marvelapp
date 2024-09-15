@@ -28,24 +28,28 @@ class UserEmailAvatarDetailsScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.primaryColor,
-        bottomSheet: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.zero,
-              color: AppColors.primaryColor,
-            ),
-            child: CustomNeoPopButton(
-              buttonColor: AppColors.secondaryColor,
-              svgColor: AppColors.primaryColor,
-              svgAssetPath: 'assets/images/svg/next-icon.svg',
-              buttonText: 'Next',
-              onTapUp: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) {
-                  return const UserEmailNicknameDetailsScreen();
-                }));
-              },
-            )),
+        bottomSheet: userEmailDetailsProvider.isAvatarUpdated
+            ? Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.zero,
+                  color: AppColors.primaryColor,
+                ),
+                child: CustomNeoPopButton(
+                  buttonColor: AppColors.secondaryColor,
+                  svgColor: AppColors.primaryColor,
+                  svgAssetPath: 'assets/images/svg/next-icon.svg',
+                  buttonText: 'Next',
+                  onTapUp: () {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) {
+                      return const UserEmailNicknameDetailsScreen();
+                    }));
+                  },
+                ),
+              )
+            : const SizedBox(),
         body: Container(
           margin: const EdgeInsets.only(
             left: 20,
@@ -81,12 +85,13 @@ class UserEmailAvatarDetailsScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                        image: userEmailDetailsProvider.selectedAvatarURL !=
-                                null
-                            ? CachedNetworkImageProvider(
-                                userEmailDetailsProvider.selectedAvatarURL!)
-                            : const CachedNetworkImageProvider(
-                                "https://i.pinimg.com/564x/cb/24/dc/cb24dcc240159a21891028e1d2eaa002.jpg"),
+                        image:
+                            userEmailDetailsProvider.selectedAvatarURL != null
+                                ? CachedNetworkImageProvider(
+                                    userEmailDetailsProvider.selectedAvatarURL!)
+                                : const AssetImage(
+                                    "assets/images/png/avatar-bg-img.png",
+                                  ),
                         // Placeholder image URL
                         fit: BoxFit.cover,
                       ),
