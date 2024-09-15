@@ -80,6 +80,9 @@ class UserGuestNicknameDetailsScreen extends StatelessWidget {
                               // Handle errors if updating nickname fails
                               print("Failed to update nickname: $error");
                             });
+
+                            /// clearing text editing controller
+                            guestUserProvider.nicknameControllerByGuest.clear();
                           },
                         ),
                 ],

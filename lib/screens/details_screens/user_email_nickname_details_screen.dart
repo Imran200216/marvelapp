@@ -78,6 +78,9 @@ class UserEmailNicknameDetailsScreen extends StatelessWidget {
                               // Handle errors if updating nickname fails
                               print("Failed to update nickname: $error");
                             });
+
+                            /// clearing text editing controller
+                            emailUserProvider.nicknameControllerByEmail.clear();
                           },
                         ),
                 ],

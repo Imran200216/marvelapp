@@ -34,7 +34,7 @@ class EmailUserDetailsProvider extends ChangeNotifier {
       );
 
       _imageUrls = urls;
-      notifyListeners(); // Notify UI of changes
+      _notifyListenersSafely(); // Notify safely
     } catch (e) {
       print('Failed to load avatars: $e');
     } finally {
@@ -45,7 +45,7 @@ class EmailUserDetailsProvider extends ChangeNotifier {
   // Set and update selected avatar in Firestore
   Future<void> setSelectedAvatar(String avatarUrl, BuildContext context) async {
     selectedAvatarURL = avatarUrl;
-    notifyListeners(); // Immediately notify UI about avatar change
+    _notifyListenersSafely(); // Notify safely
 
     final User? user = FirebaseAuth.instance.currentUser;
 
@@ -152,7 +152,7 @@ class EmailUserDetailsProvider extends ChangeNotifier {
           _avatarPhotoURL = userDoc['avatarPhotoURL'] ??
               'https://example.com/default-avatar.png';
 
-          notifyListeners(); // Notify listeners after updating data
+          _notifyListenersSafely(); // Notify safely
         } else {
           print('User document does not exist');
         }
@@ -167,6 +167,15 @@ class EmailUserDetailsProvider extends ChangeNotifier {
   // Method to set loading state
   void _setLoading(bool value) {
     _isLoading = value;
-    notifyListeners();
+    _notifyListenersSafely(); // Notify safely
+  }
+
+  // Notify listeners safely
+  void _notifyListenersSafely() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_isLoading) {
+        notifyListeners();
+      }
+    });
   }
 }

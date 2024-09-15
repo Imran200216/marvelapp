@@ -34,7 +34,7 @@ class GuestUserDetailsProvider extends ChangeNotifier {
       );
 
       _imageUrls = urls;
-      notifyListeners();
+      _notifyListenersSafely(); // Notify safely
     } catch (e) {
       print('Failed to load avatars: $e');
     } finally {
@@ -45,7 +45,7 @@ class GuestUserDetailsProvider extends ChangeNotifier {
   // Set selected avatar and update in Firestore
   Future<void> setSelectedAvatar(String avatarUrl, BuildContext context) async {
     selectedAvatarURL = avatarUrl;
-    notifyListeners();
+    _notifyListenersSafely(); // Notify safely
 
     final User? user = FirebaseAuth.instance.currentUser;
 
@@ -154,7 +154,7 @@ class GuestUserDetailsProvider extends ChangeNotifier {
           _nickname = userDoc['nickName'] ?? 'No nickname';
           _avatarPhotoURL = userDoc['avatarPhotoURL'] ??
               'https://example.com/default-avatar.png'; // Fallback URL
-          notifyListeners();
+          _notifyListenersSafely(); // Notify safely
         } else {
           print('Guest user document does not exist');
         }
@@ -169,6 +169,15 @@ class GuestUserDetailsProvider extends ChangeNotifier {
   // Method to set loading state
   void _setLoading(bool value) {
     _isLoading = value;
-    notifyListeners();
+    _notifyListenersSafely(); // Notify safely
+  }
+
+  // Notify listeners safely
+  void _notifyListenersSafely() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_isLoading) {
+        notifyListeners();
+      }
+    });
   }
 }
