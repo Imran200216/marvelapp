@@ -59,7 +59,7 @@ class UserGuestNicknameDetailsScreen extends StatelessWidget {
                     height: size.height * 0.05,
                   ),
                   // All set button
-                  guestUserProvider.isAvatarUpdated
+                  guestUserProvider.isLoading
                       ? Center(
                           child: LoadingAnimationWidget.threeArchedCircle(
                             color: AppColors.secondaryColor,
