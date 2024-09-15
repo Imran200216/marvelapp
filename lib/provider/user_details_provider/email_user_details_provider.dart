@@ -8,20 +8,24 @@ import 'package:marvelapp/widgets/toast_helper.dart';
 class EmailUserDetailsProvider extends ChangeNotifier {
   List<String> _imageUrls = [];
   String? selectedAvatarURL;
+  bool _isLoading = false;
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   List<String> get imageUrls => _imageUrls;
 
-  String? _nickname;
-  String? _avatarPhotoURL;
-
   String? get nickname => _nickname;
 
   String? get avatarPhotoURL => _avatarPhotoURL;
 
+  bool get isLoading => _isLoading;
+
+  String? _nickname;
+  String? _avatarPhotoURL;
+
   // Fetch avatars from Firebase Storage
   Future<void> fetchAvatars() async {
+    _setLoading(true);
     try {
       final storageRef = FirebaseStorage.instance.ref().child('avatars');
       final listResult = await storageRef.listAll();
@@ -33,6 +37,8 @@ class EmailUserDetailsProvider extends ChangeNotifier {
       notifyListeners(); // Notify UI of changes
     } catch (e) {
       print('Failed to load avatars: $e');
+    } finally {
+      _setLoading(false);
     }
   }
 
@@ -46,18 +52,27 @@ class EmailUserDetailsProvider extends ChangeNotifier {
     if (user != null) {
       String uid = user.uid;
 
-      // Update avatar in Firestore
-      await _firestore
-          .collection('userByEmailAuth')
-          .doc(uid)
-          .update({'avatarPhotoURL': avatarUrl}).then((value) {
-        ToastHelper.showSuccessToast(
-          context: context,
-          message: "Avatar added successfully!",
-        );
-      });
+      _setLoading(true);
+      try {
+        await _firestore.collection('userByEmailAuth').doc(uid).update({
+          'avatarPhotoURL': avatarUrl,
+        }).then((value) {
+          ToastHelper.showSuccessToast(
+            context: context,
+            message: "Avatar added successfully!",
+          );
+        });
 
-      fetchEmailUserDetails(); // Ensure updated data is fetched
+        await fetchEmailUserDetails(); // Ensure updated data is fetched
+      } catch (e) {
+        ToastHelper.showErrorToast(
+          context: context,
+          message: "Failed to update avatar.",
+        );
+        print('Error updating avatar: $e');
+      } finally {
+        _setLoading(false);
+      }
     } else {
       ToastHelper.showErrorToast(
         context: context,
@@ -79,24 +94,33 @@ class EmailUserDetailsProvider extends ChangeNotifier {
       if (user != null) {
         String uid = user.uid;
 
-        // Update the nickname in Firestore
-        await _firestore
-            .collection('userByEmailAuth')
-            .doc(uid)
-            .update({'nickName': nickName}).then((value) {
-          ToastHelper.showSuccessToast(
+        _setLoading(true);
+        try {
+          await _firestore.collection('userByEmailAuth').doc(uid).update({
+            'nickName': nickName,
+          }).then((value) {
+            ToastHelper.showSuccessToast(
+              context: context,
+              message: "Nickname updated successfully!",
+            );
+
+            Navigator.pushReplacement(context, MaterialPageRoute(
+              builder: (context) {
+                return BottomNavBar();
+              },
+            ));
+          });
+
+          await fetchEmailUserDetails(); // Fetch updated data to reflect it in the UI
+        } catch (e) {
+          ToastHelper.showErrorToast(
             context: context,
-            message: "Nickname updated successfully!",
+            message: "Failed to update nickname.",
           );
-
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) {
-            return BottomNavBar();
-          }));
-        });
-
-        // Fetch updated data to reflect it in the UI
-        fetchEmailUserDetails();
+          print('Error updating nickname: $e');
+        } finally {
+          _setLoading(false);
+        }
       } else {
         ToastHelper.showErrorToast(
           context: context,
@@ -118,6 +142,7 @@ class EmailUserDetailsProvider extends ChangeNotifier {
     if (user != null && !user.isAnonymous) {
       String uid = user.uid;
 
+      _setLoading(true);
       try {
         DocumentSnapshot userDoc =
             await _firestore.collection('userByEmailAuth').doc(uid).get();
@@ -127,14 +152,21 @@ class EmailUserDetailsProvider extends ChangeNotifier {
           _avatarPhotoURL = userDoc['avatarPhotoURL'] ??
               'https://example.com/default-avatar.png';
 
-          // Notify listeners after updating data
-          notifyListeners();
+          notifyListeners(); // Notify listeners after updating data
         } else {
           print('User document does not exist');
         }
       } catch (e) {
         print('Failed to fetch email user details: $e');
+      } finally {
+        _setLoading(false);
       }
     }
+  }
+
+  // Method to set loading state
+  void _setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
   }
 }
