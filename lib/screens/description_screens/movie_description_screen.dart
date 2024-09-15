@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dio/dio.dart';
 
 import 'package:flutter/material.dart';
 
@@ -13,12 +12,11 @@ import 'package:marvelapp/modals/mcu_modal.dart';
 import 'package:marvelapp/provider/app_required_providers/conversion_provider.dart';
 import 'package:marvelapp/provider/app_required_providers/internet_checker_provider.dart';
 import 'package:marvelapp/provider/app_required_providers/url_launcher_provider.dart';
+import 'package:marvelapp/widgets/custom_download_dialog.dart';
 import 'package:marvelapp/widgets/custom_movie_timeline.dart';
 
 import 'package:marvelapp/widgets/custom_neopop_btn.dart';
 
-import 'package:marvelapp/widgets/toast_helper.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'package:timeline_tile/timeline_tile.dart';
@@ -137,26 +135,26 @@ class MovieDescriptionScreen extends StatelessWidget {
                         ),
                       ),
 
-                      /// download trailer icon
-                      Positioned(
-                        top: 22,
-                        right: 16,
-                        child: InkWell(
-                          onTap: () {
-                            downloadFile(
-                              "https://players.brightcove.net/5359769168001/BJemW31x6g_default/index.html?videoId=5786306590001",
-                              context,
-                            );
-                          },
-                          child: SvgPicture.asset(
-                            "assets/images/svg/download-container-icon.svg",
-                            height: size.height * 0.05,
-                            width: size.width * 0.05,
-                            fit: BoxFit.cover,
-                            color: AppColors.secondaryColor,
-                          ),
-                        ),
-                      ),
+                      // /// download trailer icon
+                      // Positioned(
+                      //   top: 22,
+                      //   right: 16,
+                      //   child: InkWell(
+                      //     onTap: () {
+                      //       showDialog(
+                      //         context: context,
+                      //         builder: (context) => const DownloadingDialog(),
+                      //       );
+                      //     },
+                      //     child: SvgPicture.asset(
+                      //       "assets/images/svg/download-container-icon.svg",
+                      //       height: size.height * 0.05,
+                      //       width: size.width * 0.05,
+                      //       fit: BoxFit.cover,
+                      //       color: AppColors.secondaryColor,
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                   SizedBox(
@@ -251,7 +249,10 @@ class MovieDescriptionScreen extends StatelessWidget {
                   /// directed by
                   CustomMovieTimelineTile(
                     title: 'Directed by',
-                    subtitle: movie.directedBy ?? "Releasing soon",
+                    subtitle: (movie.directedBy != null &&
+                            movie.directedBy!.isNotEmpty)
+                        ? movie.directedBy!
+                        : "Releasing soon",
                   ),
 
                   /// overview of movie
@@ -297,41 +298,5 @@ class MovieDescriptionScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  /// download functionality
-  Future<void> downloadFile(String url, BuildContext context) async {
-    Dio dio = Dio();
-
-    try {
-      var dir = await getApplicationDocumentsDirectory();
-      final filePath = "${dir.path}/myFile.mp3";
-
-      // Start the download
-      await dio.download(
-        url,
-        filePath,
-        onReceiveProgress: (received, total) {
-          if (total != -1) {
-            // Optionally, you can show a progress indicator here
-            print('${(received / total * 100).toStringAsFixed(0)}%');
-          }
-        },
-      );
-
-      // Show a success toast when the download is completed
-      ToastHelper.showSuccessToast(
-        context: context,
-        message: "Download completed successfully!",
-      );
-      print("Download completed");
-    } catch (e) {
-      // Show an error toast if the download fails
-      ToastHelper.showErrorToast(
-        context: context,
-        message: "Failed to download file. Please try again.",
-      );
-      print("Error: $e");
-    }
   }
 }

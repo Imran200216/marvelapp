@@ -9,7 +9,6 @@ import 'package:marvelapp/screens/description_screens/movie_description_screen.d
 import 'package:provider/provider.dart';
 import 'package:lottie/lottie.dart';
 
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -42,7 +41,7 @@ class HomeScreen extends StatelessWidget {
                       "Marvel movie list &\nCool facts",
                       style: TextStyle(
                         fontFamily: "Poppins",
-                        fontSize: size.width * 0.060,
+                        fontSize: size.width * 0.052,
                         fontWeight: FontWeight.w600,
                         color: AppColors.secondaryColor,
                       ),

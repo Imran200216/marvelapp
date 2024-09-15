@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:marvelapp/constants/colors.dart';
 
-class CustomListile extends StatelessWidget {
+class CustomListTile extends StatelessWidget {
   final String svgAssetLeading;
   final String title;
   final String subTitle;
   final VoidCallback? onTap;
   final Widget? trailing; // Optional trailing widget
 
-  const CustomListile({
+  const CustomListTile({
     super.key,
     required this.svgAssetLeading,
     required this.title,
@@ -36,9 +36,9 @@ class CustomListile extends StatelessWidget {
         title,
         style: TextStyle(
           fontFamily: "Poppins",
-          fontSize: screenWidth * 0.034,
+          fontSize: screenWidth * 0.032,
           color: AppColors.secondaryColor,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w500,
         ),
       ),
       subtitle: Text(
@@ -51,11 +51,12 @@ class CustomListile extends StatelessWidget {
         ),
       ),
       // Use the trailing widget if provided, otherwise default to an Icon
-      trailing: trailing ?? Icon(
-        Icons.arrow_forward_ios,
-        size: screenWidth * 0.045,
-        color: AppColors.secondaryColor,
-      ),
+      trailing: trailing ??
+          Icon(
+            Icons.arrow_forward_ios,
+            size: screenWidth * 0.045,
+            color: AppColors.secondaryColor,
+          ),
     );
   }
 }

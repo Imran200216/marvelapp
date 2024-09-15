@@ -228,7 +228,7 @@ class ProfileScreen extends StatelessWidget {
                             /// name
                             user.isAnonymous
                                 ? const SizedBox()
-                                : CustomListile(
+                                : CustomListTile(
                                     svgAssetLeading:
                                         "assets/images/svg/profile-outlined-icon.svg",
                                     title: "Your name",
@@ -241,7 +241,7 @@ class ProfileScreen extends StatelessWidget {
 
                             /// nick name
                             user.isAnonymous
-                                ? CustomListile(
+                                ? CustomListTile(
                                     svgAssetLeading:
                                         "assets/images/svg/nickname-outlined-icon.svg",
                                     title: "Your nickname",
@@ -249,7 +249,7 @@ class ProfileScreen extends StatelessWidget {
                                         "No nickname",
                                     trailing: const SizedBox(),
                                   )
-                                : CustomListile(
+                                : CustomListTile(
                                     svgAssetLeading:
                                         "assets/images/svg/nickname-outlined-icon.svg",
                                     title: "Your nickname",
@@ -264,7 +264,7 @@ class ProfileScreen extends StatelessWidget {
                             /// email address
                             user.isAnonymous
                                 ? const SizedBox()
-                                : CustomListile(
+                                : CustomListTile(
                                     svgAssetLeading:
                                         "assets/images/svg/email-outlined-icon.svg",
                                     title: "Email address",
@@ -277,7 +277,7 @@ class ProfileScreen extends StatelessWidget {
                             ),
 
                             /// app version
-                            CustomListile(
+                            CustomListTile(
                               svgAssetLeading:
                                   "assets/images/svg/version-icon.svg",
                               title: 'App Version',
@@ -289,7 +289,7 @@ class ProfileScreen extends StatelessWidget {
                             ),
 
                             /// My Downloads
-                            CustomListile(
+                            CustomListTile(
                               svgAssetLeading:
                                   "assets/images/svg/download-icon.svg",
                               title: "Downloads",
@@ -307,7 +307,7 @@ class ProfileScreen extends StatelessWidget {
                             ),
 
                             /// about app
-                            CustomListile(
+                            CustomListTile(
                               svgAssetLeading:
                                   "assets/images/svg/about-icon.svg",
                               title: "About app",
@@ -325,7 +325,7 @@ class ProfileScreen extends StatelessWidget {
                             ),
 
                             /// sign out
-                            CustomListile(
+                            CustomListTile(
                               svgAssetLeading:
                                   "assets/images/svg/signout-icon.svg",
                               title: "Sign out",

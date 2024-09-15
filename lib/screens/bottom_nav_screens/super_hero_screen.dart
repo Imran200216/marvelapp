@@ -39,7 +39,7 @@ class SuperHeroScreen extends StatelessWidget {
                           "Marvel Super Hero\nCharacters",
                           style: TextStyle(
                             fontFamily: "Poppins",
-                            fontSize: size.width * 0.060,
+                            fontSize: size.width * 0.052,
                             fontWeight: FontWeight.w600,
                             color: AppColors.secondaryColor,
                           ),
