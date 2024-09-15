@@ -13,9 +13,10 @@ import 'package:marvelapp/modals/mcu_modal.dart';
 import 'package:marvelapp/provider/app_required_providers/conversion_provider.dart';
 import 'package:marvelapp/provider/app_required_providers/internet_checker_provider.dart';
 import 'package:marvelapp/provider/app_required_providers/url_launcher_provider.dart';
+import 'package:marvelapp/widgets/custom_movie_timeline.dart';
 
 import 'package:marvelapp/widgets/custom_neopop_btn.dart';
-import 'package:marvelapp/widgets/custom_timeline.dart';
+
 import 'package:marvelapp/widgets/toast_helper.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -230,37 +231,37 @@ class MovieDescriptionScreen extends StatelessWidget {
                   ),
 
                   /// infinity saga
-                  CustomTimelineTile(
+                  CustomMovieTimelineTile(
                     title: 'Saga',
                     subtitle: movie.saga ?? "Releasing soon",
                   ),
 
                   ///movie duration
-                  CustomTimelineTile(
+                  CustomMovieTimelineTile(
                     title: 'Duration',
                     subtitle: conversionProvider.formatDuration(movie.duration),
                   ),
 
                   /// release date
-                  CustomTimelineTile(
+                  CustomMovieTimelineTile(
                     title: 'Release Date',
                     subtitle: conversionProvider.formatDate(movie.releaseDate),
                   ),
 
                   /// directed by
-                  CustomTimelineTile(
+                  CustomMovieTimelineTile(
                     title: 'Directed by',
                     subtitle: movie.directedBy ?? "Releasing soon",
                   ),
 
                   /// overview of movie
-                  CustomTimelineTile(
+                  CustomMovieTimelineTile(
                     title: 'Overview',
                     subtitle: movie.overview ?? "Releasing soon",
                   ),
 
                   /// box office
-                  CustomTimelineTile(
+                  CustomMovieTimelineTile(
                     isLast: true,
                     title: 'Box office collection',
                     subtitle:

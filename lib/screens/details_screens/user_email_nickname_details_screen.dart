@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/provider/user_details_provider/email_user_details_provider.dart';
@@ -58,31 +57,24 @@ class UserEmailNicknameDetailsScreen extends StatelessWidget {
                     height: size.height * 0.05,
                   ),
                   // All set button
-                  emailUserProvider.isLoading
-                      ? Center(
-                          child: LoadingAnimationWidget.dotsTriangle(
-                            color: AppColors.secondaryColor,
-                            size: 30,
-                          ),
-                        )
-                      : CustomNeoPopButton(
-                          buttonColor: AppColors.secondaryColor,
-                          svgColor: AppColors.primaryColor,
-                          svgAssetPath: "assets/images/svg/next-icon.svg",
-                          buttonText: "All Set",
-                          onTapUp: () {
-                            // Call setNickname from the provider to update Fire store
-                            emailUserProvider
-                                .setNickname(context)
-                                .catchError((error) {
-                              // Handle errors if updating nickname fails
-                              print("Failed to update nickname: $error");
-                            });
+                  CustomNeoPopButton(
+                    buttonColor: AppColors.secondaryColor,
+                    svgColor: AppColors.primaryColor,
+                    svgAssetPath: "assets/images/svg/next-icon.svg",
+                    buttonText: "All Set",
+                    onTapUp: () {
+                      // Call setNickname from the provider to update Fire store
+                      emailUserProvider
+                          .setNickname(context)
+                          .catchError((error) {
+                        // Handle errors if updating nickname fails
+                        print("Failed to update nickname: $error");
+                      });
 
-                            /// clearing text editing controller
-                            emailUserProvider.nicknameControllerByEmail.clear();
-                          },
-                        ),
+                      /// clearing text editing controller
+                      emailUserProvider.nicknameControllerByEmail.clear();
+                    },
+                  ),
                 ],
               ),
             );

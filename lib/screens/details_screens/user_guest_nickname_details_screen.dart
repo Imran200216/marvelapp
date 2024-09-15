@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/provider/user_details_provider/guest_user_details_provider.dart';
@@ -60,31 +59,24 @@ class UserGuestNicknameDetailsScreen extends StatelessWidget {
                   ),
                   // All set button
 
-                  guestUserProvider.isLoading
-                      ? Center(
-                          child: LoadingAnimationWidget.dotsTriangle(
-                            color: AppColors.secondaryColor,
-                            size: 30,
-                          ),
-                        )
-                      : CustomNeoPopButton(
-                          buttonColor: AppColors.secondaryColor,
-                          svgColor: AppColors.primaryColor,
-                          svgAssetPath: "assets/images/svg/next-icon.svg",
-                          buttonText: "All Set",
-                          onTapUp: () {
-                            // Call setNickname from the provider to update Fire store
-                            guestUserProvider
-                                .setNickname(context)
-                                .catchError((error) {
-                              // Handle errors if updating nickname fails
-                              print("Failed to update nickname: $error");
-                            });
+                  CustomNeoPopButton(
+                    buttonColor: AppColors.secondaryColor,
+                    svgColor: AppColors.primaryColor,
+                    svgAssetPath: "assets/images/svg/next-icon.svg",
+                    buttonText: "All Set",
+                    onTapUp: () {
+                      // Call setNickname from the provider to update Fire store
+                      guestUserProvider
+                          .setNickname(context)
+                          .catchError((error) {
+                        // Handle errors if updating nickname fails
+                        print("Failed to update nickname: $error");
+                      });
 
-                            /// clearing text editing controller
-                            guestUserProvider.nicknameControllerByGuest.clear();
-                          },
-                        ),
+                      /// clearing text editing controller
+                      guestUserProvider.nicknameControllerByGuest.clear();
+                    },
+                  ),
                 ],
               ),
             );

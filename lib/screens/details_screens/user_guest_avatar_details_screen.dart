@@ -103,7 +103,7 @@ class UserGuestAvatarDetailsScreen extends StatelessWidget {
               userGuestDetailsProvider.imageUrls.isEmpty
                   ? Center(
                       child: LoadingAnimationWidget.dotsTriangle(
-                        color: AppColors.primaryColor,
+                        color: AppColors.secondaryColor,
                         size: 40,
                       ),
                     )

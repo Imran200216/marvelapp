@@ -102,7 +102,7 @@ class UserEmailAvatarDetailsScreen extends StatelessWidget {
               userEmailDetailsProvider.imageUrls.isEmpty
                   ? Center(
                       child: LoadingAnimationWidget.dotsTriangle(
-                        color: AppColors.primaryColor,
+                        color: AppColors.secondaryColor,
                         size: 40,
                       ),
                     )

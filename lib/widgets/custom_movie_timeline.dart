@@ -4,7 +4,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:marvelapp/constants/colors.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
-class CustomTimelineTile extends StatelessWidget {
+class CustomMovieTimelineTile extends StatelessWidget {
   final String title;
   final String subtitle;
 
@@ -13,7 +13,7 @@ class CustomTimelineTile extends StatelessWidget {
   final bool isFirst;
   final bool isLast;
 
-  const CustomTimelineTile({
+  const CustomMovieTimelineTile({
     super.key,
     required this.title,
     required this.subtitle,

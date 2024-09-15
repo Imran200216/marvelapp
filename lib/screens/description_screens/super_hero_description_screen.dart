@@ -6,6 +6,7 @@ import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/screens/character_model_screen.dart';
 import 'package:marvelapp/screens/video_player_screen.dart';
 import 'package:marvelapp/widgets/custom_neopop_btn.dart';
+import 'package:marvelapp/widgets/custom_superhero_timeline.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 class SuperHeroDescriptionScreen extends StatelessWidget {
@@ -144,105 +145,16 @@ class SuperHeroDescriptionScreen extends StatelessWidget {
                       ),
                     ),
 
-                    /// Timeline Tile for the first paragraph
-                    TimelineTile(
-                      alignment: TimelineAlign.start,
-                      lineXY: 0,
-                      indicatorStyle: IndicatorStyle(
-                        width: 34,
-                        height: 34,
-                        indicator: CachedNetworkImage(
-                          imageUrl: indicatorPhotoUrl,
-                          placeholder: (context, url) {
-                            return LoadingAnimationWidget.dotsTriangle(
-                              color: AppColors.secondaryColor,
-                              size: 16,
-                            );
-                          },
-                          imageBuilder: (context, imageProvider) {
-                            return Container(
-                              width: 34,
-                              height: 34,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColors.timeLineBgColor,
-                                image: DecorationImage(
-                                  image: imageProvider,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        padding: const EdgeInsets.all(4),
-                      ),
-                      beforeLineStyle: LineStyle(
-                        color: AppColors.timeLineBgColor,
-                        thickness: 2,
-                      ),
-                      endChild: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Text(
-                          characterPara1,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.subTitleColor,
-                            fontFamily: "Poppins",
-                            fontSize: MediaQuery.of(context).size.width * 0.038,
-                          ),
-                        ),
-                      ),
+                    /// para 1
+                    CustomSuperHeroTimelineTile(
+                      imageUrl: indicatorPhotoUrl,
+                      text: characterPara1,
                     ),
 
-                    /// Timeline Tile for the second paragraph
-                    TimelineTile(
-                      alignment: TimelineAlign.start,
-                      lineXY: 0,
-                      isLast: false,
-                      indicatorStyle: IndicatorStyle(
-                        width: 34,
-                        height: 34,
-                        indicator: CachedNetworkImage(
-                          imageUrl: indicatorPhotoUrl,
-                          placeholder: (context, url) {
-                            return LoadingAnimationWidget.dotsTriangle(
-                              color: AppColors.secondaryColor,
-                              size: 16,
-                            );
-                          },
-                          imageBuilder: (context, imageProvider) {
-                            return Container(
-                              width: 34,
-                              height: 34,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColors.timeLineBgColor,
-                                image: DecorationImage(
-                                  image: imageProvider,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        padding: const EdgeInsets.all(4),
-                      ),
-                      beforeLineStyle: LineStyle(
-                        color: AppColors.timeLineBgColor,
-                        thickness: 2,
-                      ),
-                      endChild: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Text(
-                          characterPara2,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontFamily: "Poppins",
-                            color: AppColors.subTitleColor,
-                            fontSize: MediaQuery.of(context).size.width * 0.038,
-                          ),
-                        ),
-                      ),
+                    /// para 2
+                    CustomSuperHeroTimelineTile(
+                      imageUrl: indicatorPhotoUrl,
+                      text: characterPara2,
                     ),
 
                     TimelineTile(
