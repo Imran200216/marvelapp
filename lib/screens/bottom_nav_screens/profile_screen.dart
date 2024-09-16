@@ -11,7 +11,7 @@ import 'package:marvelapp/provider/authentication_providers/guest_auth_provider.
 import 'package:marvelapp/provider/user_details_provider/email_user_details_provider.dart';
 import 'package:marvelapp/provider/user_details_provider/guest_user_details_provider.dart';
 import 'package:marvelapp/screens/about_app_details_screen.dart';
-import 'package:marvelapp/screens/my_download_screen.dart';
+
 import 'package:marvelapp/screens/profile_edit_screens/profile_avatar_edit_email_screen.dart';
 import 'package:marvelapp/screens/profile_edit_screens/profile_avatar_edit_guest_screen.dart';
 
@@ -284,24 +284,6 @@ class ProfileScreen extends StatelessWidget {
                               subTitle: appVersionProvider.appVersion,
                               trailing: const SizedBox(),
                             ),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.01,
-                            ),
-
-                            /// My Downloads
-                            CustomListTile(
-                              svgAssetLeading:
-                                  "assets/images/svg/download-icon.svg",
-                              title: "Downloads",
-                              subTitle: "My Downloads",
-                              onTap: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return const MyDownloadScreen();
-                                }));
-                              },
-                            ),
-
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.01,
                             ),

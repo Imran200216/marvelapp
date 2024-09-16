@@ -8,7 +8,18 @@ import 'package:marvelapp/constants/colors.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 
 class CharacterModelScreen extends StatefulWidget {
-  const CharacterModelScreen({super.key});
+  final String characterName;
+
+  final String characterQuotes;
+
+  final String characterModal;
+
+  const CharacterModelScreen({
+    super.key,
+    required this.characterName,
+    required this.characterQuotes,
+    required this.characterModal,
+  });
 
   @override
   _CharacterModelScreenState createState() => _CharacterModelScreenState();
@@ -92,8 +103,10 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
                 SizedBox(
                   height: size.height * 0.02, // Reduced space
                 ),
+
+                /// character name
                 Text(
-                  "Black Panther",
+                  widget.characterName,
                   style: TextStyle(
                     fontFamily: "Poppins",
                     fontSize: size.width * 0.060,
@@ -121,7 +134,7 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
                       repeatForever: false,
                       animatedTexts: [
                         TypewriterAnimatedText(
-                          '''"We serve Wakanda, and let us not forget, we also serve each other. Together we will always rise."''',
+                          widget.characterQuotes,
                         ),
                       ],
                     ),
@@ -147,10 +160,11 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
                     width: size.width,
                     child: Consumer<CharacterModelProvider>(
                       builder: (context, provider, child) {
+                        /// 3d modal
                         return ModelViewer(
                           autoPlay: false,
                           backgroundColor: AppColors.primaryColor,
-                          src: "assets/images/3d_modal/blackpanther-modal.glb",
+                          src: widget.characterModal,
                           autoRotate: provider.autoRotate,
                           disableZoom: provider.isScrolling,
                           cameraControls: !provider.isScrolling,

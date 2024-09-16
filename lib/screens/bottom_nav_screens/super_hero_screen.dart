@@ -135,6 +135,10 @@ class SuperHeroScreen extends StatelessWidget {
                                     MaterialPageRoute(
                                       builder: (context) =>
                                           SuperHeroDescriptionScreen(
+                                        characterQuotes:
+                                            character['characterQuotes'],
+                                        characterModal:
+                                            character['character3dModal'],
                                         characterName:
                                             character['characterName'],
                                         characterCoverUrl:
