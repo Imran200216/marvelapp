@@ -19,7 +19,7 @@ class VideoPlayerProvider with ChangeNotifier {
       looping: true,
       materialProgressColors: ChewieProgressColors(
         playedColor: AppColors.secondaryColor,
-        handleColor: AppColors.primaryColor,
+        handleColor: AppColors.secondaryColor,
         backgroundColor: Colors.grey,
         bufferedColor: Colors.white24,
       ),

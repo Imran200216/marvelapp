@@ -24,11 +24,9 @@ class VideoPlayerScreen extends StatelessWidget {
               body: LayoutBuilder(
                 builder: (context, constraints) {
                   return Container(
-                    margin: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                      bottom: 30,
-                      top: 30,
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 10, // Reduced vertical margin
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +48,7 @@ class VideoPlayerScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          height: size.height * 0.02,
+                          height: size.height * 0.01,
                         ),
                         Text(
                           "Marvel Fan Videos",
@@ -63,7 +61,12 @@ class VideoPlayerScreen extends StatelessWidget {
                             color: AppColors.secondaryColor,
                           ),
                         ),
+                        SizedBox(
+                          height:
+                              size.height * 0.01, // Space before video player
+                        ),
                         Expanded(
+                          flex: 1,
                           child: Center(
                             child: AspectRatio(
                               aspectRatio: isPortrait ? 16 / 9 : 16 / 10,
@@ -74,6 +77,15 @@ class VideoPlayerScreen extends StatelessWidget {
                             ),
                           ),
                         ),
+                        Text(
+                          "Description",
+                          style: TextStyle(
+                            fontSize: size.width * 0.04,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.secondaryColor,
+                            fontFamily: "Poppins",
+                          ),
+                        )
                       ],
                     ),
                   );
