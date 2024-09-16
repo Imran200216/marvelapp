@@ -13,6 +13,7 @@ import 'package:marvelapp/provider/authentication_providers/guest_auth_provider.
 import 'package:marvelapp/provider/screens_providers/bottom_nav_provider.dart';
 
 import 'package:marvelapp/provider/db_provider/marvel_movie_db_provider.dart';
+import 'package:marvelapp/provider/screens_providers/character_modal_provider.dart';
 import 'package:marvelapp/provider/screens_providers/get_started_provider.dart';
 
 import 'package:marvelapp/provider/db_provider/super_hero_character_db_provider.dart';
@@ -109,6 +110,11 @@ class MyApp extends StatelessWidget {
         /// video player provider
         ChangeNotifierProvider(
           create: (_) => VideoPlayerProvider(),
+        ),
+
+        /// character modal provider
+        ChangeNotifierProvider(
+          create: (_) => CharacterModelProvider(),
         ),
       ],
       builder: (context, child) {

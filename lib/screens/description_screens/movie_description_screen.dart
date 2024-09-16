@@ -12,7 +12,7 @@ import 'package:marvelapp/modals/mcu_modal.dart';
 import 'package:marvelapp/provider/app_required_providers/conversion_provider.dart';
 import 'package:marvelapp/provider/app_required_providers/internet_checker_provider.dart';
 import 'package:marvelapp/provider/app_required_providers/url_launcher_provider.dart';
-import 'package:marvelapp/widgets/custom_download_dialog.dart';
+
 import 'package:marvelapp/widgets/custom_movie_timeline.dart';
 
 import 'package:marvelapp/widgets/custom_neopop_btn.dart';
@@ -70,7 +70,7 @@ class MovieDescriptionScreen extends StatelessWidget {
                       ),
                       child: Text(
                         textAlign: TextAlign.center,
-                        "It seems you aren't connected to the internet. Try checking your connection or switching between Wi-Fi adn cellular data.",
+                        "It seems you aren't connected to the internet. Try checking your connection or switching between Wi-Fi and cellular data.",
                         style: TextStyle(
                           fontFamily: "Poppins",
                           fontSize: size.width * 0.036,
@@ -134,27 +134,6 @@ class MovieDescriptionScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-
-                      // /// download trailer icon
-                      // Positioned(
-                      //   top: 22,
-                      //   right: 16,
-                      //   child: InkWell(
-                      //     onTap: () {
-                      //       showDialog(
-                      //         context: context,
-                      //         builder: (context) => const DownloadingDialog(),
-                      //       );
-                      //     },
-                      //     child: SvgPicture.asset(
-                      //       "assets/images/svg/download-container-icon.svg",
-                      //       height: size.height * 0.05,
-                      //       width: size.width * 0.05,
-                      //       fit: BoxFit.cover,
-                      //       color: AppColors.secondaryColor,
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                   SizedBox(

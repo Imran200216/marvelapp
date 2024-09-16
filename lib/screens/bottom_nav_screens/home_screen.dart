@@ -76,7 +76,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                             child: Text(
                               textAlign: TextAlign.center,
-                              "It seems you aren't connected to the internet. Try checking your connection or switching between Wi-Fi adn cellular data.",
+                              "It seems you aren't connected to the internet. Try checking your connection or switching between Wi-Fi and cellular data.",
                               style: TextStyle(
                                 fontFamily: "Poppins",
                                 fontSize: size.width * 0.036,
