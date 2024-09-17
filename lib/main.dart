@@ -10,8 +10,7 @@ import 'package:marvelapp/provider/app_required_providers/video_player_provider.
 
 import 'package:marvelapp/provider/authentication_providers/email_auth_provider.dart';
 import 'package:marvelapp/provider/authentication_providers/guest_auth_provider.dart';
-import 'package:marvelapp/provider/profile_edit_providers/profile_avatar_email_edit_provider.dart';
-import 'package:marvelapp/provider/profile_edit_providers/profile_avatar_guest_edit_provider.dart';
+
 import 'package:marvelapp/provider/screens_providers/bottom_nav_provider.dart';
 
 import 'package:marvelapp/provider/db_provider/marvel_movie_db_provider.dart';
@@ -117,16 +116,6 @@ class MyApp extends StatelessWidget {
         /// character modal provider
         ChangeNotifierProvider(
           create: (_) => CharacterModelProvider(),
-        ),
-
-        /// profile guest edit provider
-        ChangeNotifierProvider(
-          create: (_) => ProfileAvatarGuestEditProvider(),
-        ),
-
-        /// profile email edit provider
-        ChangeNotifierProvider(
-          create: (_) => ProfileAvatarEmailEditProvider(),
         ),
       ],
       builder: (context, child) {

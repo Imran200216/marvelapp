@@ -68,6 +68,7 @@ dependencies:
   visibility_detector: ^0.4.0+2
   liquid_pull_to_refresh: ^3.0.1
   flutter_launcher_icons: ^0.13.1
+  avatar_glow: ^3.0.1
 
 
 

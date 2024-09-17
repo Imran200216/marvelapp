@@ -1,7 +1,8 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/provider/app_required_providers/app_version_provider.dart';
 
@@ -11,9 +12,6 @@ import 'package:marvelapp/provider/authentication_providers/guest_auth_provider.
 import 'package:marvelapp/provider/user_details_provider/email_user_details_provider.dart';
 import 'package:marvelapp/provider/user_details_provider/guest_user_details_provider.dart';
 import 'package:marvelapp/screens/about_app_details_screen.dart';
-
-import 'package:marvelapp/screens/profile_edit_screens/profile_avatar_edit_email_screen.dart';
-import 'package:marvelapp/screens/profile_edit_screens/profile_avatar_edit_guest_screen.dart';
 
 import 'package:marvelapp/widgets/custom_listile.dart';
 import 'package:marvelapp/widgets/toast_helper.dart';
@@ -69,9 +67,15 @@ class ProfileScreen extends StatelessWidget {
                   /// Profile picture
 
                   user!.isAnonymous
-                      ? Stack(
-                          children: [
-                            Container(
+                      ? AvatarGlow(
+                          startDelay: const Duration(microseconds: 1000),
+                          repeat: true,
+                          glowRadiusFactor: 0.2,
+                          child: Material(
+                            elevation: 0.4,
+                            shape: const CircleBorder(),
+                            color: AppColors.avatarGlowColor,
+                            child: Container(
                               height: MediaQuery.of(context).size.height * 0.16,
                               width: MediaQuery.of(context).size.height * 0.16,
                               decoration: const BoxDecoration(
@@ -94,40 +98,16 @@ class ProfileScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return const ProfileAvatarEditGuestScreen();
-                                  }));
-                                },
-                                child: Container(
-                                  height: 50,
-                                  width: 50,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.editContainerBgColor,
-                                  ),
-                                  child: Center(
-                                    child: SvgPicture.asset(
-                                      "assets/images/svg/edit-outlined-icon.svg",
-                                      height: 30,
-                                      width: 30,
-                                      fit: BoxFit.cover,
-                                      color: AppColors.secondaryColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         )
-                      : Stack(
-                          children: [
-                            Container(
+                      : AvatarGlow(
+                          startDelay: const Duration(microseconds: 1000),
+                          repeat: true,
+                          child: Material(
+                            elevation: 0.4,
+                            shape: const CircleBorder(),
+                            color: AppColors.avatarGlowColor,
+                            child: Container(
                               height: MediaQuery.of(context).size.height * 0.16,
                               width: MediaQuery.of(context).size.height * 0.16,
                               decoration: const BoxDecoration(
@@ -150,36 +130,7 @@ class ProfileScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return const ProfileAvatarEditEmailScreen();
-                                  }));
-                                },
-                                child: Container(
-                                  height: 50,
-                                  width: 50,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.editContainerBgColor,
-                                  ),
-                                  child: Center(
-                                    child: SvgPicture.asset(
-                                      "assets/images/svg/edit-outlined-icon.svg",
-                                      height: 30,
-                                      width: 30,
-                                      fit: BoxFit.cover,
-                                      color: AppColors.secondaryColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
 
                   SizedBox(

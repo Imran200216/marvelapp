@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 class AppColors {
   static Color primaryColor = const Color(0xFF000000);
@@ -9,4 +9,5 @@ class AppColors {
   static Color failureToastColor = const Color(0xFFD92F54);
   static Color editContainerBgColor = const Color(0xFF181B1D);
   static Color pullToRefreshBgColor = const Color(0xFFEC1D24);
+  static Color avatarGlowColor = Colors.transparent;
 }

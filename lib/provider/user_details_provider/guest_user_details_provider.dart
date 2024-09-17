@@ -12,18 +12,20 @@ class GuestUserDetailsProvider extends ChangeNotifier {
   String? selectedAvatarURL;
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  bool _isLoading = false;
 
-  bool _isLoading = false; // Loading flag
-  bool get isLoading => _isLoading; // Getter to expose loading status
+  bool get isLoading => _isLoading;
 
   // Getters for nickname and avatar URL
   String? get nickname => _nickname;
+
   String? get avatarPhotoURL => _avatarPhotoURL;
 
   List<String> get imageUrls => _imageUrls;
 
-  bool _isAvatarUpdated = false; // Add this flag to track avatar update
-  bool get isAvatarUpdated => _isAvatarUpdated; // Expose this flag to UI
+  bool _isAvatarUpdated = false;
+
+  bool get isAvatarUpdated => _isAvatarUpdated;
 
   // Fetch avatars from Firebase Storage
   Future<void> fetchAvatars() async {
@@ -85,7 +87,8 @@ class GuestUserDetailsProvider extends ChangeNotifier {
   }
 
   // Controller for nickname TextField
-  final TextEditingController nicknameControllerByGuest = TextEditingController();
+  final TextEditingController nicknameControllerByGuest =
+      TextEditingController();
 
   // Set nickname and update in Firestore
   Future<void> setNickname(BuildContext context) async {
@@ -120,8 +123,8 @@ class GuestUserDetailsProvider extends ChangeNotifier {
           // Navigate to BottomNavBar
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
-                return BottomNavBar();
-              }));
+            return BottomNavBar();
+          }));
         });
       } catch (e) {
         ToastHelper.showErrorToast(
@@ -151,7 +154,7 @@ class GuestUserDetailsProvider extends ChangeNotifier {
 
       try {
         DocumentSnapshot userDoc =
-        await _firestore.collection('userByGuestAuth').doc(uid).get();
+            await _firestore.collection('userByGuestAuth').doc(uid).get();
 
         if (userDoc.exists) {
           _nickname = userDoc['nickName'] ?? 'No nickname';
@@ -164,6 +167,17 @@ class GuestUserDetailsProvider extends ChangeNotifier {
       } catch (e) {
         print('Failed to fetch guest user details: $e');
       }
+    } else {
+      _nickname = null;
+      _avatarPhotoURL = null; // Clear avatar URL on sign out
+      notifyListeners(); // Notify UI to reflect sign-out status
     }
+  }
+
+  // Clear selected avatar
+  void clearSelectedAvatar() {
+    selectedAvatarURL = null;
+    _isAvatarUpdated = false;
+    notifyListeners();
   }
 }

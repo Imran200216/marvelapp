@@ -10,21 +10,34 @@ import 'package:marvelapp/screens/details_screens/user_guest_nickname_details_sc
 import 'package:marvelapp/widgets/custom_neopop_btn.dart';
 import 'package:provider/provider.dart';
 
-class UserGuestAvatarDetailsScreen extends StatelessWidget {
+class UserGuestAvatarDetailsScreen extends StatefulWidget {
   const UserGuestAvatarDetailsScreen({super.key});
+
+  @override
+  _UserGuestAvatarDetailsScreenState createState() =>
+      _UserGuestAvatarDetailsScreenState();
+}
+
+class _UserGuestAvatarDetailsScreenState
+    extends State<UserGuestAvatarDetailsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Fetch avatars when the screen is initialized
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final userGuestDetailsProvider =
+          Provider.of<GuestUserDetailsProvider>(context, listen: false);
+      if (userGuestDetailsProvider.imageUrls.isEmpty) {
+        userGuestDetailsProvider.fetchAvatars();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
-    // Fetch avatars from provider
     final userGuestDetailsProvider =
         Provider.of<GuestUserDetailsProvider>(context);
-
-    // Trigger fetch if imageUrls is empty
-    if (userGuestDetailsProvider.imageUrls.isEmpty) {
-      userGuestDetailsProvider.fetchAvatars();
-    }
 
     return SafeArea(
       child: Scaffold(
@@ -48,7 +61,8 @@ class UserGuestAvatarDetailsScreen extends StatelessWidget {
                       return const UserGuestNicknameDetailsScreen();
                     }));
                   },
-                ))
+                ),
+              )
             : const SizedBox(),
         body: LiquidPullToRefresh(
           showChildOpacityTransition: true,
@@ -56,9 +70,7 @@ class UserGuestAvatarDetailsScreen extends StatelessWidget {
             await userGuestDetailsProvider.fetchAvatars();
           },
           color: AppColors.timeLineBgColor,
-          // The color of the refresh indicator
           backgroundColor: AppColors.pullToRefreshBgColor,
-          // The background color of the refresh area
           child: Container(
             margin: const EdgeInsets.only(
               left: 20,
@@ -78,10 +90,7 @@ class UserGuestAvatarDetailsScreen extends StatelessWidget {
                     color: AppColors.secondaryColor,
                   ),
                 ),
-                SizedBox(
-                  height: size.height * 0.05,
-                ),
-                // Display selected avatar in dotted border
+                SizedBox(height: size.height * 0.05),
                 Center(
                   child: DottedBorder(
                     borderType: BorderType.Circle,
@@ -99,45 +108,34 @@ class UserGuestAvatarDetailsScreen extends StatelessWidget {
                               ? CachedNetworkImageProvider(
                                   userGuestDetailsProvider.selectedAvatarURL!)
                               : const AssetImage(
-                                  "assets/images/png/avatar-bg-img.png",
-                                ),
-                          // Placeholder image URL
+                                  "assets/images/png/avatar-bg-img.png"),
                           fit: BoxFit.cover,
                         ),
                       ),
                     ),
                   ),
                 ),
-
-                SizedBox(
-                  height: size.height * 0.05,
-                ),
-
-                /// Grid view for cool avatars
+                SizedBox(height: size.height * 0.05),
                 userGuestDetailsProvider.imageUrls.isEmpty
                     ? Center(
-                        child: Center(
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: size.height * 0.02,
+                        child: Column(
+                          children: [
+                            SizedBox(height: size.height * 0.02),
+                            Lottie.asset(
+                              'assets/images/animation/empty-animation.json',
+                              height: size.height * 0.3,
+                              fit: BoxFit.cover,
+                            ),
+                            Text(
+                              'Loading, Lets have some fun!',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: size.width * 0.040,
+                                fontFamily: "Poppins",
+                                color: AppColors.secondaryColor,
                               ),
-                              Lottie.asset(
-                                'assets/images/animation/empty-animation.json',
-                                height: size.height * 0.3,
-                                fit: BoxFit.cover,
-                              ),
-                              Text(
-                                '''Loading, Lets have some fun!''',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: size.width * 0.040,
-                                  fontFamily: "Poppins",
-                                  color: AppColors.secondaryColor,
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       )
                     : Expanded(
@@ -156,7 +154,6 @@ class UserGuestAvatarDetailsScreen extends StatelessWidget {
 
                             return InkWell(
                               onTap: () {
-                                // Update the selected avatar in provider and Firebase
                                 userGuestDetailsProvider.setSelectedAvatar(
                                     avatarUrl, context);
                               },
@@ -166,8 +163,7 @@ class UserGuestAvatarDetailsScreen extends StatelessWidget {
                                 ),
                                 child: ClipOval(
                                   child: CachedNetworkImage(
-                                    imageUrl: userGuestDetailsProvider
-                                        .imageUrls[index],
+                                    imageUrl: avatarUrl,
                                     fit: BoxFit.cover,
                                     placeholder: (context, url) => Center(
                                       child:
@@ -187,9 +183,7 @@ class UserGuestAvatarDetailsScreen extends StatelessWidget {
                           },
                         ),
                       ),
-                SizedBox(
-                  height: size.height * 0.08,
-                ),
+                SizedBox(height: size.height * 0.08),
               ],
             ),
           ),
