@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:double_tap_to_exit/double_tap_to_exit.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:marvelapp/constants/colors.dart';
+import 'package:marvelapp/widgets/custom_photo_details.dart';
 
 class AboutAppDetailsScreen extends StatelessWidget {
   const AboutAppDetailsScreen({super.key});
@@ -13,7 +15,6 @@ class AboutAppDetailsScreen extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return DoubleTapToExit(
-
       snackBar: SnackBar(
         backgroundColor: AppColors.timeLineBgColor,
         content: Text(
@@ -77,7 +78,7 @@ class AboutAppDetailsScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                       child: CachedNetworkImage(
                         imageUrl:
-                            "https://i.pinimg.com/564x/93/11/ca/9311caae8ca0783b6173889e8da61cab.jpg",
+                            "https://i.pinimg.com/564x/70/be/4b/70be4beb641318234c325eafed173d3d.jpg",
                         fit: BoxFit.cover,
                         placeholder: (context, url) => Center(
                           child: LoadingAnimationWidget.dotsTriangle(
@@ -107,10 +108,7 @@ class AboutAppDetailsScreen extends StatelessWidget {
       To elevate the experience further, the app incorporates videos that include trailers, superhero battles, and fan-favorite clips. These videos help fans relive their favorite moments and get hyped for upcoming releases.
       
       The Marvel App is a fan-centric space, designed to provide an awesome, interactive experience where fans can geek out, stay informed, and explore every corner of the Marvel Universe. Whether you're catching up on movie facts or discovering new superheroes, this app is an exciting journey for every Marvel lover.
-                  
-                  
-                  
-                  ''',
+                    ''',
                     style: TextStyle(
                       fontFamily: "Poppins",
                       fontWeight: FontWeight.w500,
@@ -120,6 +118,17 @@ class AboutAppDetailsScreen extends StatelessWidget {
                   ),
                   SizedBox(
                     height: size.height * 0.04,
+                  ),
+
+                  /// imran
+                  const CustomPhotoDetails(
+                    placeHolderUrl:
+                        "assets/images/jpg/spiderman-placeholder.jpg",
+                    imageUrl:
+                        "https://firebasestorage.googleapis.com/v0/b/marvelapp-ba95e.appspot.com/o/supporters%2Fimran.jpg?alt=media&token=e09707a5-2a27-4dc0-a9a5-af5680265c9d",
+                    personName: "Imran B",
+                    personDesignation: "Mobile Developer && UI/UX Designer",
+                    skills: ["flutter", "figma"],
                   ),
                 ],
               ),

@@ -7,23 +7,16 @@ import 'package:marvelapp/provider/app_required_providers/conversion_provider.da
 import 'package:marvelapp/provider/app_required_providers/internet_checker_provider.dart';
 import 'package:marvelapp/provider/app_required_providers/url_launcher_provider.dart';
 import 'package:marvelapp/provider/app_required_providers/video_player_provider.dart';
-
 import 'package:marvelapp/provider/authentication_providers/email_auth_provider.dart';
 import 'package:marvelapp/provider/authentication_providers/guest_auth_provider.dart';
-
 import 'package:marvelapp/provider/screens_providers/bottom_nav_provider.dart';
-
 import 'package:marvelapp/provider/db_provider/marvel_movie_db_provider.dart';
 import 'package:marvelapp/provider/screens_providers/character_modal_provider.dart';
 import 'package:marvelapp/provider/screens_providers/get_started_provider.dart';
-
 import 'package:marvelapp/provider/db_provider/super_hero_character_db_provider.dart';
-
 import 'package:marvelapp/provider/user_details_provider/email_user_details_provider.dart';
 import 'package:marvelapp/provider/user_details_provider/guest_user_details_provider.dart';
-
 import 'package:marvelapp/provider/authentication_providers/password_visibility_provider.dart';
-
 import 'package:marvelapp/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 
