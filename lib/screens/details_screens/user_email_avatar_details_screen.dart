@@ -47,7 +47,9 @@ class UserEmailAvatarDetailsScreen extends StatelessWidget {
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) {
                       return const UserEmailNicknameDetailsScreen();
-                    }));
+                    })).then((value) {
+                      userEmailDetailsProvider.selectedAvatarURL = null;
+                    });
                   },
                 ),
               )

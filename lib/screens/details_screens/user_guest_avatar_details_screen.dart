@@ -59,7 +59,9 @@ class _UserGuestAvatarDetailsScreenState
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) {
                       return const UserGuestNicknameDetailsScreen();
-                    }));
+                    })).then((value){
+                      userGuestDetailsProvider.clearSelectedAvatar();
+                    });
                   },
                 ),
               )
