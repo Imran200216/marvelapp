@@ -6,7 +6,7 @@ import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lottie/lottie.dart';
 import 'package:marvelapp/constants/colors.dart';
-import 'package:marvelapp/provider/user_details_provider/guest_user_details_provider.dart';
+import 'package:marvelapp/provider/profile_edit_providers/profile_avatar_guest_edit_provider.dart';
 
 import 'package:provider/provider.dart';
 import 'package:marvelapp/widgets/custom_neopop_btn.dart';
@@ -19,12 +19,13 @@ class ProfileAvatarEditGuestScreen extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     // Fetch avatars from provider
-    final userGuestDetailsProvider =
-        Provider.of<GuestUserDetailsProvider>(context);
+
+    final profileAvatarGuestEditProvider =
+        Provider.of<ProfileAvatarGuestEditProvider>(context);
 
     // Trigger fetch if imageUrls is empty
-    if (userGuestDetailsProvider.imageUrls.isEmpty) {
-      userGuestDetailsProvider.fetchAvatars();
+    if (profileAvatarGuestEditProvider.imageUrls.isEmpty) {
+      profileAvatarGuestEditProvider.fetchAvatars();
     }
 
     return SafeArea(
@@ -48,7 +49,7 @@ class ProfileAvatarEditGuestScreen extends StatelessWidget {
         body: LiquidPullToRefresh(
           showChildOpacityTransition: true,
           onRefresh: () async {
-            await userGuestDetailsProvider.fetchAvatars();
+            await profileAvatarGuestEditProvider.fetchAvatars();
           },
           color: AppColors.timeLineBgColor,
           // The color of the refresh indicator
@@ -101,10 +102,12 @@ class ProfileAvatarEditGuestScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: userGuestDetailsProvider.selectedAvatarURL !=
+                          image: profileAvatarGuestEditProvider
+                                      .selectedAvatarURL !=
                                   null
                               ? CachedNetworkImageProvider(
-                                  userGuestDetailsProvider.selectedAvatarURL!)
+                                  profileAvatarGuestEditProvider
+                                      .selectedAvatarURL!)
                               : const CachedNetworkImageProvider(
                                   "https://i.pinimg.com/564x/cb/24/dc/cb24dcc240159a21891028e1d2eaa002.jpg"),
                           // Placeholder image URL
@@ -119,7 +122,7 @@ class ProfileAvatarEditGuestScreen extends StatelessWidget {
                 ),
 
                 /// Grid view for cool avatars
-                userGuestDetailsProvider.imageUrls.isEmpty
+                profileAvatarGuestEditProvider.imageUrls.isEmpty
                     ? Center(
                         child: Center(
                           child: Column(
@@ -154,16 +157,17 @@ class ProfileAvatarEditGuestScreen extends StatelessWidget {
                             mainAxisSpacing: 12,
                             childAspectRatio: 1,
                           ),
-                          itemCount: userGuestDetailsProvider.imageUrls.length,
+                          itemCount:
+                              profileAvatarGuestEditProvider.imageUrls.length,
                           itemBuilder: (context, index) {
                             final avatarUrl =
-                                userGuestDetailsProvider.imageUrls[index];
+                                profileAvatarGuestEditProvider.imageUrls[index];
 
                             return InkWell(
                               onTap: () {
                                 // Update the selected avatar in provider and Firebase
-                                userGuestDetailsProvider.setSelectedAvatar(
-                                    avatarUrl, context);
+                                profileAvatarGuestEditProvider
+                                    .setSelectedAvatar(avatarUrl, context);
                               },
                               child: Container(
                                 decoration: const BoxDecoration(
@@ -171,7 +175,7 @@ class ProfileAvatarEditGuestScreen extends StatelessWidget {
                                 ),
                                 child: ClipOval(
                                   child: CachedNetworkImage(
-                                    imageUrl: userGuestDetailsProvider
+                                    imageUrl: profileAvatarGuestEditProvider
                                         .imageUrls[index],
                                     fit: BoxFit.cover,
                                     placeholder: (context, url) => Center(

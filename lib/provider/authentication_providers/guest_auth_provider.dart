@@ -67,36 +67,48 @@ class GuestAuthenticationProvider extends ChangeNotifier {
     }
   }
 
-  /// Sign out with guest
+  /// Sign out with guest and delete their data
   Future<void> signOutWithGuest(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      await _auth.signOut().then((value) async {
-        /// Showing success toast
-        ToastHelper.showSuccessToast(
-          context: context,
-          message: "Sign Out Successfully!",
-        );
+      // Get the current user (guest)
+      User? user = _auth.currentUser;
 
-        /// Clear guest sign-in status from shared preferences
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.remove('isSignedInAsGuest');
+      if (user != null) {
+        // Delete guest data from Firestore
+        await FirebaseFirestore.instance
+            .collection('userByGuestAuth')
+            .doc(user.uid)
+            .delete();
 
-        /// Navigate to the Get Started Screen
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const GetStartedScreen(),
-          ),
-        );
-      });
+        // Sign the user out
+        await _auth.signOut().then((value) async {
+          /// Showing success toast
+          ToastHelper.showSuccessToast(
+            context: context,
+            message: "Signed out and guest data deleted successfully!",
+          );
+
+          /// Clear guest sign-in status from shared preferences
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.remove('isSignedInAsGuest');
+
+          /// Navigate to the Get Started Screen
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const GetStartedScreen(),
+            ),
+          );
+        });
+      }
     } catch (e) {
       /// Showing failure toast
       ToastHelper.showErrorToast(
         context: context,
-        message: "Failed to sign out. Please try again.",
+        message: "Failed to sign out or delete data. Please try again.",
       );
     } finally {
       _isLoading = false;
