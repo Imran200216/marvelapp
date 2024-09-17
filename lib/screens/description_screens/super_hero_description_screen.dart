@@ -57,52 +57,52 @@ class SuperHeroDescriptionScreen extends StatelessWidget {
               color: AppColors.timeLineBgColor,
               // The color of the refresh indicator
               backgroundColor: AppColors.pullToRefreshBgColor,
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: (!internetCheckerProvider.isNetworkConnected)
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const SizedBox(
-                              height: 6,
+              child: (!internetCheckerProvider.isNetworkConnected)
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(
+                            height: 6,
+                          ),
+                          Lottie.asset(
+                            'assets/images/animation/robot-animation.json',
+                            height: size.height * 0.3,
+                            fit: BoxFit.cover,
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            "Connection error",
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: size.width * 0.050,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.secondaryColor,
                             ),
-                            Lottie.asset(
-                              'assets/images/animation/robot-animation.json',
-                              height: size.height * 0.3,
-                              fit: BoxFit.cover,
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            margin: const EdgeInsets.only(
+                              left: 12,
+                              right: 12,
                             ),
-                            const SizedBox(height: 20),
-                            Text(
-                              "Connection error",
+                            child: Text(
+                              textAlign: TextAlign.center,
+                              "It seems you aren't connected to the internet. Try checking your connection or switching between Wi-Fi and cellular data.",
                               style: TextStyle(
                                 fontFamily: "Poppins",
-                                fontSize: size.width * 0.050,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.secondaryColor,
+                                fontSize: size.width * 0.036,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.subTitleColor,
                               ),
                             ),
-                            const SizedBox(height: 10),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                left: 12,
-                                right: 12,
-                              ),
-                              child: Text(
-                                textAlign: TextAlign.center,
-                                "It seems you aren't connected to the internet. Try checking your connection or switching between Wi-Fi and cellular data.",
-                                style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontSize: size.width * 0.036,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.subTitleColor,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    : Column(
+                          ),
+                        ],
+                      ),
+                    )
+                  : SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           /// Marvel character image
@@ -543,7 +543,7 @@ class SuperHeroDescriptionScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-              ),
+                    ),
             );
           },
         ),
