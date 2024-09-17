@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lottie/lottie.dart';
-import 'package:marvelapp/modals/modal_cache_manager.dart';
 import 'package:marvelapp/provider/app_required_providers/internet_checker_provider.dart';
 import 'package:marvelapp/provider/db_provider/super_hero_character_db_provider.dart';
 import 'package:marvelapp/provider/screens_providers/character_modal_provider.dart';
@@ -37,23 +36,19 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    // Save a reference to the correct providers here
     characterModelProvider =
         Provider.of<CharacterModelProvider>(context, listen: false);
     superHeroProvider =
         Provider.of<SuperHeroCharacterDBProvider>(context, listen: false);
 
-    // Fetch the 3D model URL and cache it
-    superHeroProvider.fetchCharacterModel(widget.characterName).then((_) {
-      // Caching the model URL
-      final modelUrl = superHeroProvider.characterModelUrl;
-      if (modelUrl != null) {
-        ModelCacheManager.instance.downloadFile(modelUrl);
-      }
-    });
+    // Fetch the 3D model when the screen is displayed
+    superHeroProvider.fetchCharacterModel(widget.characterName);
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Handle app lifecycle changes
     if (state == AppLifecycleState.paused ||
         state == AppLifecycleState.inactive) {
       characterModelProvider.setAudioPlayback(false);
@@ -69,17 +64,12 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
   }
 
   void _scrollToTop() {
+    // Animate scroll to the top
     characterModelProvider.scrollController.animateTo(
       0.0,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
-  }
-
-  Future<String?> _getCachedModelUrl() async {
-    final file = await ModelCacheManager.instance
-        .getFileFromCache(widget.characterModal);
-    return file?.file.path;
   }
 
   @override
@@ -90,25 +80,27 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
       child: Scaffold(
         backgroundColor: const Color(0xFF010100),
         body: Consumer<InternetCheckerProvider>(
-          builder: (context, internetCheckerProvider, child) {
+          builder: (
+            context,
+            internetCheckerProvider,
+            child,
+          ) {
             return LiquidPullToRefresh(
               showChildOpacityTransition: true,
               onRefresh: () async {
+                // Fetch the 3D model when the screen is displayed
                 await superHeroProvider
                     .fetchCharacterModel(widget.characterName);
-                final modelUrl = superHeroProvider.characterModelUrl;
-                if (modelUrl != null) {
-                  ModelCacheManager.instance.downloadFile(modelUrl);
-                }
               },
               color: AppColors.timeLineBgColor,
+              // The color of the refresh indicator
               backgroundColor: AppColors.pullToRefreshBgColor,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 controller: characterModelProvider.scrollController,
                 child: Container(
                   margin: EdgeInsets.only(
-                    left: size.width * 0.05,
+                    left: size.width * 0.05, // Adjust margins as needed
                     top: size.height * 0.03,
                     right: size.width * 0.05,
                     bottom: size.height * 0.03,
@@ -135,8 +127,10 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
                         ],
                       ),
                       SizedBox(
-                        height: size.height * 0.02,
+                        height: size.height * 0.02, // Reduced space
                       ),
+
+                      /// character name
                       Text(
                         widget.characterName,
                         style: TextStyle(
@@ -146,11 +140,14 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
                           color: AppColors.secondaryColor,
                         ),
                       ),
+
                       if (!internetCheckerProvider.isNetworkConnected)
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const SizedBox(height: 6),
+                            const SizedBox(
+                              height: 6,
+                            ),
                             Lottie.asset(
                               'assets/images/animation/robot-animation.json',
                               height: size.height * 0.3,
@@ -168,8 +165,10 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
                             ),
                             const SizedBox(height: 10),
                             Container(
-                              margin:
-                                  const EdgeInsets.only(left: 12, right: 12),
+                              margin: const EdgeInsets.only(
+                                left: 12,
+                                right: 12,
+                              ),
                               child: Text(
                                 textAlign: TextAlign.center,
                                 "It seems you aren't connected to the internet. Try checking your connection or switching between Wi-Fi and cellular data.",
@@ -188,10 +187,13 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
-                              height: size.height * 0.01,
+                              height:
+                                  size.height * 0.01, // Further reduced space
                             ),
+
+                            /// Character quotes
                             SizedBox(
-                              width: size.width * 0.9,
+                              width: size.width * 0.9, // Adjust width as needed
                               child: DefaultTextStyle(
                                 style: TextStyle(
                                   fontSize: size.width * 0.07,
@@ -204,17 +206,22 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
                                   repeatForever: false,
                                   animatedTexts: [
                                     TypewriterAnimatedText(
-                                        widget.characterQuotes),
+                                      widget.characterQuotes,
+                                    ),
                                   ],
                                 ),
                               ),
                             ),
+
                             SizedBox(
-                              height: size.height * 0.02,
+                              height: size.height * 0.02, // Reduced space
                             ),
+
+                            /// 3D model with visibility detector
                             VisibilityDetector(
                               key: const Key('3d-model-viewer'),
                               onVisibilityChanged: (VisibilityInfo info) {
+                                // Ensure the widget is mounted before accessing the provider
                                 if (mounted) {
                                   characterModelProvider.handleVisibilityChange(
                                       info.visibleFraction);
@@ -222,10 +229,12 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
                               },
                               child: SizedBox(
                                 height: size.height * 0.6,
+                                // Adjust height as needed
                                 width: size.width,
                                 child: Consumer<SuperHeroCharacterDBProvider>(
                                   builder: (context, provider, child) {
                                     if (provider.isModelLoading) {
+                                      // Show Lottie animation while loading
                                       return Center(
                                         child: LoadingAnimationWidget
                                             .threeArchedCircle(
@@ -248,7 +257,7 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
                                               height: size.height * 0.02,
                                             ),
                                             Text(
-                                              'Admin will be updated soon!',
+                                              'Admin will be update soon!',
                                               style: TextStyle(
                                                 fontFamily: "Poppins",
                                                 fontWeight: FontWeight.w600,
@@ -261,46 +270,53 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
                                       );
                                     }
 
-                                    return FutureBuilder<String?>(
-                                      future: _getCachedModelUrl(),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          return Center(
-                                            child: LoadingAnimationWidget
-                                                .threeArchedCircle(
-                                              color: AppColors.secondaryColor,
-                                              size: 32,
-                                            ),
-                                          );
-                                        } else if (snapshot.hasError) {
-                                          return Center(
-                                            child: Text(
-                                              'Error loading model',
-                                              style: TextStyle(
-                                                fontFamily: "Poppins",
-                                                fontWeight: FontWeight.w600,
-                                                color: AppColors.secondaryColor,
-                                                fontSize: size.width * 0.04,
-                                              ),
-                                            ),
-                                          );
-                                        } else {
-                                          final modelUrl = snapshot.data;
-
-                                          return ModelViewer(
-                                            src: modelUrl ?? '',
-                                            alt:
-                                                'A 3D model of ${widget.characterName}',
-                                            autoRotate: true,
-                                            cameraControls: true,
-                                          );
-                                        }
-                                      },
+                                    /// 3D model
+                                    return ModelViewer(
+                                      alt: "No modal found!",
+                                      loading: Loading.eager,
+                                      autoPlay: false,
+                                      backgroundColor: AppColors.primaryColor,
+                                      src: widget.characterModal,
+                                      autoRotate:
+                                          characterModelProvider.autoRotate,
+                                      disableZoom:
+                                          characterModelProvider.isScrolling,
+                                      cameraControls:
+                                          !characterModelProvider.isScrolling,
                                     );
                                   },
                                 ),
                               ),
+                            ),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                InkWell(
+                                  onTap: _scrollToTop, // Call the scroll method
+                                  child: Container(
+                                    height: size.height * 0.07,
+                                    // Container height
+                                    width: size.width * 0.09,
+                                    // Container width
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          size.width * 0.035),
+                                      // Rounded corners
+                                      color: AppColors.secondaryColor,
+                                    ),
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                        "assets/images/svg/arrow-up-icon.svg",
+                                        color: AppColors.primaryColor,
+                                        height: size.height * 0.03,
+                                        width: size.width * 0.03,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),

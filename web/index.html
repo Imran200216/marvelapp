@@ -31,8 +31,15 @@
 
   <title>marvelapp</title>
   <link rel="manifest" href="manifest.json">
+
+  <!-- Include the model-viewer library -->
+  <script type="module" src="model-viewer.min.js" defer></script>
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+<!-- Existing Flutter bootstrap script -->
+<script src="flutter_bootstrap.js" async></script>
+
+<!-- Your model-viewer content -->
+<model-viewer src="&#47;model" alt="No model found!" loading="eager" camera-controls auto-rotate style="background-color: rgba(0, 0, 0, 255); "></model-viewer>
 </body>
 </html>

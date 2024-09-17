@@ -18,7 +18,6 @@ class GuestUserDetailsProvider extends ChangeNotifier {
 
   // Getters for nickname and avatar URL
   String? get nickname => _nickname;
-
   String? get avatarPhotoURL => _avatarPhotoURL;
 
   List<String> get imageUrls => _imageUrls;
@@ -53,10 +52,14 @@ class GuestUserDetailsProvider extends ChangeNotifier {
       String uid = user.uid;
 
       try {
-        await _firestore.collection('userByGuestAuth').doc(uid).update({
+        // Update Firestore with the new avatar URL
+        await _firestore.collection('userByGuestAuth').doc(uid).set({
           'avatarPhotoURL': avatarUrl,
-        }).then((value) {
+        }, SetOptions(merge: true)).then((value) async {
           _isAvatarUpdated = true;
+
+          // Refetch guest details after update to reflect changes
+          await fetchGuestUserDetails();
 
           ToastHelper.showSuccessToast(
             context: context,
@@ -82,8 +85,7 @@ class GuestUserDetailsProvider extends ChangeNotifier {
   }
 
   // Controller for nickname TextField
-  final TextEditingController nicknameControllerByGuest =
-      TextEditingController();
+  final TextEditingController nicknameControllerByGuest = TextEditingController();
 
   // Set nickname and update in Firestore
   Future<void> setNickname(BuildContext context) async {
@@ -106,22 +108,20 @@ class GuestUserDetailsProvider extends ChangeNotifier {
       String uid = user.uid;
 
       try {
-        await _firestore.collection('userByGuestAuth').doc(uid).update({
+        // Update Firestore with the new nickname
+        await _firestore.collection('userByGuestAuth').doc(uid).set({
           'nickName': nickName,
-        }).then((value) async {
+        }, SetOptions(merge: true)).then((value) async {
           ToastHelper.showSuccessToast(
             context: context,
             message: "Nickname updated successfully!",
           );
 
-          // Refetch guest details after update to reflect changes
-          await fetchGuestUserDetails();
-
           // Navigate to BottomNavBar
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
-            return BottomNavBar();
-          }));
+                return BottomNavBar();
+              }));
         });
       } catch (e) {
         ToastHelper.showErrorToast(
@@ -151,7 +151,7 @@ class GuestUserDetailsProvider extends ChangeNotifier {
 
       try {
         DocumentSnapshot userDoc =
-            await _firestore.collection('userByGuestAuth').doc(uid).get();
+        await _firestore.collection('userByGuestAuth').doc(uid).get();
 
         if (userDoc.exists) {
           _nickname = userDoc['nickName'] ?? 'No nickname';

@@ -34,7 +34,7 @@ class SuperHeroCharacterDBProvider extends ChangeNotifier {
   Future<void> fetchCharacterModel(String characterName) async {
     try {
       _isModelLoading = true; // Start loading
-      notifyListeners();
+
 
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('superHeroCharacters')
