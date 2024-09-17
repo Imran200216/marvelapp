@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:lottie/lottie.dart';
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/provider/user_details_provider/guest_user_details_provider.dart';
 import 'package:marvelapp/screens/details_screens/user_guest_nickname_details_screen.dart';
@@ -48,118 +50,148 @@ class UserGuestAvatarDetailsScreen extends StatelessWidget {
                   },
                 ))
             : const SizedBox(),
-        body: Container(
-          margin: const EdgeInsets.only(
-            left: 20,
-            right: 20,
-            bottom: 30,
-            top: 30,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Add Cool Avatars\nfor your profile",
-                style: TextStyle(
-                  fontFamily: "Poppins",
-                  fontSize: size.width * 0.060,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.secondaryColor,
+        body: LiquidPullToRefresh(
+          showChildOpacityTransition: true,
+          onRefresh: () async {
+            await userGuestDetailsProvider.fetchAvatars();
+          },
+          color: AppColors.timeLineBgColor,
+          // The color of the refresh indicator
+          backgroundColor: AppColors.pullToRefreshBgColor,
+          // The background color of the refresh area
+          child: Container(
+            margin: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+              bottom: 30,
+              top: 30,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Add Cool Avatars\nfor your profile",
+                  style: TextStyle(
+                    fontFamily: "Poppins",
+                    fontSize: size.width * 0.060,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.secondaryColor,
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: size.height * 0.05,
-              ),
-              // Display selected avatar in dotted border
-              Center(
-                child: DottedBorder(
-                  borderType: BorderType.Circle,
-                  dashPattern: const [6, 6],
-                  color: Colors.grey.shade200,
-                  strokeWidth: 2,
-                  child: Container(
-                    width: size.width * 0.42,
-                    height: size.width * 0.42,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image:
-                            userGuestDetailsProvider.selectedAvatarURL != null
-                                ? CachedNetworkImageProvider(
-                                    userGuestDetailsProvider.selectedAvatarURL!)
-                                : const AssetImage(
-                                    "assets/images/png/avatar-bg-img.png",
-                                  ),
-                        // Placeholder image URL
-                        fit: BoxFit.cover,
+                SizedBox(
+                  height: size.height * 0.05,
+                ),
+                // Display selected avatar in dotted border
+                Center(
+                  child: DottedBorder(
+                    borderType: BorderType.Circle,
+                    dashPattern: const [6, 6],
+                    color: Colors.grey.shade200,
+                    strokeWidth: 2,
+                    child: Container(
+                      width: size.width * 0.42,
+                      height: size.width * 0.42,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: userGuestDetailsProvider.selectedAvatarURL !=
+                                  null
+                              ? CachedNetworkImageProvider(
+                                  userGuestDetailsProvider.selectedAvatarURL!)
+                              : const AssetImage(
+                                  "assets/images/png/avatar-bg-img.png",
+                                ),
+                          // Placeholder image URL
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
 
-              SizedBox(
-                height: size.height * 0.05,
-              ),
+                SizedBox(
+                  height: size.height * 0.05,
+                ),
 
-              /// Grid view for cool avatars
-              userGuestDetailsProvider.imageUrls.isEmpty
-                  ? Center(
-                      child: LoadingAnimationWidget.dotsTriangle(
-                        color: AppColors.secondaryColor,
-                        size: 40,
-                      ),
-                    )
-                  : Expanded(
-                      child: GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                          childAspectRatio: 1,
-                        ),
-                        itemCount: userGuestDetailsProvider.imageUrls.length,
-                        itemBuilder: (context, index) {
-                          final avatarUrl =
-                              userGuestDetailsProvider.imageUrls[index];
-
-                          return InkWell(
-                            onTap: () {
-                              // Update the selected avatar in provider and Firebase
-                              userGuestDetailsProvider.setSelectedAvatar(
-                                  avatarUrl, context);
-                            },
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
+                /// Grid view for cool avatars
+                userGuestDetailsProvider.imageUrls.isEmpty
+                    ? Center(
+                        child: Center(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: size.height * 0.02,
                               ),
-                              child: ClipOval(
-                                child: CachedNetworkImage(
-                                  imageUrl:
-                                      userGuestDetailsProvider.imageUrls[index],
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) => Center(
-                                    child: LoadingAnimationWidget.dotsTriangle(
-                                      color: AppColors.secondaryColor,
-                                      size: 40,
+                              Lottie.asset(
+                                'assets/images/animation/empty-animation.json',
+                                height: size.height * 0.3,
+                                fit: BoxFit.cover,
+                              ),
+                              Text(
+                                '''Loading, Lets have some fun!''',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: size.width * 0.040,
+                                  fontFamily: "Poppins",
+                                  color: AppColors.secondaryColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : Expanded(
+                        child: GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
+                            childAspectRatio: 1,
+                          ),
+                          itemCount: userGuestDetailsProvider.imageUrls.length,
+                          itemBuilder: (context, index) {
+                            final avatarUrl =
+                                userGuestDetailsProvider.imageUrls[index];
+
+                            return InkWell(
+                              onTap: () {
+                                // Update the selected avatar in provider and Firebase
+                                userGuestDetailsProvider.setSelectedAvatar(
+                                    avatarUrl, context);
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: ClipOval(
+                                  child: CachedNetworkImage(
+                                    imageUrl: userGuestDetailsProvider
+                                        .imageUrls[index],
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) => Center(
+                                      child:
+                                          LoadingAnimationWidget.dotsTriangle(
+                                        color: AppColors.secondaryColor,
+                                        size: 40,
+                                      ),
                                     ),
-                                  ),
-                                  errorWidget: (context, url, error) => Icon(
-                                    Icons.error,
-                                    color: AppColors.secondaryColor,
+                                    errorWidget: (context, url, error) => Icon(
+                                      Icons.error,
+                                      color: AppColors.secondaryColor,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
-                    ),
-              SizedBox(
-                height: size.height * 0.08,
-              ),
-            ],
+                SizedBox(
+                  height: size.height * 0.08,
+                ),
+              ],
+            ),
           ),
         ),
       ),

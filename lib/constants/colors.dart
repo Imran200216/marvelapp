@@ -8,4 +8,5 @@ class AppColors {
   static Color successToastColor = const Color(0xFF02A75A);
   static Color failureToastColor = const Color(0xFFD92F54);
   static Color editContainerBgColor = const Color(0xFF181B1D);
+  static Color pullToRefreshBgColor = const Color(0xFFEC1D24);
 }

@@ -2,8 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:lottie/lottie.dart';
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/provider/user_details_provider/email_user_details_provider.dart';
 
@@ -44,129 +46,159 @@ class ProfileAvatarEditEmailScreen extends StatelessWidget {
                 Navigator.pop(context);
               },
             )),
-        body: Container(
-          margin: const EdgeInsets.only(
-            left: 20,
-            right: 20,
-            bottom: 30,
-            top: 30,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: SvgPicture.asset(
-                  "assets/images/svg/back-icon.svg",
-                  height: size.height * 0.05,
-                  width: size.width * 0.05,
-                  color: AppColors.secondaryColor,
+        body: LiquidPullToRefresh(
+          showChildOpacityTransition: true,
+          onRefresh: () async {
+            await userEmailDetailsProvider.fetchAvatars();
+          },
+          color: AppColors.timeLineBgColor,
+          // The color of the refresh indicator
+          backgroundColor: AppColors.pullToRefreshBgColor,
+          // The background color of the refresh area
+          child: Container(
+            margin: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+              bottom: 30,
+              top: 30,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: SvgPicture.asset(
+                    "assets/images/svg/back-icon.svg",
+                    height: size.height * 0.05,
+                    width: size.width * 0.05,
+                    color: AppColors.secondaryColor,
+                  ),
                 ),
-              ),
-              SizedBox(height: size.height * 0.03),
+                SizedBox(height: size.height * 0.03),
 
-              Text(
-                "Add Cool Avatars\nfor your profile",
-                style: TextStyle(
-                  fontFamily: "Poppins",
-                  fontSize: size.width * 0.060,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.secondaryColor,
+                Text(
+                  "Add Cool Avatars\nfor your profile",
+                  style: TextStyle(
+                    fontFamily: "Poppins",
+                    fontSize: size.width * 0.060,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.secondaryColor,
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: size.height * 0.05,
-              ),
-              // Display selected avatar in dotted border
-              Center(
-                child: DottedBorder(
-                  borderType: BorderType.Circle,
-                  dashPattern: const [6, 6],
-                  color: Colors.grey.shade200,
-                  strokeWidth: 2,
-                  child: Container(
-                    width: size.width * 0.42,
-                    height: size.width * 0.42,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: userEmailDetailsProvider.selectedAvatarURL !=
-                                null
-                            ? CachedNetworkImageProvider(
-                                userEmailDetailsProvider.selectedAvatarURL!)
-                            : const CachedNetworkImageProvider(
-                                "https://i.pinimg.com/564x/cb/24/dc/cb24dcc240159a21891028e1d2eaa002.jpg"),
-                        // Placeholder image URL
-                        fit: BoxFit.cover,
+                SizedBox(
+                  height: size.height * 0.05,
+                ),
+                // Display selected avatar in dotted border
+                Center(
+                  child: DottedBorder(
+                    borderType: BorderType.Circle,
+                    dashPattern: const [6, 6],
+                    color: Colors.grey.shade200,
+                    strokeWidth: 2,
+                    child: Container(
+                      width: size.width * 0.42,
+                      height: size.width * 0.42,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: userEmailDetailsProvider.selectedAvatarURL !=
+                                  null
+                              ? CachedNetworkImageProvider(
+                                  userEmailDetailsProvider.selectedAvatarURL!)
+                              : const CachedNetworkImageProvider(
+                                  "https://i.pinimg.com/564x/cb/24/dc/cb24dcc240159a21891028e1d2eaa002.jpg"),
+                          // Placeholder image URL
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: size.height * 0.05,
-              ),
+                SizedBox(
+                  height: size.height * 0.05,
+                ),
 
-              /// Grid view for cool avatars
-              userEmailDetailsProvider.imageUrls.isEmpty
-                  ? Center(
-                      child: LoadingAnimationWidget.dotsTriangle(
-                        color: AppColors.primaryColor,
-                        size: 40,
-                      ),
-                    )
-                  : Expanded(
-                      child: GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                          childAspectRatio: 1,
-                        ),
-                        itemCount: userEmailDetailsProvider.imageUrls.length,
-                        itemBuilder: (context, index) {
-                          final avatarUrl =
-                              userEmailDetailsProvider.imageUrls[index];
-
-                          return InkWell(
-                            onTap: () {
-                              // Update the selected avatar in provider and Firebase
-                              userEmailDetailsProvider.setSelectedAvatar(
-                                  avatarUrl, context);
-                            },
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
+                /// Grid view for cool avatars
+                userEmailDetailsProvider.imageUrls.isEmpty
+                    ? Center(
+                        child: Center(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: size.height * 0.02,
                               ),
-                              child: ClipOval(
-                                child: CachedNetworkImage(
-                                  imageUrl:
-                                      userEmailDetailsProvider.imageUrls[index],
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) => Center(
-                                    child: LoadingAnimationWidget.dotsTriangle(
-                                      color: AppColors.secondaryColor,
-                                      size: 40,
+                              Lottie.asset(
+                                'assets/images/animation/empty-animation.json',
+                                height: size.height * 0.3,
+                                fit: BoxFit.cover,
+                              ),
+                              Text(
+                                '''Loading, Lets have some fun!''',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: size.width * 0.040,
+                                  fontFamily: "Poppins",
+                                  color: AppColors.secondaryColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : Expanded(
+                        child: GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
+                            childAspectRatio: 1,
+                          ),
+                          itemCount: userEmailDetailsProvider.imageUrls.length,
+                          itemBuilder: (context, index) {
+                            final avatarUrl =
+                                userEmailDetailsProvider.imageUrls[index];
+
+                            return InkWell(
+                              onTap: () {
+                                // Update the selected avatar in provider and Firebase
+                                userEmailDetailsProvider.setSelectedAvatar(
+                                    avatarUrl, context);
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: ClipOval(
+                                  child: CachedNetworkImage(
+                                    imageUrl: userEmailDetailsProvider
+                                        .imageUrls[index],
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) => Center(
+                                      child:
+                                          LoadingAnimationWidget.dotsTriangle(
+                                        color: AppColors.secondaryColor,
+                                        size: 40,
+                                      ),
                                     ),
-                                  ),
-                                  errorWidget: (context, url, error) => Icon(
-                                    Icons.error,
-                                    color: AppColors.secondaryColor,
+                                    errorWidget: (context, url, error) => Icon(
+                                      Icons.error,
+                                      color: AppColors.secondaryColor,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
-                    ),
-              SizedBox(
-                height: size.height * 0.08,
-              ),
-            ],
+                SizedBox(
+                  height: size.height * 0.08,
+                ),
+              ],
+            ),
           ),
         ),
       ),
