@@ -1,5 +1,6 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:double_tap_to_exit/double_tap_to_exit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -32,6 +33,8 @@ class ProfileScreen extends StatelessWidget {
       Provider.of<EmailUserDetailsProvider>(context, listen: false)
           .fetchEmailUserDetails();
     }
+
+    final size = MediaQuery.of(context).size;
 
     return SafeArea(
       child: Scaffold(
@@ -76,14 +79,17 @@ class ProfileScreen extends StatelessWidget {
                             shape: const CircleBorder(),
                             color: AppColors.avatarGlowColor,
                             child: Container(
-                              height: MediaQuery.of(context).size.height * 0.16,
-                              width: MediaQuery.of(context).size.height * 0.16,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.16,
+                              width:
+                                  MediaQuery.of(context).size.height * 0.16,
                               decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                               ),
                               child: ClipOval(
                                 child: CachedNetworkImage(
-                                  imageUrl: guestUserProvider.avatarPhotoURL ??
+                                  imageUrl: guestUserProvider
+                                          .avatarPhotoURL ??
                                       "https://i.pinimg.com/564x/39/51/fa/3951fa4087ca2e4e75dd9a954722ed77.jpg",
                                   fit: BoxFit.cover,
                                   placeholder: (context, url) => Center(
@@ -108,14 +114,17 @@ class ProfileScreen extends StatelessWidget {
                             shape: const CircleBorder(),
                             color: AppColors.avatarGlowColor,
                             child: Container(
-                              height: MediaQuery.of(context).size.height * 0.16,
-                              width: MediaQuery.of(context).size.height * 0.16,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.16,
+                              width:
+                                  MediaQuery.of(context).size.height * 0.16,
                               decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                               ),
                               child: ClipOval(
                                 child: CachedNetworkImage(
-                                  imageUrl: emailUserProvider.avatarPhotoURL ??
+                                  imageUrl: emailUserProvider
+                                          .avatarPhotoURL ??
                                       "https://imgs.search.brave.com/hjo8zDIxlTqf_jwu_RxiKpSQpyauoiJ7Pbx8m7HVNfg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/ZnJlZS1waG90by91/c2VyLXByb2ZpbGUt/aWNvbi1mcm9udC1z/aWRlLXdpdGgtd2hp/dGUtYmFja2dyb3Vu/ZF8xODcyOTktNDAw/MTAuanBnP3NpemU9/NjI2JmV4dD1qcGc",
                                   fit: BoxFit.cover,
                                   placeholder: (context, url) => Center(
@@ -187,7 +196,8 @@ class ProfileScreen extends StatelessWidget {
                                     trailing: const SizedBox(),
                                   ),
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.01,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.01,
                             ),
 
                             /// nick name
@@ -209,7 +219,8 @@ class ProfileScreen extends StatelessWidget {
                                     trailing: const SizedBox(),
                                   ),
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.01,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.01,
                             ),
 
                             /// email address
@@ -224,7 +235,8 @@ class ProfileScreen extends StatelessWidget {
                                     trailing: const SizedBox(),
                                   ),
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.01,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.01,
                             ),
 
                             /// app version
@@ -236,7 +248,8 @@ class ProfileScreen extends StatelessWidget {
                               trailing: const SizedBox(),
                             ),
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.01,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.01,
                             ),
 
                             /// about app
@@ -254,7 +267,8 @@ class ProfileScreen extends StatelessWidget {
                             ),
 
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.01,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.01,
                             ),
 
                             /// sign out
@@ -285,7 +299,8 @@ class ProfileScreen extends StatelessWidget {
                                   // No user is signed in
                                   ToastHelper.showErrorToast(
                                     context: context,
-                                    message: "No user is currently signed in.",
+                                    message:
+                                        "No user is currently signed in.",
                                   );
                                 }
                               },
