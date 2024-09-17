@@ -23,6 +23,38 @@ class SuperHeroCharacterDBProvider extends ChangeNotifier {
     }
   }
 
+  String? _characterModelUrl; // URL for the 3D model
+  bool _isModelLoading = false; // Loading state for 3D model
+
+  String? get characterModelUrl => _characterModelUrl;
+
+  bool get isModelLoading => _isModelLoading;
+
+  // Fetch specific superhero's 3D model by character name
+  Future<void> fetchCharacterModel(String characterName) async {
+    try {
+      _isModelLoading = true; // Start loading
+      notifyListeners();
+
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('superHeroCharacters')
+          .where('characterName', isEqualTo: characterName)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        // Get the first match (assuming name is unique)
+        _characterModelUrl = querySnapshot.docs.first['character3dModal'];
+      }
+
+      _isModelLoading = false; // Stop loading
+      notifyListeners();
+    } catch (e) {
+      _isModelLoading = false;
+      print('Failed to load character model: $e');
+      notifyListeners();
+    }
+  }
+
   // Initialize the provider and seed data if necessary
   SuperHeroCharacterDBProvider() {
     fetchSuperHeroes(); // Fetch the existing or newly seeded data

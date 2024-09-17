@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:lottie/lottie.dart';
 import 'package:marvelapp/constants/colors.dart';
+import 'package:marvelapp/provider/app_required_providers/internet_checker_provider.dart';
 import 'package:marvelapp/provider/db_provider/super_hero_character_db_provider.dart';
 import 'package:marvelapp/screens/character_model_screen.dart';
 import 'package:marvelapp/screens/video_player_screen.dart';
@@ -38,12 +40,56 @@ class SuperHeroDescriptionScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.primaryColor,
-        body: Consumer<SuperHeroCharacterDBProvider>(
+        body: Consumer2<SuperHeroCharacterDBProvider, InternetCheckerProvider>(
           builder: (
             context,
-            provider,
+            superHeroCharacterDBProvider,
+            internetCheckerProvider,
             child,
           ) {
+            if (!internetCheckerProvider.isNetworkConnected) {
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 6,
+                  ),
+                  Lottie.asset(
+                    'assets/images/animation/robot-animation.json',
+                    height: size.height * 0.3,
+                    fit: BoxFit.cover,
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    "Connection error",
+                    style: TextStyle(
+                      fontFamily: "Poppins",
+                      fontSize: size.width * 0.050,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.secondaryColor,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    margin: const EdgeInsets.only(
+                      left: 12,
+                      right: 12,
+                    ),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      "It seems you aren't connected to the internet. Try checking your connection or switching between Wi-Fi and cellular data.",
+                      style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: size.width * 0.036,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.subTitleColor,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }
+
             return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
