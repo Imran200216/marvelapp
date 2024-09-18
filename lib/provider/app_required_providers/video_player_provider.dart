@@ -7,19 +7,6 @@ class VideoPlayerProvider with ChangeNotifier {
   late VideoPlayerController _videoPlayerController;
   late ChewieController _chewieController;
 
-
-  late CachedVideoPlayerController _videoPlayerController;
-
-  VideoPlayerProvider(String videoUrl) {
-    _videoPlayerController = CachedVideoPlayerController.network(videoUrl)
-      ..initialize().then((_) {
-        notifyListeners();
-      });
-    _videoPlayerController.setLooping(true);
-  }
-
-  CachedVideoPlayerController get videoPlayerController => _videoPlayerController;
-
   VideoPlayerProvider(String videoUrl) {
     _videoPlayerController = VideoPlayerController.network(videoUrl);
 
