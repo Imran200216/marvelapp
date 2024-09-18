@@ -23,6 +23,7 @@ class SuperHeroDescriptionScreen extends StatelessWidget {
   final String characterPara2;
   final String characterQuotes;
   final String characterModal;
+  final List<dynamic> characterVideos;
 
   const SuperHeroDescriptionScreen({
     super.key,
@@ -33,6 +34,7 @@ class SuperHeroDescriptionScreen extends StatelessWidget {
     required this.characterPara2,
     required this.characterQuotes,
     required this.characterModal,
+    required this.characterVideos,
   });
 
   @override
@@ -250,6 +252,7 @@ class SuperHeroDescriptionScreen extends StatelessWidget {
                                     text: characterPara2,
                                   ),
 
+                                  /// videos
                                   TimelineTile(
                                     alignment: TimelineAlign.start,
                                     lineXY: 0,
@@ -289,253 +292,92 @@ class SuperHeroDescriptionScreen extends StatelessWidget {
                                     ),
                                     endChild: Padding(
                                       padding: const EdgeInsets.all(12.0),
-                                      child: SingleChildScrollView(
-                                        clipBehavior: Clip.antiAlias,
-                                        scrollDirection: Axis.horizontal,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            // Video 1 (No left margin)
-                                            InkWell(
-                                              onTap: () {
-                                                Navigator.push(context,
+                                      child: SizedBox(
+                                        height: 102,
+                                        child: ListView.builder(
+                                          physics:
+                                              const ClampingScrollPhysics(),
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: characterVideos.length,
+                                          itemBuilder: (context, index) {
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.all(12.0),
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
                                                     MaterialPageRoute(
-                                                        builder: (context) {
-                                                  return const VideoPlayerScreen();
-                                                }));
-                                              },
-                                              child: Stack(
-                                                children: [
-                                                  Container(
-                                                    height: size.height * 0.1,
-                                                    width: size.width * 0.3,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12),
+                                                      builder: (context) {
+                                                        return VideoPlayerScreen(
+                                                          videoUrl:
+                                                              characterVideos[
+                                                                  index],
+                                                        );
+                                                      },
                                                     ),
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12),
-                                                      child: CachedNetworkImage(
-                                                        imageUrl:
-                                                            "https://i.pinimg.com/564x/93/11/ca/9311caae8ca0783b6173889e8da61cab.jpg",
-                                                        fit: BoxFit.cover,
-                                                        placeholder:
-                                                            (context, url) =>
-                                                                Center(
-                                                          child:
-                                                              LoadingAnimationWidget
-                                                                  .dotsTriangle(
+                                                  );
+                                                },
+                                                child: Stack(
+                                                  children: [
+                                                    Container(
+                                                      height: size.height * 0.1,
+                                                      width: size.width * 0.3,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12),
+                                                      ),
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12),
+                                                        child:
+                                                            CachedNetworkImage(
+                                                          imageUrl:
+                                                              "https://i.pinimg.com/564x/93/11/ca/9311caae8ca0783b6173889e8da61cab.jpg",
+                                                          fit: BoxFit.cover,
+                                                          placeholder:
+                                                              (context, url) =>
+                                                                  Center(
+                                                            child:
+                                                                LoadingAnimationWidget
+                                                                    .dotsTriangle(
+                                                              color: AppColors
+                                                                  .secondaryColor,
+                                                              size: 26,
+                                                            ),
+                                                          ),
+                                                          errorWidget: (context,
+                                                                  url, error) =>
+                                                              Icon(
+                                                            Icons.error,
                                                             color: AppColors
-                                                                .secondaryColor,
-                                                            size: 26,
+                                                                .primaryColor,
                                                           ),
                                                         ),
-                                                        errorWidget: (context,
-                                                                url, error) =>
-                                                            Icon(
-                                                          Icons.error,
+                                                      ),
+                                                    ),
+                                                    Positioned.fill(
+                                                      child: Align(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Icon(
+                                                          Icons
+                                                              .play_circle_fill,
+                                                          size:
+                                                              32, // Adjust size as needed
                                                           color: AppColors
-                                                              .primaryColor,
+                                                              .secondaryColor, // Adjust color as needed
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  Positioned.fill(
-                                                    child: Align(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child: Icon(
-                                                        Icons.play_circle_fill,
-                                                        size:
-                                                            32, // Adjust size as needed
-                                                        color: AppColors
-                                                            .secondaryColor, // Adjust color as needed
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-
-                                            // Video 2 (With left and right margin)
-                                            Stack(
-                                              children: [
-                                                Container(
-                                                  margin: const EdgeInsets.only(
-                                                    left: 16,
-                                                  ),
-                                                  height: size.height * 0.1,
-                                                  width: size.width * 0.3,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                  ),
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                    child: CachedNetworkImage(
-                                                      imageUrl:
-                                                          "https://i.pinimg.com/564x/93/11/ca/9311caae8ca0783b6173889e8da61cab.jpg",
-                                                      fit: BoxFit.cover,
-                                                      placeholder:
-                                                          (context, url) =>
-                                                              Center(
-                                                        child:
-                                                            LoadingAnimationWidget
-                                                                .dotsTriangle(
-                                                          color: AppColors
-                                                              .secondaryColor,
-                                                          size: 26,
-                                                        ),
-                                                      ),
-                                                      errorWidget: (context,
-                                                              url, error) =>
-                                                          Icon(
-                                                        Icons.error,
-                                                        color: AppColors
-                                                            .primaryColor,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Positioned.fill(
-                                                  child: Align(
-                                                    alignment: Alignment.center,
-                                                    child: Icon(
-                                                      Icons.play_circle_fill,
-                                                      size:
-                                                          32, // Adjust size as needed
-                                                      color: AppColors
-                                                          .secondaryColor, // Adjust color as needed
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-
-                                            // Video 3 (With left and right margin)
-                                            Stack(
-                                              children: [
-                                                Container(
-                                                  margin: const EdgeInsets.only(
-                                                    left: 16,
-                                                  ),
-                                                  height: size.height * 0.1,
-                                                  width: size.width * 0.3,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                  ),
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                    child: CachedNetworkImage(
-                                                      imageUrl:
-                                                          "https://i.pinimg.com/564x/93/11/ca/9311caae8ca0783b6173889e8da61cab.jpg",
-                                                      fit: BoxFit.cover,
-                                                      placeholder:
-                                                          (context, url) =>
-                                                              Center(
-                                                        child:
-                                                            LoadingAnimationWidget
-                                                                .dotsTriangle(
-                                                          color: AppColors
-                                                              .secondaryColor,
-                                                          size: 26,
-                                                        ),
-                                                      ),
-                                                      errorWidget: (context,
-                                                              url, error) =>
-                                                          Icon(
-                                                        Icons.error,
-                                                        color: AppColors
-                                                            .primaryColor,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Positioned.fill(
-                                                  child: Align(
-                                                    alignment: Alignment.center,
-                                                    child: Icon(
-                                                      Icons.play_circle_fill,
-                                                      size:
-                                                          32, // Adjust size as needed
-                                                      color: AppColors
-                                                          .secondaryColor, // Adjust color as needed
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-
-                                            // Video 4 (No right margin)
-                                            Stack(
-                                              children: [
-                                                Container(
-                                                  margin: const EdgeInsets.only(
-                                                    left: 16,
-                                                  ),
-                                                  height: size.height * 0.1,
-                                                  width: size.width * 0.3,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                  ),
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                    child: CachedNetworkImage(
-                                                      imageUrl:
-                                                          "https://i.pinimg.com/564x/93/11/ca/9311caae8ca0783b6173889e8da61cab.jpg",
-                                                      fit: BoxFit.cover,
-                                                      placeholder:
-                                                          (context, url) =>
-                                                              Center(
-                                                        child:
-                                                            LoadingAnimationWidget
-                                                                .dotsTriangle(
-                                                          color: AppColors
-                                                              .secondaryColor,
-                                                          size: 26,
-                                                        ),
-                                                      ),
-                                                      errorWidget: (context,
-                                                              url, error) =>
-                                                          Icon(
-                                                        Icons.error,
-                                                        color: AppColors
-                                                            .primaryColor,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                // Using Positioned to Center the Icon
-                                                Positioned.fill(
-                                                  child: Align(
-                                                    alignment: Alignment.center,
-                                                    child: Icon(
-                                                      Icons.play_circle_fill,
-                                                      size:
-                                                          32, // Adjust size as needed
-                                                      color: AppColors
-                                                          .secondaryColor, // Adjust color as needed
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                                            );
+                                          },
                                         ),
                                       ),
                                     ),

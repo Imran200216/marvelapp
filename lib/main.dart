@@ -6,7 +6,6 @@ import 'package:marvelapp/provider/app_required_providers/app_version_provider.d
 import 'package:marvelapp/provider/app_required_providers/conversion_provider.dart';
 import 'package:marvelapp/provider/app_required_providers/internet_checker_provider.dart';
 import 'package:marvelapp/provider/app_required_providers/url_launcher_provider.dart';
-import 'package:marvelapp/provider/app_required_providers/video_player_provider.dart';
 import 'package:marvelapp/provider/authentication_providers/email_auth_provider.dart';
 import 'package:marvelapp/provider/authentication_providers/guest_auth_provider.dart';
 import 'package:marvelapp/provider/screens_providers/bottom_nav_provider.dart';
@@ -99,11 +98,6 @@ class MyApp extends StatelessWidget {
         /// url launcher provider
         ChangeNotifierProvider(
           create: (_) => UrlLauncherProvider(),
-        ),
-
-        /// video player provider
-        ChangeNotifierProvider(
-          create: (_) => VideoPlayerProvider(),
         ),
 
         /// character modal provider

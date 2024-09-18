@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:double_tap_to_exit/double_tap_to_exit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -9,6 +8,7 @@ import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/provider/app_required_providers/internet_checker_provider.dart';
 import 'package:marvelapp/provider/db_provider/super_hero_character_db_provider.dart';
 import 'package:marvelapp/screens/description_screens/super_hero_description_screen.dart';
+
 import 'package:provider/provider.dart';
 
 class SuperHeroScreen extends StatelessWidget {
@@ -21,8 +21,7 @@ class SuperHeroScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.primaryColor,
-        body:
-            Consumer2<InternetCheckerProvider, SuperHeroCharacterDBProvider>(
+        body: Consumer2<InternetCheckerProvider, SuperHeroCharacterDBProvider>(
           builder: (
             context,
             internetCheckerProvider,
@@ -108,8 +107,7 @@ class SuperHeroScreen extends StatelessWidget {
                             ),
                           ],
                         )
-                      else if (superHeroCharacterDBProvider
-                          .superHeroes.isEmpty)
+                      else if (superHeroCharacterDBProvider.superHeroes.isEmpty)
                         Center(
                           child: LoadingAnimationWidget.dotsTriangle(
                             color: AppColors.secondaryColor,
@@ -130,8 +128,8 @@ class SuperHeroScreen extends StatelessWidget {
                           itemCount:
                               superHeroCharacterDBProvider.superHeroes.length,
                           itemBuilder: (context, index) {
-                            final character = superHeroCharacterDBProvider
-                                .superHeroes[index];
+                            final character =
+                                superHeroCharacterDBProvider.superHeroes[index];
                             final imageUrl =
                                 character["characterCardPhotoUrl"] ?? '';
 
@@ -139,15 +137,13 @@ class SuperHeroScreen extends StatelessWidget {
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        SuperHeroDescriptionScreen(
+                                  MaterialPageRoute(builder: (context) {
+                                    return SuperHeroDescriptionScreen(
                                       characterQuotes:
                                           character['characterQuotes'],
                                       characterModal:
                                           character['character3dModal'],
-                                      characterName:
-                                          character['characterName'],
+                                      characterName: character['characterName'],
                                       characterCoverUrl:
                                           character['characterCoverUrl'],
                                       indicatorPhotoUrl:
@@ -156,8 +152,9 @@ class SuperHeroScreen extends StatelessWidget {
                                           character['characterPara1'],
                                       characterPara2:
                                           character['characterPara2'],
-                                    ),
-                                  ),
+                                      characterVideos: character['videos'],
+                                    );
+                                  }),
                                 );
                               },
                               child: Container(

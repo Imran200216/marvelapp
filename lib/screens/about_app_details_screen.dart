@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:double_tap_to_exit/double_tap_to_exit.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -122,12 +121,11 @@ class AboutAppDetailsScreen extends StatelessWidget {
 
                   /// imran
                   const CustomPhotoDetails(
-                    placeHolderUrl:
-                        "assets/images/jpg/spiderman-placeholder.jpg",
+                    placeHolderUrl: "assets/images/jpg/marvel-placeholder.jpg",
                     imageUrl:
                         "https://firebasestorage.googleapis.com/v0/b/marvelapp-ba95e.appspot.com/o/supporters%2Fimran.jpg?alt=media&token=e09707a5-2a27-4dc0-a9a5-af5680265c9d",
                     personName: "Imran B",
-                    personDesignation: "Mobile Developer && UI/UX Designer",
+                    personDesignation: "Mobile Developer & UI/UX Designer",
                     skills: ["flutter", "figma"],
                   ),
                 ],

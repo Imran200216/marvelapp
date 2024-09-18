@@ -7,7 +7,9 @@ import 'package:provider/provider.dart';
 import 'package:chewie/chewie.dart';
 
 class VideoPlayerScreen extends StatelessWidget {
-  const VideoPlayerScreen({super.key});
+  final String videoUrl;
+
+  const VideoPlayerScreen({super.key, required this.videoUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +18,15 @@ class VideoPlayerScreen extends StatelessWidget {
         MediaQuery.of(context).orientation == Orientation.portrait;
 
     return ChangeNotifierProvider(
-      create: (context) => VideoPlayerProvider(),
+      /// initializing the video player provider
+      create: (context) => VideoPlayerProvider(videoUrl),
       child: Consumer<VideoPlayerProvider>(
         builder: (context, videoPlayerProvider, child) {
           return DoubleTapToExit(
             snackBar: SnackBar(
               backgroundColor: AppColors.timeLineBgColor,
               content: Text(
-                "Tag again to exit!",
+                "Tap again to exit!",
                 style: TextStyle(
                   fontFamily: "Poppins",
                   fontSize: size.width * 0.040,
@@ -40,7 +43,7 @@ class VideoPlayerScreen extends StatelessWidget {
                     return Container(
                       margin: const EdgeInsets.symmetric(
                         horizontal: 20,
-                        vertical: 10, // Reduced vertical margin
+                        vertical: 30,
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +65,7 @@ class VideoPlayerScreen extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            height: size.height * 0.01,
+                            height: size.height * 0.02,
                           ),
                           Text(
                             "Marvel Fan Videos",
@@ -76,30 +79,20 @@ class VideoPlayerScreen extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            height:
-                                size.height * 0.01, // Space before video player
+                            height: isPortrait
+                                ? size.height * 0.05 // Reduced space
+                                : size.width *
+                                    0.05, // Adjust space for landscape as well
                           ),
-                          Expanded(
-                            flex: 1,
-                            child: Center(
-                              child: AspectRatio(
-                                aspectRatio: isPortrait ? 16 / 9 : 16 / 10,
-                                child: Chewie(
-                                  controller:
-                                      videoPlayerProvider.chewieController,
-                                ),
+                          Center(
+                            child: AspectRatio(
+                              aspectRatio: isPortrait ? 16 / 9 : 16 / 10,
+                              child: Chewie(
+                                controller:
+                                    videoPlayerProvider.chewieController,
                               ),
                             ),
                           ),
-                          Text(
-                            "Description",
-                            style: TextStyle(
-                              fontSize: size.width * 0.04,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.secondaryColor,
-                              fontFamily: "Poppins",
-                            ),
-                          )
                         ],
                       ),
                     );

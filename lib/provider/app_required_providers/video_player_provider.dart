@@ -7,10 +7,21 @@ class VideoPlayerProvider with ChangeNotifier {
   late VideoPlayerController _videoPlayerController;
   late ChewieController _chewieController;
 
-  VideoPlayerProvider() {
-    _videoPlayerController = VideoPlayerController.network(
-      "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4",
-    );
+
+  late CachedVideoPlayerController _videoPlayerController;
+
+  VideoPlayerProvider(String videoUrl) {
+    _videoPlayerController = CachedVideoPlayerController.network(videoUrl)
+      ..initialize().then((_) {
+        notifyListeners();
+      });
+    _videoPlayerController.setLooping(true);
+  }
+
+  CachedVideoPlayerController get videoPlayerController => _videoPlayerController;
+
+  VideoPlayerProvider(String videoUrl) {
+    _videoPlayerController = VideoPlayerController.network(videoUrl);
 
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
@@ -30,4 +41,11 @@ class VideoPlayerProvider with ChangeNotifier {
   }
 
   ChewieController get chewieController => _chewieController;
+
+  @override
+  void dispose() {
+    _videoPlayerController.dispose();
+    _chewieController.dispose();
+    super.dispose();
+  }
 }

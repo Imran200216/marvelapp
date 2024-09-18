@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class SuperHeroCharacter {
   final String characterName;
   final String characterCoverUrl;
@@ -16,8 +14,6 @@ class SuperHeroCharacter {
     required this.characterPara2,
     required this.characterCardPhotoUrl,
   });
-
-
 
   // Convert SuperHeroCharacter instance to map
   Map<String, dynamic> toMap() {

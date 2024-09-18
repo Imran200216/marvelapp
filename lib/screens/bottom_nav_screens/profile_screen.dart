@@ -1,6 +1,6 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:double_tap_to_exit/double_tap_to_exit.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -34,7 +34,7 @@ class ProfileScreen extends StatelessWidget {
           .fetchEmailUserDetails();
     }
 
-    final size = MediaQuery.of(context).size;
+
 
     return SafeArea(
       child: Scaffold(
