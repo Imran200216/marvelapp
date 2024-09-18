@@ -123,7 +123,7 @@ class AboutAppDetailsScreen extends StatelessWidget {
                   const CustomPhotoDetails(
                     placeHolderUrl: "assets/images/jpg/marvel-placeholder.jpg",
                     imageUrl:
-                        "https://firebasestorage.googleapis.com/v0/b/marvelapp-ba95e.appspot.com/o/supporters%2Fimran.jpg?alt=media&token=e09707a5-2a27-4dc0-a9a5-af5680265c9d",
+                        "https://firebasestorage.googleapis.com/v0/b/marvelapp-ba95e.appspot.com/o/supporters%2Fimran-full-photo.jpg?alt=media&token=32d9cd33-44bd-4639-acd7-dd539f18930d",
                     personName: "Imran B",
                     personDesignation: "Mobile Developer & UI/UX Designer",
                     skills: ["flutter", "figma"],

@@ -9,7 +9,7 @@ class CustomPhotoDetails extends StatelessWidget {
   final String imageUrl;
   final String personName;
   final String personDesignation;
-  final List<String> skills; // Add a list of skills
+  final List<String> skills;
 
   const CustomPhotoDetails({
     super.key,
@@ -32,7 +32,7 @@ class CustomPhotoDetails extends StatelessWidget {
             fill: Fill.fillBack,
             autoFlipDuration: const Duration(seconds: 4),
             front: Container(
-              height: MediaQuery.of(context).size.height * 0.30,
+              height: MediaQuery.of(context).size.height * 0.44,
               width: MediaQuery.of(context).size.height * 0.30,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
@@ -44,7 +44,7 @@ class CustomPhotoDetails extends StatelessWidget {
                   fit: BoxFit.cover,
                   placeholder: (context, url) => Center(
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.30,
+                      height: MediaQuery.of(context).size.height * 0.44,
                       width: MediaQuery.of(context).size.height * 0.30,
                       decoration: BoxDecoration(
                         shape: BoxShape.rectangle,

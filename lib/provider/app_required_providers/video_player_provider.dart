@@ -1,5 +1,6 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:marvelapp/constants/colors.dart';
 import 'package:video_player/video_player.dart';
 
@@ -21,8 +22,11 @@ class VideoPlayerProvider with ChangeNotifier {
         backgroundColor: Colors.grey,
         bufferedColor: Colors.white24,
       ),
-      placeholder: const Center(
-        child: CircularProgressIndicator(),
+      placeholder: Center(
+        child: LoadingAnimationWidget.dotsTriangle(
+          color: AppColors.secondaryColor,
+          size: 20,
+        ),
       ),
     );
   }
