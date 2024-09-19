@@ -73,7 +73,7 @@ class _UserGuestAvatarDetailsScreenState
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) {
                         return const UserGuestNicknameDetailsScreen();
-                      })).then((value){
+                      })).then((value) {
                         userGuestDetailsProvider.clearSelectedAvatar();
                       });
                     },
@@ -143,7 +143,7 @@ class _UserGuestAvatarDetailsScreenState
                                 fit: BoxFit.cover,
                               ),
                               Text(
-                                'Loading, Lets have some fun!',
+                                '''Loading, Cool avatars!''',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: size.width * 0.040,
@@ -163,7 +163,8 @@ class _UserGuestAvatarDetailsScreenState
                               mainAxisSpacing: 12,
                               childAspectRatio: 1,
                             ),
-                            itemCount: userGuestDetailsProvider.imageUrls.length,
+                            itemCount:
+                                userGuestDetailsProvider.imageUrls.length,
                             itemBuilder: (context, index) {
                               final avatarUrl =
                                   userGuestDetailsProvider.imageUrls[index];
@@ -188,7 +189,8 @@ class _UserGuestAvatarDetailsScreenState
                                           size: 40,
                                         ),
                                       ),
-                                      errorWidget: (context, url, error) => Icon(
+                                      errorWidget: (context, url, error) =>
+                                          Icon(
                                         Icons.error,
                                         color: AppColors.secondaryColor,
                                       ),

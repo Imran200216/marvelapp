@@ -6,7 +6,7 @@ class UrlLauncherProvider with ChangeNotifier {
   /// Launch URL
   Future<void> launchUrlInBrowser(Uri url, BuildContext context) async {
     try {
-      if (!await launchUrl(url)) {
+      if (!await launchUrl(url, mode: LaunchMode.inAppWebView)) {
         // Show an error toast if the URL cannot be launched
         ToastHelper.showErrorToast(
           context: context,

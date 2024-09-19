@@ -70,7 +70,8 @@ dependencies:
   avatar_glow: ^3.0.1
   double_tap_to_exit: ^1.0.1
   flip_card: ^0.7.0
-  flutter_cache_manager: ^3.4.1
+
+
 
 
 

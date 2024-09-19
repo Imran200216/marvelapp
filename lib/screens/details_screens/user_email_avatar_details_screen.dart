@@ -145,7 +145,7 @@ class UserEmailAvatarDetailsScreen extends StatelessWidget {
                                   fit: BoxFit.cover,
                                 ),
                                 Text(
-                                  '''Loading, Lets have some fun!''',
+                                  '''Loading, Cool avatars!''',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: size.width * 0.040,
