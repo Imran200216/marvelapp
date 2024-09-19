@@ -1,7 +1,7 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+
 import 'package:lottie/lottie.dart';
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/provider/app_required_providers/internet_checker_provider.dart';
@@ -54,12 +54,13 @@ class VideoPlayerScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: size.height * 0.01,
+                      height: size.height * 0.03,
                     ),
                     Text(
                       "Marvel Fan Videos",
                       style: TextStyle(
                         fontFamily: "Poppins",
+                        fontWeight: FontWeight.w600,
                         fontSize:
                             isPortrait ? size.width * 0.05 : size.height * 0.05,
                         color: AppColors.secondaryColor,
@@ -68,6 +69,7 @@ class VideoPlayerScreen extends StatelessWidget {
                     SizedBox(
                       height: size.height * 0.03,
                     ),
+                    // Handle network check
                     !internetCheckerProvider.isNetworkConnected
                         ? Center(
                             child: Column(
@@ -91,7 +93,8 @@ class VideoPlayerScreen extends StatelessWidget {
                                 const SizedBox(height: 10),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 12),
+                                    horizontal: 12,
+                                  ),
                                   child: Text(
                                     "It seems you aren't connected to the internet. Try checking your connection or switching between Wi-Fi and cellular data.",
                                     textAlign: TextAlign.center,
@@ -106,44 +109,22 @@ class VideoPlayerScreen extends StatelessWidget {
                               ],
                             ),
                           )
-                        : FutureBuilder(
-                            future: videoPlayerProvider.chewieController
-                                    .videoPlayerController.value.isInitialized
-                                ? Future.value(true)
-                                : videoPlayerProvider
-                                    .chewieController.videoPlayerController
-                                    .initialize(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                  child: LoadingAnimationWidget.dotsTriangle(
-                                    color: AppColors.secondaryColor,
-                                    size: size.height * 0.08,
-                                  ),
-                                );
-                              } else if (snapshot.hasError) {
-                                return Center(
-                                  child: Text(
-                                    "Error loading video",
-                                    style: TextStyle(
-                                      fontFamily: "Poppins",
-                                      fontSize: size.width * 0.045,
-                                      color: AppColors.secondaryColor,
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                return AspectRatio(
-                                  aspectRatio: isPortrait ? 16 / 9 : 16 / 10,
-                                  child: Chewie(
-                                    controller:
-                                        videoPlayerProvider.chewieController,
-                                  ),
-                                );
-                              }
-                            },
-                          ),
+                        : videoPlayerProvider.isInitialized &&
+                                videoPlayerProvider.chewieController != null
+                            ? AspectRatio(
+                                aspectRatio: isPortrait ? 16 / 9 : 16 / 10,
+                                child: Chewie(
+                                  controller:
+                                      videoPlayerProvider.chewieController!,
+                                ),
+                              )
+                            : Center(
+                                child: Lottie.asset(
+                                  "assets/images/animation/video-loading-animation.json",
+                                  height: size.height * 0.3,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                   ],
                 ),
               ),

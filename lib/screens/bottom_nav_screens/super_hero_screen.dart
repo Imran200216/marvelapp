@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+
 import 'package:lottie/lottie.dart';
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/provider/app_required_providers/internet_checker_provider.dart';
@@ -109,9 +109,24 @@ class SuperHeroScreen extends StatelessWidget {
                         )
                       else if (superHeroCharacterDBProvider.superHeroes.isEmpty)
                         Center(
-                          child: LoadingAnimationWidget.dotsTriangle(
-                            color: AppColors.secondaryColor,
-                            size: 40,
+                          child: Column(
+                            children: [
+                              SizedBox(height: size.height * 0.02),
+                              Lottie.asset(
+                                "assets/images/animation/super-hero-animation.json",
+                                height: size.height * 0.3,
+                                fit: BoxFit.cover,
+                              ),
+                              Text(
+                                "Fetching Marvel Hero's",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.secondaryColor,
+                                  fontSize: size.width * 0.038,
+                                  fontFamily: "Poppins",
+                                ),
+                              ),
+                            ],
                           ),
                         )
                       else
@@ -175,9 +190,15 @@ class SuperHeroScreen extends StatelessWidget {
                                         ? imageUrl
                                         : 'https://i.pinimg.com/564x/2d/d1/2f/2dd12f14def5c18840f10599cfe9e54a.jpg',
                                     // Fallback image
-                                    placeholder: (context, url) => Center(
-                                      child: CircularProgressIndicator(
-                                        color: AppColors.secondaryColor,
+                                    placeholder: (context, url) => Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        image: const DecorationImage(
+                                          image: AssetImage(
+                                            "assets/images/jpg/super-hero-placeholder.jpg",
+                                          ),
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
                                     errorWidget: (context, url, error) =>

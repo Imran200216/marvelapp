@@ -207,7 +207,8 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
 
                               /// Character quotes
                               SizedBox(
-                                width: size.width * 0.9, // Adjust width as needed
+                                width: size.width * 0.9,
+                                // Adjust width as needed
                                 child: DefaultTextStyle(
                                   style: TextStyle(
                                     fontSize: size.width * 0.07,
@@ -237,8 +238,9 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
                                 onVisibilityChanged: (VisibilityInfo info) {
                                   // Ensure the widget is mounted before accessing the provider
                                   if (mounted) {
-                                    characterModelProvider.handleVisibilityChange(
-                                        info.visibleFraction);
+                                    characterModelProvider
+                                        .handleVisibilityChange(
+                                            info.visibleFraction);
                                   }
                                 },
                                 child: SizedBox(
@@ -275,7 +277,8 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
                                                 style: TextStyle(
                                                   fontFamily: "Poppins",
                                                   fontWeight: FontWeight.w600,
-                                                  color: AppColors.secondaryColor,
+                                                  color:
+                                                      AppColors.secondaryColor,
                                                   fontSize: size.width * 0.04,
                                                 ),
                                               ),
@@ -307,7 +310,8 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   InkWell(
-                                    onTap: _scrollToTop, // Call the scroll method
+                                    onTap: _scrollToTop,
+                                    // Call the scroll method
                                     child: Container(
                                       height: size.height * 0.07,
                                       // Container height

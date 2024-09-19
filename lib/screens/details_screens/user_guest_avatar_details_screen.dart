@@ -142,15 +142,6 @@ class _UserGuestAvatarDetailsScreenState
                                 height: size.height * 0.3,
                                 fit: BoxFit.cover,
                               ),
-                              Text(
-                                '''Loading, Cool avatars!''',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: size.width * 0.040,
-                                  fontFamily: "Poppins",
-                                  color: AppColors.secondaryColor,
-                                ),
-                              ),
                             ],
                           ),
                         )

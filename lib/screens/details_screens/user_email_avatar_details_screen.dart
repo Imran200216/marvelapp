@@ -144,15 +144,6 @@ class UserEmailAvatarDetailsScreen extends StatelessWidget {
                                   height: size.height * 0.3,
                                   fit: BoxFit.cover,
                                 ),
-                                Text(
-                                  '''Loading, Cool avatars!''',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: size.width * 0.040,
-                                    fontFamily: "Poppins",
-                                    color: AppColors.secondaryColor,
-                                  ),
-                                ),
                               ],
                             ),
                           ),
@@ -166,7 +157,8 @@ class UserEmailAvatarDetailsScreen extends StatelessWidget {
                               mainAxisSpacing: 12,
                               childAspectRatio: 1,
                             ),
-                            itemCount: userEmailDetailsProvider.imageUrls.length,
+                            itemCount:
+                                userEmailDetailsProvider.imageUrls.length,
                             itemBuilder: (context, index) {
                               final avatarUrl =
                                   userEmailDetailsProvider.imageUrls[index];
@@ -193,7 +185,8 @@ class UserEmailAvatarDetailsScreen extends StatelessWidget {
                                           size: 40,
                                         ),
                                       ),
-                                      errorWidget: (context, url, error) => Icon(
+                                      errorWidget: (context, url, error) =>
+                                          Icon(
                                         Icons.error,
                                         color: AppColors.secondaryColor,
                                       ),

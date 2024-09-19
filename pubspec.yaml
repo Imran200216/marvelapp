@@ -71,6 +71,7 @@ dependencies:
   double_tap_to_exit: ^1.0.1
   flip_card: ^0.7.0
   firebase_app_check: ^0.3.1+2
+  flutter_cache_manager: ^3.4.1
 
 
 
