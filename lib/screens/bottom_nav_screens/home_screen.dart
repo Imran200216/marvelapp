@@ -1,5 +1,5 @@
+import 'package:animations/animations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -101,29 +101,41 @@ class HomeScreen extends StatelessWidget {
                           itemBuilder: (context, index) {
                             final movie =
                                 marvelMoviesProvider.mcuMoviesList[index];
-                            return InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        MovieDescriptionScreen(movie: movie),
+                            return OpenContainer(
+                              transitionType: ContainerTransitionType.fade,
+                              transitionDuration:
+                                  const Duration(milliseconds: 800),
+                              openBuilder: (context, _) =>
+                                  MovieDescriptionScreen(movie: movie),
+                              closedElevation: 0,
+                              closedShape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              closedColor: AppColors.primaryColor,
+                              openColor: AppColors.primaryColor,
+                              closedBuilder: (context, openContainer) {
+                                return InkWell(
+                                  onTap: openContainer,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: movie.coverUrl != null
+                                        ? CachedNetworkImage(
+                                            imageUrl: movie.coverUrl.toString(),
+                                            fit: BoxFit.cover,
+                                            height: 150,
+                                            // Ensure size consistency
+                                            width: 100,
+                                          )
+                                        : SvgPicture.asset(
+                                            "assets/images/svg/marvel-placeholder.svg",
+                                            fit: BoxFit.cover,
+                                            height: 150,
+                                            // Ensure size consistency
+                                            width: 100,
+                                          ),
                                   ),
                                 );
                               },
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: movie.coverUrl != null
-                                    ? CachedNetworkImage(
-                                        imageUrl: movie.coverUrl.toString(),
-                                        fit: BoxFit.cover,
-                                      )
-                                    : SvgPicture.asset(
-                                        "assets/images/svg/marvel-placeholder.svg",
-                                        fit: BoxFit.cover,
-                                        height: 80,
-                                        width: 80,
-                                      ),
-                              ),
                             );
                           },
                         )

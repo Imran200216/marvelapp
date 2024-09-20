@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:double_tap_to_exit/double_tap_to_exit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -141,230 +142,266 @@ class SuperHeroDescriptionScreen extends StatelessWidget {
                                 top: 0,
                                 bottom: 30,
                               ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  /// Character name
-                                  TimelineTile(
-                                    alignment: TimelineAlign.start,
-                                    lineXY: 0,
-                                    isFirst: true,
-                                    indicatorStyle: IndicatorStyle(
-                                      width: 34,
-                                      height: 34,
-                                      indicator: CachedNetworkImage(
-                                        imageUrl: indicatorPhotoUrl,
-                                        placeholder: (context, url) {
-                                          return LoadingAnimationWidget
-                                              .dotsTriangle(
-                                            color: AppColors.secondaryColor,
-                                            size: 16,
-                                          );
-                                        },
-                                        imageBuilder: (context, imageProvider) {
-                                          return Container(
+                              child: AnimationLimiter(
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children:
+                                        AnimationConfiguration.toStaggeredList(
+                                      duration:
+                                          const Duration(milliseconds: 600),
+                                      childAnimationBuilder: (widget) {
+                                        return SlideAnimation(
+                                          horizontalOffset: 50.0,
+                                          child: FadeInAnimation(child: widget),
+                                        );
+                                      },
+                                      children: [
+                                        /// Character name
+                                        TimelineTile(
+                                          alignment: TimelineAlign.start,
+                                          lineXY: 0,
+                                          isFirst: true,
+                                          indicatorStyle: IndicatorStyle(
                                             width: 34,
                                             height: 34,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: AppColors.timeLineBgColor,
-                                              image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.cover,
+                                            indicator: CachedNetworkImage(
+                                              imageUrl: indicatorPhotoUrl,
+                                              placeholder: (context, url) {
+                                                return LoadingAnimationWidget
+                                                    .dotsTriangle(
+                                                  color:
+                                                      AppColors.secondaryColor,
+                                                  size: 16,
+                                                );
+                                              },
+                                              imageBuilder:
+                                                  (context, imageProvider) {
+                                                return Container(
+                                                  width: 34,
+                                                  height: 34,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: AppColors
+                                                        .timeLineBgColor,
+                                                    image: DecorationImage(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                            padding: const EdgeInsets.all(4),
+                                          ),
+                                          beforeLineStyle: LineStyle(
+                                            color: AppColors.timeLineBgColor,
+                                            thickness: 2,
+                                          ),
+                                          endChild: Padding(
+                                            padding: const EdgeInsets.all(12.0),
+                                            child: Text(
+                                              characterName,
+                                              style: TextStyle(
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.w700,
+                                                color: AppColors.secondaryColor,
+                                                fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.064,
                                               ),
                                             ),
-                                          );
-                                        },
-                                      ),
-                                      padding: const EdgeInsets.all(4),
-                                    ),
-                                    beforeLineStyle: LineStyle(
-                                      color: AppColors.timeLineBgColor,
-                                      thickness: 2,
-                                    ),
-                                    endChild: Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Text(
-                                        characterName,
-                                        style: TextStyle(
-                                          fontFamily: "Poppins",
-                                          fontWeight: FontWeight.w700,
-                                          color: AppColors.secondaryColor,
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.064,
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  ),
 
-                                  /// para 1
-                                  CustomSuperHeroTimelineTile(
-                                    imageUrl: indicatorPhotoUrl,
-                                    text: characterPara1,
-                                  ),
+                                        /// para 1
+                                        CustomSuperHeroTimelineTile(
+                                          imageUrl: indicatorPhotoUrl,
+                                          text: characterPara1,
+                                        ),
 
-                                  /// para 2
-                                  CustomSuperHeroTimelineTile(
-                                    imageUrl: indicatorPhotoUrl,
-                                    text: characterPara2,
-                                  ),
+                                        /// para 2
+                                        CustomSuperHeroTimelineTile(
+                                          imageUrl: indicatorPhotoUrl,
+                                          text: characterPara2,
+                                        ),
 
-                                  /// videos
-                                  TimelineTile(
-                                    alignment: TimelineAlign.start,
-                                    lineXY: 0,
-                                    isLast: true,
-                                    indicatorStyle: IndicatorStyle(
-                                      width: 34,
-                                      height: 34,
-                                      indicator: CachedNetworkImage(
-                                        imageUrl: indicatorPhotoUrl,
-                                        placeholder: (context, url) {
-                                          return LoadingAnimationWidget
-                                              .dotsTriangle(
-                                            color: AppColors.secondaryColor,
-                                            size: 16,
-                                          );
-                                        },
-                                        imageBuilder: (context, imageProvider) {
-                                          return Container(
+                                        /// videos
+                                        TimelineTile(
+                                          alignment: TimelineAlign.start,
+                                          lineXY: 0,
+                                          isLast: true,
+                                          indicatorStyle: IndicatorStyle(
                                             width: 34,
                                             height: 34,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: AppColors.timeLineBgColor,
-                                              image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.cover,
-                                              ),
+                                            indicator: CachedNetworkImage(
+                                              imageUrl: indicatorPhotoUrl,
+                                              placeholder: (context, url) {
+                                                return LoadingAnimationWidget
+                                                    .dotsTriangle(
+                                                  color:
+                                                      AppColors.secondaryColor,
+                                                  size: 16,
+                                                );
+                                              },
+                                              imageBuilder:
+                                                  (context, imageProvider) {
+                                                return Container(
+                                                  width: 34,
+                                                  height: 34,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: AppColors
+                                                        .timeLineBgColor,
+                                                    image: DecorationImage(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
                                             ),
-                                          );
-                                        },
-                                      ),
-                                      padding: const EdgeInsets.all(4),
-                                    ),
-                                    beforeLineStyle: LineStyle(
-                                      color: AppColors.timeLineBgColor,
-                                      thickness: 2,
-                                    ),
-                                    endChild: Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: SizedBox(
-                                        height: 102,
-                                        child: ListView.builder(
-                                          physics:
-                                              const ClampingScrollPhysics(),
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: characterVideos.length,
-                                          itemBuilder: (context, index) {
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.all(12.0),
-                                              child: InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) {
-                                                        return VideoPlayerScreen(
-                                                          videoUrl:
-                                                              characterVideos[
-                                                                  index],
+                                            padding: const EdgeInsets.all(4),
+                                          ),
+                                          beforeLineStyle: LineStyle(
+                                            color: AppColors.timeLineBgColor,
+                                            thickness: 2,
+                                          ),
+                                          endChild: Padding(
+                                            padding: const EdgeInsets.all(12.0),
+                                            child: SizedBox(
+                                              height: 102,
+                                              child: ListView.builder(
+                                                physics:
+                                                    const ClampingScrollPhysics(),
+                                                shrinkWrap: true,
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount:
+                                                    characterVideos.length,
+                                                itemBuilder: (context, index) {
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            12.0),
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) {
+                                                              return VideoPlayerScreen(
+                                                                videoUrl:
+                                                                    characterVideos[
+                                                                        index],
+                                                              );
+                                                            },
+                                                          ),
                                                         );
                                                       },
+                                                      child: Stack(
+                                                        children: [
+                                                          Container(
+                                                            height:
+                                                                size.height *
+                                                                    0.1,
+                                                            width: size.width *
+                                                                0.3,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          12),
+                                                            ),
+                                                            child: ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          12),
+                                                              child:
+                                                                  CachedNetworkImage(
+                                                                imageUrl:
+                                                                    "https://i.pinimg.com/564x/93/11/ca/9311caae8ca0783b6173889e8da61cab.jpg",
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                                placeholder:
+                                                                    (context,
+                                                                            url) =>
+                                                                        Center(
+                                                                  child: LoadingAnimationWidget
+                                                                      .dotsTriangle(
+                                                                    color: AppColors
+                                                                        .secondaryColor,
+                                                                    size: 26,
+                                                                  ),
+                                                                ),
+                                                                errorWidget:
+                                                                    (context,
+                                                                            url,
+                                                                            error) =>
+                                                                        Icon(
+                                                                  Icons.error,
+                                                                  color: AppColors
+                                                                      .primaryColor,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Positioned.fill(
+                                                            child: Align(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              child: Icon(
+                                                                Icons
+                                                                    .play_circle_fill,
+                                                                size: 32,
+                                                                // Adjust size as needed
+                                                                color: AppColors
+                                                                    .secondaryColor, // Adjust color as needed
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
                                                   );
                                                 },
-                                                child: Stack(
-                                                  children: [
-                                                    Container(
-                                                      height: size.height * 0.1,
-                                                      width: size.width * 0.3,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(12),
-                                                      ),
-                                                      child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(12),
-                                                        child:
-                                                            CachedNetworkImage(
-                                                          imageUrl:
-                                                              "https://i.pinimg.com/564x/93/11/ca/9311caae8ca0783b6173889e8da61cab.jpg",
-                                                          fit: BoxFit.cover,
-                                                          placeholder:
-                                                              (context, url) =>
-                                                                  Center(
-                                                            child:
-                                                                LoadingAnimationWidget
-                                                                    .dotsTriangle(
-                                                              color: AppColors
-                                                                  .secondaryColor,
-                                                              size: 26,
-                                                            ),
-                                                          ),
-                                                          errorWidget: (context,
-                                                                  url, error) =>
-                                                              Icon(
-                                                            Icons.error,
-                                                            color: AppColors
-                                                                .primaryColor,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Positioned.fill(
-                                                      child: Align(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: Icon(
-                                                          Icons
-                                                              .play_circle_fill,
-                                                          size:
-                                                              32, // Adjust size as needed
-                                                          color: AppColors
-                                                              .secondaryColor, // Adjust color as needed
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
                                               ),
-                                            );
+                                            ),
+                                          ),
+                                        ),
+
+                                        SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.03,
+                                        ),
+
+                                        CustomNeoPopButton(
+                                          buttonColor: AppColors.secondaryColor,
+                                          svgColor: AppColors.primaryColor,
+                                          svgAssetPath:
+                                              "assets/images/svg/super-hero-icon.svg",
+                                          buttonText: "View 3d modal",
+                                          onTapUp: () {
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                              return CharacterModelScreen(
+                                                characterModal: characterModal,
+                                                characterName: characterName,
+                                                characterQuotes:
+                                                    characterQuotes,
+                                              );
+                                            }));
                                           },
                                         ),
-                                      ),
-                                    ),
-                                  ),
-
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.03,
-                                  ),
-
-                                  CustomNeoPopButton(
-                                    buttonColor: AppColors.secondaryColor,
-                                    svgColor: AppColors.primaryColor,
-                                    svgAssetPath:
-                                        "assets/images/svg/super-hero-icon.svg",
-                                    buttonText: "View 3d modal",
-                                    onTapUp: () {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) {
-                                        return CharacterModelScreen(
-                                          characterModal: characterModal,
-                                          characterName: characterName,
-                                          characterQuotes: characterQuotes,
-                                        );
-                                      }));
-                                    },
-                                  ),
-                                ],
+                                      ],
+                                    )),
                               ),
                             ),
                           ],

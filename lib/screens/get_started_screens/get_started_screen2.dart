@@ -8,11 +8,12 @@ class GetStartedScreen2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Column(
       children: [
         Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 0.6,
+          width: size.width,
+          height: size.height * 0.6,
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.zero,
           ),
@@ -48,13 +49,13 @@ class GetStartedScreen2 extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   color: AppColors.primaryColor,
-                  fontSize: MediaQuery.of(context).size.width * 0.054,
+                  fontSize: size.width * 0.054,
                   fontFamily: "Poppins",
                 ),
               ),
 
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.02,
+                height: size.height * 0.02,
               ),
 
               /// subtitle
@@ -64,7 +65,7 @@ class GetStartedScreen2 extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: AppColors.subTitleColor,
-                  fontSize: MediaQuery.of(context).size.width * 0.040,
+                  fontSize: size.width * 0.040,
                   fontFamily: "Poppins",
                 ),
               ),

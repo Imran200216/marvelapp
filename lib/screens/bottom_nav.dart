@@ -68,14 +68,14 @@ class BottomNavBar extends StatelessWidget {
                 items: <BottomNavigationBarItem>[
                   BottomNavigationBarItem(
                     icon: SvgPicture.asset(
-                      'assets/images/svg/home-icon.svg',
+                      'assets/images/svg/movie-icon.svg',
                       color: bottomNavProvider.currentIndex == 0
                           ? AppColors.secondaryColor
                           : AppColors.subTitleColor,
                       height: 24,
                       width: 24,
                     ),
-                    label: 'Home',
+                    label: 'Movies',
                   ),
                   BottomNavigationBarItem(
                     icon: SvgPicture.asset(

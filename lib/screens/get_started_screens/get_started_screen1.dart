@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:marvelapp/constants/colors.dart';
 
-
 class GetStartedScreen1 extends StatelessWidget {
   const GetStartedScreen1({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// image container
         Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 0.6,
+          width: size.width,
+          height: size.height * 0.6,
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.zero,
           ),
@@ -52,13 +52,13 @@ class GetStartedScreen1 extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   color: AppColors.primaryColor,
-                  fontSize: MediaQuery.of(context).size.width * 0.054,
+                  fontSize: size.width * 0.054,
                   fontFamily: "Poppins",
                 ),
               ),
 
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.02,
+                height: size.height * 0.02,
               ),
 
               /// subtitle
@@ -68,7 +68,7 @@ class GetStartedScreen1 extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: AppColors.subTitleColor,
-                  fontSize: MediaQuery.of(context).size.width * 0.040,
+                  fontSize: size.width * 0.040,
                   fontFamily: "Poppins",
                 ),
               ),
