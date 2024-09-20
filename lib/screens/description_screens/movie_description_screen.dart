@@ -7,7 +7,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:lottie/lottie.dart';
 
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/modals/mcu_modal.dart';
@@ -19,6 +18,7 @@ import 'package:marvelapp/provider/db_provider/super_hero_character_db_provider.
 import 'package:marvelapp/widgets/custom_movie_timeline.dart';
 
 import 'package:marvelapp/widgets/custom_neopop_btn.dart';
+import 'package:marvelapp/widgets/internet_checker.dart';
 
 import 'package:provider/provider.dart';
 
@@ -60,45 +60,7 @@ class MovieDescriptionScreen extends StatelessWidget {
             ) {
               // Check if there is an internet connection
               if (!internetCheckerProvider.isNetworkConnected) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Lottie.asset(
-                        'assets/images/animation/robot-animation.json',
-                        height: size.height * 0.3,
-                        fit: BoxFit.cover,
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        "Connection error",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontSize: size.width * 0.050,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.secondaryColor,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Container(
-                        margin: const EdgeInsets.only(
-                          left: 12,
-                          right: 12,
-                        ),
-                        child: Text(
-                          textAlign: TextAlign.center,
-                          "It seems you aren't connected to the internet. Try checking your connection or switching between Wi-Fi and cellular data.",
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: size.width * 0.036,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.subTitleColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
+                return const InternetCheckerContent();
               }
 
               return LiquidPullToRefresh(
@@ -179,9 +141,19 @@ class MovieDescriptionScreen extends StatelessWidget {
                             imageUrl:
                                 "https://i.pinimg.com/564x/a2/d7/a6/a2d7a6ddce35f2bf9c53fe9fbd22971f.jpg",
                             placeholder: (context, url) {
-                              return LoadingAnimationWidget.dotsTriangle(
-                                color: AppColors.secondaryColor,
-                                size: 16,
+                              return Container(
+                                width: 34,
+                                height: 34,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColors.timeLineBgColor,
+                                  image: const DecorationImage(
+                                    image: AssetImage(
+                                      "assets/images/jpg/super-hero-description-timeline-placeholder.jpg",
+                                    ),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               );
                             },
                             imageBuilder: (context, imageProvider) {
@@ -295,7 +267,8 @@ class MovieDescriptionScreen extends StatelessWidget {
 
                             /// Check if the trailer URL is valid
                             urlLauncherProvider.launchUrlInBrowser(
-                                Uri.parse(trailerUrl ?? "No Url Found"), context);
+                                Uri.parse(trailerUrl ?? "No Url Found"),
+                                context);
                           },
                         ),
                       ),

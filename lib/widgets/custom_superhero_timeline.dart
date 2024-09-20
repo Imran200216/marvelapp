@@ -67,12 +67,7 @@ class CustomSuperHeroTimelineTile extends StatelessWidget {
         padding: const EdgeInsets.all(12.0),
         child: Text(
           text,
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            color: AppColors.subTitleColor,
-            fontFamily: "Poppins",
-            fontSize: MediaQuery.of(context).size.width * 0.038,
-          ),
+          style: Theme.of(context).textTheme.bodySmall,
         ),
       ),
     );

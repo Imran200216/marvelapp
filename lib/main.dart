@@ -114,12 +114,33 @@ class MyApp extends StatelessWidget {
         ),
       ],
       builder: (context, child) {
+        final size = MediaQuery.of(context).size;
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ThemeData(
-            colorScheme:
-                ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
+            textTheme: TextTheme(
+              /// super hero description text
+              bodySmall: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: AppColors.subTitleColor,
+                fontFamily: "Poppins",
+                fontSize: size.width * 0.038,
+              ),
+
+              /// home title & super hero title
+              titleLarge: TextStyle(
+                fontFamily: "Poppins",
+                fontSize: size.width * 0.052,
+                fontWeight: FontWeight.w600,
+                color: AppColors.secondaryColor,
+              ),
+            ),
+
+            /// colors schemes
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: AppColors.primaryColor,
+            ),
             useMaterial3: true,
           ),
           home: const SplashScreen(),

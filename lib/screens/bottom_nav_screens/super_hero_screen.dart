@@ -8,6 +8,7 @@ import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/provider/app_required_providers/internet_checker_provider.dart';
 import 'package:marvelapp/provider/db_provider/super_hero_character_db_provider.dart';
 import 'package:marvelapp/screens/description_screens/super_hero_description_screen.dart';
+import 'package:marvelapp/widgets/internet_checker.dart';
 
 import 'package:provider/provider.dart';
 
@@ -50,12 +51,7 @@ class SuperHeroScreen extends StatelessWidget {
                           Text(
                             textAlign: TextAlign.start,
                             "Marvel Super Hero\nCharacters",
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: size.width * 0.052,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.secondaryColor,
-                            ),
+                            style: Theme.of(context).textTheme.titleLarge,
                           ),
                           SvgPicture.asset(
                             "assets/images/svg/super-hero-icon.svg",
@@ -70,43 +66,7 @@ class SuperHeroScreen extends StatelessWidget {
                         height: size.height * 0.06,
                       ),
                       if (!internetCheckerProvider.isNetworkConnected)
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Lottie.asset(
-                              'assets/images/animation/robot-animation.json',
-                              height: size.height * 0.3,
-                              fit: BoxFit.cover,
-                            ),
-                            const SizedBox(height: 20),
-                            Text(
-                              "Connection error",
-                              style: TextStyle(
-                                fontFamily: "Poppins",
-                                fontSize: size.width * 0.050,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.secondaryColor,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                left: 12,
-                                right: 12,
-                              ),
-                              child: Text(
-                                textAlign: TextAlign.center,
-                                "It seems you aren't connected to the internet. Try checking your connection or switching between Wi-Fi and cellular data.",
-                                style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontSize: size.width * 0.036,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.subTitleColor,
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
+                        const InternetCheckerContent()
                       else if (superHeroCharacterDBProvider.superHeroes.isEmpty)
                         Center(
                           child: Column(

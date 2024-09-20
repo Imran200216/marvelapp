@@ -1,11 +1,11 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:lottie/lottie.dart';
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/provider/app_required_providers/internet_checker_provider.dart';
 import 'package:marvelapp/provider/app_required_providers/video_player_provider.dart';
+import 'package:marvelapp/widgets/internet_checker.dart';
 import 'package:provider/provider.dart';
 
 class VideoPlayerScreen extends StatelessWidget {
@@ -71,44 +71,7 @@ class VideoPlayerScreen extends StatelessWidget {
                     ),
                     // Handle network check
                     !internetCheckerProvider.isNetworkConnected
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Lottie.asset(
-                                  'assets/images/animation/robot-animation.json',
-                                  height: size.height * 0.3,
-                                  fit: BoxFit.cover,
-                                ),
-                                const SizedBox(height: 20),
-                                Text(
-                                  "Connection error",
-                                  style: TextStyle(
-                                    fontFamily: "Poppins",
-                                    fontSize: size.width * 0.050,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.secondaryColor,
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                  ),
-                                  child: Text(
-                                    "It seems you aren't connected to the internet. Try checking your connection or switching between Wi-Fi and cellular data.",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontFamily: "Poppins",
-                                      fontSize: size.width * 0.036,
-                                      fontWeight: FontWeight.w500,
-                                      color: AppColors.subTitleColor,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
+                        ? const InternetCheckerContent()
                         : videoPlayerProvider.isInitialized &&
                                 videoPlayerProvider.chewieController != null
                             ? AspectRatio(

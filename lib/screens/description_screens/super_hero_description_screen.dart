@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:lottie/lottie.dart';
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/provider/app_required_providers/internet_checker_provider.dart';
 import 'package:marvelapp/provider/db_provider/super_hero_character_db_provider.dart';
@@ -12,6 +11,7 @@ import 'package:marvelapp/screens/character_model_screen.dart';
 import 'package:marvelapp/screens/video_player_screen.dart';
 import 'package:marvelapp/widgets/custom_neopop_btn.dart';
 import 'package:marvelapp/widgets/custom_superhero_timeline.dart';
+import 'package:marvelapp/widgets/internet_checker.dart';
 import 'package:provider/provider.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
@@ -75,48 +75,7 @@ class SuperHeroDescriptionScreen extends StatelessWidget {
                 // The color of the refresh indicator
                 backgroundColor: AppColors.pullToRefreshBgColor,
                 child: (!internetCheckerProvider.isNetworkConnected)
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const SizedBox(
-                              height: 6,
-                            ),
-                            Lottie.asset(
-                              'assets/images/animation/robot-animation.json',
-                              height: size.height * 0.3,
-                              fit: BoxFit.cover,
-                            ),
-                            const SizedBox(height: 20),
-                            Text(
-                              "Connection error",
-                              style: TextStyle(
-                                fontFamily: "Poppins",
-                                fontSize: size.width * 0.050,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.secondaryColor,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                left: 12,
-                                right: 12,
-                              ),
-                              child: Text(
-                                textAlign: TextAlign.center,
-                                "It seems you aren't connected to the internet. Try checking your connection or switching between Wi-Fi and cellular data.",
-                                style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontSize: size.width * 0.036,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.subTitleColor,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
+                    ? const InternetCheckerContent()
                     : SingleChildScrollView(
                         physics: const AlwaysScrollableScrollPhysics(),
                         child: Column(
