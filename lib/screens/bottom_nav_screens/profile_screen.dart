@@ -1,23 +1,19 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
-
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/provider/app_required_providers/app_version_provider.dart';
-
 import 'package:marvelapp/provider/authentication_providers/email_auth_provider.dart';
 import 'package:marvelapp/provider/authentication_providers/guest_auth_provider.dart';
-
 import 'package:marvelapp/provider/user_details_provider/email_user_details_provider.dart';
 import 'package:marvelapp/provider/user_details_provider/guest_user_details_provider.dart';
 import 'package:marvelapp/screens/about_app_details_screen.dart';
-
 import 'package:marvelapp/widgets/custom_listile.dart';
 import 'package:marvelapp/widgets/toast_helper.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -262,6 +258,35 @@ class ProfileScreen extends StatelessWidget {
                                 subTitle: appVersionProvider.appVersion,
                                 trailing: const SizedBox(),
                               ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.01,
+                              ),
+
+                              /// share app
+                              CustomListTile(
+                                svgAssetLeading:
+                                    "assets/images/svg/share-icon.svg",
+                                title: "Share app",
+                                subTitle: "Share app to your marvel fans",
+                                onTap: () async {
+                                  /// share functionality
+                                  final result = await Share.share(
+                                      'https://play.google.com/store/apps/details?id=com.example.marvelapp');
+
+                                  if (result.status ==
+                                      ShareResultStatus.success) {
+                                    ToastHelper.showSuccessToast(
+                                        context: context,
+                                        message: "Thanks for sharing");
+                                  } else {
+                                    ToastHelper.showErrorToast(
+                                        context: context,
+                                        message: "Something went wrong");
+                                  }
+                                },
+                              ),
+
                               SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height * 0.01,

@@ -73,6 +73,8 @@ dependencies:
   firebase_app_check: ^0.3.1+2
   flutter_cache_manager: ^3.4.1
   flutter_staggered_animations: ^1.1.1
+  share_plus: ^10.0.2
+
 
 
 
