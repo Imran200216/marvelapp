@@ -303,39 +303,30 @@ class ProfileScreen extends StatelessWidget {
 
                               /// in app review
                               user.isAnonymous
-                                  ? guestAuthProvider.guestUser?.hasReviewed ==
-                                          true
-                                      ? const SizedBox.shrink()
-                                      : CustomListTile(
-                                          svgAssetLeading:
-                                              "assets/images/svg/ratings-logo-icon.svg",
-                                          title: "App Review",
-                                          subTitle:
-                                              "Make a review that helps us grow",
-                                          onTap: () async {
-                                            /// Trigger the app review
-                                            await reviewProvider
-                                                .triggerInAppReview(context);
-                                            await guestAuthProvider
-                                                .submitReview(context);
-                                          },
-                                        )
-                                  : (!emailAuthProvider.hasReviewed)
-                                      ? CustomListTile(
-                                          svgAssetLeading:
-                                              "assets/images/svg/ratings-logo-icon.svg",
-                                          title: "App Review",
-                                          subTitle:
-                                              "Make a review that helps us grow",
-                                          onTap: () async {
-                                            /// Trigger the app review
-                                            await reviewProvider
-                                                .triggerInAppReview(context);
-                                            await emailAuthProvider
-                                                .submitReview(context);
-                                          },
-                                        )
-                                      : const SizedBox.shrink(),
+                                  ? CustomListTile(
+                                      svgAssetLeading:
+                                          "assets/images/svg/ratings-logo-icon.svg",
+                                      title: "App Review",
+                                      subTitle:
+                                          "Make a review that helps us grow",
+                                      onTap: () async {
+                                        /// Trigger the app review
+                                        await reviewProvider
+                                            .triggerInAppReview(context);
+                                      },
+                                    )
+                                  : CustomListTile(
+                                      svgAssetLeading:
+                                          "assets/images/svg/ratings-logo-icon.svg",
+                                      title: "App Review",
+                                      subTitle:
+                                          "Make a review that helps us grow",
+                                      onTap: () async {
+                                        /// Trigger the app review
+                                        await reviewProvider
+                                            .triggerInAppReview(context);
+                                      },
+                                    ),
 
                               SizedBox(
                                 height:

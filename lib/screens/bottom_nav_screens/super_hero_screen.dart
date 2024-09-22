@@ -73,17 +73,8 @@ class SuperHeroScreen extends StatelessWidget {
                               SizedBox(height: size.height * 0.02),
                               Lottie.asset(
                                 "assets/images/animation/super-hero-animation.json",
-                                height: size.height * 0.3,
+                                height: size.height * 0.4,
                                 fit: BoxFit.cover,
-                              ),
-                              Text(
-                                "Fetching Marvel Hero's",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.secondaryColor,
-                                  fontSize: size.width * 0.038,
-                                  fontFamily: "Poppins",
-                                ),
                               ),
                             ],
                           ),

@@ -13,11 +13,8 @@ class EmailAuthenticationProvider extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   bool _isLoading = false;
-  bool _hasReviewed = false;
 
   bool get isLoading => _isLoading;
-
-  bool get hasReviewed => _hasReviewed;
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController registerEmailController = TextEditingController();
@@ -40,19 +37,6 @@ class EmailAuthenticationProvider extends ChangeNotifier {
     await prefs.setBool('isLoggedIn', isLoggedIn);
   }
 
-  // Check review status from Firestore
-  Future<void> checkReviewStatus() async {
-    User? user = _auth.currentUser;
-    if (user != null) {
-      DocumentSnapshot userDoc =
-          await _firestore.collection('userByEmailAuth').doc(user.uid).get();
-      if (userDoc.exists && userDoc.data() != null) {
-        _hasReviewed = userDoc['hasReviewed'] ?? false;
-        notifyListeners();
-      }
-    }
-  }
-
   // Update review status in Firestore
   Future<void> updateReviewStatus() async {
     User? user = _auth.currentUser;
@@ -60,7 +44,7 @@ class EmailAuthenticationProvider extends ChangeNotifier {
       await _firestore.collection('userByEmailAuth').doc(user.uid).update({
         'hasReviewed': true,
       });
-      _hasReviewed = true; // Update local state
+
       notifyListeners();
     }
   }
@@ -77,8 +61,6 @@ class EmailAuthenticationProvider extends ChangeNotifier {
             .doc(user.uid)
             .update({'hasReviewed': true});
 
-        // Update local state
-        _hasReviewed = true;
         notifyListeners();
 
         // Show success toast
@@ -92,21 +74,6 @@ class EmailAuthenticationProvider extends ChangeNotifier {
           context: context,
           message: "Failed to submit your review. Please try again.",
         );
-      }
-    }
-  }
-
-  // Fetch review status from Firestore
-  Future<void> fetchReviewStatus() async {
-    User? user = _auth.currentUser;
-
-    if (user != null) {
-      DocumentSnapshot userSnapshot =
-          await _firestore.collection('userByEmailAuth').doc(user.uid).get();
-
-      if (userSnapshot.exists) {
-        _hasReviewed = userSnapshot['hasReviewed'] ?? false;
-        notifyListeners(); // Notify listeners after fetching data
       }
     }
   }
@@ -169,7 +136,6 @@ class EmailAuthenticationProvider extends ChangeNotifier {
           userName: name,
           userEmail: emailUser.email,
           userPhotoURL: emailUser.photoURL,
-          hasReviewed: false,
         );
 
         await _firestore
@@ -229,8 +195,6 @@ class EmailAuthenticationProvider extends ChangeNotifier {
       User? emailUser = userCredential.user;
       if (emailUser != null) {
         await _saveLoginState(true);
-        // After login, check if the user has reviewed the app
-        await checkReviewStatus();
 
         loginEmailController.clear();
         loginPasswordController.clear();
