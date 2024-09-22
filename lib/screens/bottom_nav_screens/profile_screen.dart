@@ -207,7 +207,7 @@ class ProfileScreen extends StatelessWidget {
 
                               /// name
                               user.isAnonymous
-                                  ? const SizedBox()
+                                  ? const SizedBox.shrink()
                                   : CustomListTile(
                                       svgAssetLeading:
                                           "assets/images/svg/profile-outlined-icon.svg",
@@ -245,7 +245,7 @@ class ProfileScreen extends StatelessWidget {
 
                               /// email address
                               user.isAnonymous
-                                  ? const SizedBox()
+                                  ? const SizedBox.shrink()
                                   : CustomListTile(
                                       svgAssetLeading:
                                           "assets/images/svg/email-outlined-icon.svg",
