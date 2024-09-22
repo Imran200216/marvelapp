@@ -5,6 +5,7 @@ import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/firebase_options.dart';
 import 'package:marvelapp/provider/app_required_providers/app_version_provider.dart';
 import 'package:marvelapp/provider/app_required_providers/conversion_provider.dart';
+import 'package:marvelapp/provider/app_required_providers/in_app_review_provider.dart';
 import 'package:marvelapp/provider/app_required_providers/internet_checker_provider.dart';
 import 'package:marvelapp/provider/app_required_providers/url_launcher_provider.dart';
 import 'package:marvelapp/provider/authentication_providers/email_auth_provider.dart';
@@ -111,6 +112,11 @@ class MyApp extends StatelessWidget {
         /// character modal provider
         ChangeNotifierProvider(
           create: (_) => CharacterModelProvider(),
+        ),
+
+        /// review provider
+        ChangeNotifierProvider(
+          create: (_) => InAppReviewProvider(),
         ),
       ],
       builder: (context, child) {

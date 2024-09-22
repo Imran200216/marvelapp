@@ -10,10 +10,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class GuestAuthenticationProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;
+
+  UserModal? _guestUser;
+
+  UserModal? get guestUser => _guestUser;
 
   /// Sign in with guest and add to db
   Future<void> signInWithGuest(BuildContext context) async {
@@ -26,9 +29,10 @@ class GuestAuthenticationProvider extends ChangeNotifier {
       User? user = userCredential.user;
 
       if (user != null) {
-        /// Create a UserModal instance
-        UserModal guestModalUser = UserModal(
+        /// Create a UserModal instance with hasReviewed defaulting to false
+        _guestUser = UserModal(
           uid: user.uid,
+          hasReviewed: false,
         );
 
         /// showing success toast
@@ -41,13 +45,13 @@ class GuestAuthenticationProvider extends ChangeNotifier {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setBool('isSignedInAsGuest', true);
 
-        /// Add guest user to Fire store using UserModal's toJson method
+        /// Add guest user to Firestore using UserModal's toJson method
         await FirebaseFirestore.instance
             .collection('userByGuestAuth')
             .doc(user.uid)
-            .set(guestModalUser.toJson());
+            .set(_guestUser!.toJson());
 
-        /// push to bottom nav bar
+        /// Push to bottom nav bar
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -122,6 +126,8 @@ class GuestAuthenticationProvider extends ChangeNotifier {
     final isSignedInAsGuest = prefs.getBool('isSignedInAsGuest') ?? false;
 
     if (isSignedInAsGuest) {
+      await fetchGuestReviewStatus(); // Fetch guest's review status
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -137,5 +143,52 @@ class GuestAuthenticationProvider extends ChangeNotifier {
       );
     }
     notifyListeners();
+  }
+
+  Future<void> submitReview(BuildContext context) async {
+    User? user = _auth.currentUser;
+
+    if (user != null) {
+      try {
+        // Update hasReviewed field in Firestore
+        await FirebaseFirestore.instance
+            .collection('userByGuestAuth')
+            .doc(user.uid)
+            .update({'hasReviewed': true});
+
+        // Fetch the updated user data
+        await fetchGuestReviewStatus();
+
+        // Show success toast
+        ToastHelper.showSuccessToast(
+          context: context,
+          message: "Thank you for your review!",
+        );
+      } catch (e) {
+        // Handle error
+        ToastHelper.showErrorToast(
+          context: context,
+          message: "Failed to submit your review. Please try again.",
+        );
+      }
+    }
+  }
+
+  // Fetch guest user review status from Firestore
+  Future<void> fetchGuestReviewStatus() async {
+    User? user = _auth.currentUser;
+
+    if (user != null) {
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection('userByGuestAuth')
+          .doc(user.uid)
+          .get();
+
+      if (userSnapshot.exists) {
+        _guestUser =
+            UserModal.fromJson(userSnapshot.data() as Map<String, dynamic>);
+        notifyListeners(); // Notify listeners after fetching data
+      }
+    }
   }
 }

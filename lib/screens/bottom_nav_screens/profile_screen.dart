@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/provider/app_required_providers/app_version_provider.dart';
+import 'package:marvelapp/provider/app_required_providers/in_app_review_provider.dart';
 import 'package:marvelapp/provider/authentication_providers/email_auth_provider.dart';
 import 'package:marvelapp/provider/authentication_providers/guest_auth_provider.dart';
 import 'package:marvelapp/provider/user_details_provider/email_user_details_provider.dart';
@@ -34,13 +35,21 @@ class ProfileScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.primaryColor,
-        body: Consumer3<GuestUserDetailsProvider, EmailUserDetailsProvider,
-            AppVersionProvider>(
+        body: Consumer6<
+            GuestUserDetailsProvider,
+            EmailUserDetailsProvider,
+            AppVersionProvider,
+            InAppReviewProvider,
+            EmailAuthenticationProvider,
+            GuestAuthenticationProvider>(
           builder: (
             context,
             guestUserProvider,
             emailUserProvider,
             appVersionProvider,
+            reviewProvider,
+            emailAuthProvider,
+            guestAuthProvider,
             child,
           ) {
             return LiquidPullToRefresh(
@@ -286,6 +295,47 @@ class ProfileScreen extends StatelessWidget {
                                   }
                                 },
                               ),
+
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.01,
+                              ),
+
+                              /// in app review
+                              user.isAnonymous
+                                  ? guestAuthProvider.guestUser?.hasReviewed ==
+                                          true
+                                      ? const SizedBox.shrink()
+                                      : CustomListTile(
+                                          svgAssetLeading:
+                                              "assets/images/svg/ratings-logo-icon.svg",
+                                          title: "App Review",
+                                          subTitle:
+                                              "Make a review that helps us grow",
+                                          onTap: () async {
+                                            /// Trigger the app review
+                                            await reviewProvider
+                                                .triggerInAppReview(context);
+                                            await guestAuthProvider
+                                                .submitReview(context);
+                                          },
+                                        )
+                                  : (!emailAuthProvider.hasReviewed)
+                                      ? CustomListTile(
+                                          svgAssetLeading:
+                                              "assets/images/svg/ratings-logo-icon.svg",
+                                          title: "App Review",
+                                          subTitle:
+                                              "Make a review that helps us grow",
+                                          onTap: () async {
+                                            /// Trigger the app review
+                                            await reviewProvider
+                                                .triggerInAppReview(context);
+                                            await emailAuthProvider
+                                                .submitReview(context);
+                                          },
+                                        )
+                                      : const SizedBox.shrink(),
 
                               SizedBox(
                                 height:

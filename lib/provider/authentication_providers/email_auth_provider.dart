@@ -13,8 +13,11 @@ class EmailAuthenticationProvider extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   bool _isLoading = false;
+  bool _hasReviewed = false;
 
   bool get isLoading => _isLoading;
+
+  bool get hasReviewed => _hasReviewed;
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController registerEmailController = TextEditingController();
@@ -35,6 +38,77 @@ class EmailAuthenticationProvider extends ChangeNotifier {
   Future<void> _saveLoginState(bool isLoggedIn) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLoggedIn', isLoggedIn);
+  }
+
+  // Check review status from Firestore
+  Future<void> checkReviewStatus() async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      DocumentSnapshot userDoc =
+          await _firestore.collection('userByEmailAuth').doc(user.uid).get();
+      if (userDoc.exists && userDoc.data() != null) {
+        _hasReviewed = userDoc['hasReviewed'] ?? false;
+        notifyListeners();
+      }
+    }
+  }
+
+  // Update review status in Firestore
+  Future<void> updateReviewStatus() async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      await _firestore.collection('userByEmailAuth').doc(user.uid).update({
+        'hasReviewed': true,
+      });
+      _hasReviewed = true; // Update local state
+      notifyListeners();
+    }
+  }
+
+  // Submit a review for the app
+  Future<void> submitReview(BuildContext context) async {
+    User? user = _auth.currentUser;
+
+    if (user != null) {
+      try {
+        // Update hasReviewed field in Firestore
+        await _firestore
+            .collection('userByEmailAuth')
+            .doc(user.uid)
+            .update({'hasReviewed': true});
+
+        // Update local state
+        _hasReviewed = true;
+        notifyListeners();
+
+        // Show success toast
+        ToastHelper.showSuccessToast(
+          context: context,
+          message: "Thank you for your review!",
+        );
+      } catch (e) {
+        // Handle error
+        ToastHelper.showErrorToast(
+          context: context,
+          message: "Failed to submit your review. Please try again.",
+        );
+      }
+    }
+  }
+
+  // Fetch review status from Firestore
+  Future<void> fetchReviewStatus() async {
+    User? user = _auth.currentUser;
+
+    if (user != null) {
+      DocumentSnapshot userSnapshot =
+          await _firestore.collection('userByEmailAuth').doc(user.uid).get();
+
+      if (userSnapshot.exists) {
+        _hasReviewed = userSnapshot['hasReviewed'] ?? false;
+        notifyListeners(); // Notify listeners after fetching data
+      }
+    }
   }
 
   bool isValidEmail(String email) {
@@ -95,11 +169,13 @@ class EmailAuthenticationProvider extends ChangeNotifier {
           userName: name,
           userEmail: emailUser.email,
           userPhotoURL: emailUser.photoURL,
+          hasReviewed: false,
         );
 
-        await _firestore.collection('userByEmailAuth').doc(emailUser.uid).set(
-              emailModalUser.toJson(),
-            );
+        await _firestore
+            .collection('userByEmailAuth')
+            .doc(emailUser.uid)
+            .set(emailModalUser.toJson());
 
         await _saveLoginState(true);
 
@@ -153,6 +229,8 @@ class EmailAuthenticationProvider extends ChangeNotifier {
       User? emailUser = userCredential.user;
       if (emailUser != null) {
         await _saveLoginState(true);
+        // After login, check if the user has reviewed the app
+        await checkReviewStatus();
 
         loginEmailController.clear();
         loginPasswordController.clear();
@@ -206,6 +284,4 @@ class EmailAuthenticationProvider extends ChangeNotifier {
           message: "Failed to send reset link. Try again later.");
     }
   }
-
-
 }

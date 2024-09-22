@@ -5,6 +5,7 @@ class UserModal {
   String? userEmail;
   String? userPhotoURL;
   String? avatarPhotoURL;
+  bool? hasReviewed;
 
   UserModal({
     this.uid,
@@ -13,9 +14,10 @@ class UserModal {
     this.userEmail,
     this.userPhotoURL,
     this.avatarPhotoURL,
+    this.hasReviewed,
   });
 
-  /// Convert a UserModal object into a Map (for Fire store or JSON serialization)
+  /// Convert a UserModal object into a Map (for Firestore or JSON serialization)
   Map<String, dynamic> toJson() {
     return {
       'uid': uid,
@@ -24,10 +26,11 @@ class UserModal {
       'userEmail': userEmail,
       'userPhotoURL': userPhotoURL,
       'avatarPhotoURL': avatarPhotoURL,
+      'hasReviewed': hasReviewed ?? false, // Ensure default value if null
     };
   }
 
-  /// Create a UserModal object from a Map (for Fire store or JSON deserialization)
+  /// Create a UserModal object from a Map (for Firestore or JSON deserialization)
   factory UserModal.fromJson(Map<String, dynamic> json) {
     return UserModal(
       uid: json['uid'],
@@ -36,6 +39,7 @@ class UserModal {
       userEmail: json['userEmail'],
       userPhotoURL: json['userPhotoURL'],
       avatarPhotoURL: json['avatarPhotoURL'],
+      hasReviewed: json['hasReviewed'] ?? false, // Default to false if null
     );
   }
 }

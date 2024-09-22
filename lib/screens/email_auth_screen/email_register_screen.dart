@@ -160,7 +160,8 @@ class EmailRegisterScreen extends StatelessWidget {
                               fontFamily: "Poppins",
                               fontWeight: FontWeight.w600,
                               color: AppColors.secondaryColor,
-                              fontSize: MediaQuery.of(context).size.width * 0.040,
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.040,
                             ),
                           ),
                         ),

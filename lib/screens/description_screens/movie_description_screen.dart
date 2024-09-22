@@ -67,224 +67,230 @@ class MovieDescriptionScreen extends StatelessWidget {
                 backgroundColor: AppColors.pullToRefreshBgColor,
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  child: Container(
-                    margin: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                    ),
-                    child: AnimationLimiter(
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: AnimationConfiguration.toStaggeredList(
-                            duration: const Duration(milliseconds: 600),
-                            childAnimationBuilder: (widget) {
-                              return SlideAnimation(
-                                horizontalOffset: 50.0,
-                                child: FadeInAnimation(child: widget),
-                              );
-                            },
-                            children: [
-                              /// image
-                              Stack(
-                                children: [
-                                  Container(
-                                    height: size.height * 0.6,
-                                    width: size.width,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(16),
-                                      child: CachedNetworkImage(
-                                        imageUrl: movie.coverUrl ??
-                                            "https://i.pinimg.com/564x/93/11/ca/9311caae8ca0783b6173889e8da61cab.jpg",
-                                        fit: BoxFit.cover,
-                                        placeholder: (context, url) => Center(
-                                          child: LoadingAnimationWidget
-                                              .dotsTriangle(
-                                            color: AppColors.secondaryColor,
-                                            size: 26,
-                                          ),
+                  child: AnimationLimiter(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: AnimationConfiguration.toStaggeredList(
+                          duration: const Duration(milliseconds: 600),
+                          childAnimationBuilder: (widget) {
+                            return SlideAnimation(
+                              horizontalOffset: 50.0,
+                              child: FadeInAnimation(child: widget),
+                            );
+                          },
+                          children: [
+                            /// image
+                            Stack(
+                              children: [
+                                Container(
+                                  height: size.height * 0.6,
+                                  width: size.width,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: CachedNetworkImage(
+                                      imageUrl: movie.coverUrl ??
+                                          "https://i.pinimg.com/564x/93/11/ca/9311caae8ca0783b6173889e8da61cab.jpg",
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) => Center(
+                                        child:
+                                            LoadingAnimationWidget.dotsTriangle(
+                                          color: AppColors.secondaryColor,
+                                          size: 26,
                                         ),
-                                        errorWidget: (context, url, error) =>
-                                            Icon(
-                                          Icons.error,
-                                          color: AppColors.primaryColor,
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(
+                                        Icons.error,
+                                        color: AppColors.primaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                /// back icon
+                                Positioned(
+                                  top: 22,
+                                  left: 16,
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: SvgPicture.asset(
+                                      "assets/images/svg/back-icon.svg",
+                                      height: size.height * 0.05,
+                                      width: size.width * 0.05,
+                                      fit: BoxFit.cover,
+                                      color: AppColors.secondaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: size.height * 0.04,
+                            ),
+
+                            /// movie contents
+                            Container(
+                              margin: const EdgeInsets.only(
+                                left: 20,
+                                right: 20,
+                              ),
+                              child: Column(
+                                children: [
+                                  /// movie title
+                                  TimelineTile(
+                                    isFirst: true,
+                                    alignment: TimelineAlign.start,
+                                    lineXY: 0,
+                                    indicatorStyle: IndicatorStyle(
+                                      width: 34,
+                                      height: 34,
+                                      indicator: CachedNetworkImage(
+                                        imageUrl:
+                                            "https://i.pinimg.com/564x/a2/d7/a6/a2d7a6ddce35f2bf9c53fe9fbd22971f.jpg",
+                                        placeholder: (context, url) {
+                                          return Container(
+                                            width: 34,
+                                            height: 34,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: AppColors.timeLineBgColor,
+                                              image: const DecorationImage(
+                                                image: AssetImage(
+                                                  "assets/images/jpg/super-hero-description-timeline-placeholder.jpg",
+                                                ),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        imageBuilder: (context, imageProvider) {
+                                          return Container(
+                                            width: 34,
+                                            height: 34,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: AppColors.timeLineBgColor,
+                                              image: DecorationImage(
+                                                image: imageProvider,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                      padding: const EdgeInsets.all(4),
+                                    ),
+                                    beforeLineStyle: LineStyle(
+                                      color: AppColors.timeLineBgColor,
+                                      thickness: 2,
+                                    ),
+                                    endChild: Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: RichText(
+                                        text: TextSpan(
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text: 'Movie name \n',
+                                              style: TextStyle(
+                                                fontFamily: "Poppins",
+                                                color: AppColors.subTitleColor,
+                                                fontSize: size.width * 0.040,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: movie.title ??
+                                                  "Releasing soon",
+                                              style: TextStyle(
+                                                fontFamily: "Poppins",
+                                                color: AppColors.secondaryColor,
+                                                fontSize: size.width * 0.064,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
                                   ),
 
-                                  /// back icon
-                                  Positioned(
-                                    top: 22,
-                                    left: 16,
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: SvgPicture.asset(
-                                        "assets/images/svg/back-icon.svg",
-                                        height: size.height * 0.05,
-                                        width: size.width * 0.05,
-                                        fit: BoxFit.cover,
-                                        color: AppColors.secondaryColor,
-                                      ),
-                                    ),
+                                  /// infinity saga
+                                  CustomMovieTimelineTile(
+                                    title: 'Saga',
+                                    subtitle: movie.saga ?? "Releasing soon",
+                                  ),
+
+                                  ///movie duration
+                                  CustomMovieTimelineTile(
+                                    title: 'Duration',
+                                    subtitle: conversionProvider
+                                        .formatDuration(movie.duration),
+                                  ),
+
+                                  /// release date
+                                  CustomMovieTimelineTile(
+                                    title: 'Release Date',
+                                    subtitle: conversionProvider
+                                        .formatDate(movie.releaseDate),
+                                  ),
+
+                                  /// directed by
+                                  CustomMovieTimelineTile(
+                                    title: 'Directed by',
+                                    subtitle: (movie.directedBy != null &&
+                                            movie.directedBy!.isNotEmpty)
+                                        ? movie.directedBy!
+                                        : "Releasing soon",
+                                  ),
+
+                                  /// overview of movie
+                                  CustomMovieTimelineTile(
+                                    title: 'Overview',
+                                    subtitle:
+                                        movie.overview ?? "Releasing soon",
+                                  ),
+
+                                  /// box office
+                                  CustomMovieTimelineTile(
+                                    isLast: true,
+                                    title: 'Box office collection',
+                                    subtitle: conversionProvider
+                                        .formatBoxOffice(movie.boxOffice),
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                height: size.height * 0.04,
-                              ),
+                            ),
 
-                              /// movie title
-                              TimelineTile(
-                                isFirst: true,
-                                alignment: TimelineAlign.start,
-                                lineXY: 0,
-                                indicatorStyle: IndicatorStyle(
-                                  width: 34,
-                                  height: 34,
-                                  indicator: CachedNetworkImage(
-                                    imageUrl:
-                                        "https://i.pinimg.com/564x/a2/d7/a6/a2d7a6ddce35f2bf9c53fe9fbd22971f.jpg",
-                                    placeholder: (context, url) {
-                                      return Container(
-                                        width: 34,
-                                        height: 34,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: AppColors.timeLineBgColor,
-                                          image: const DecorationImage(
-                                            image: AssetImage(
-                                              "assets/images/jpg/super-hero-description-timeline-placeholder.jpg",
-                                            ),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    imageBuilder: (context, imageProvider) {
-                                      return Container(
-                                        width: 34,
-                                        height: 34,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: AppColors.timeLineBgColor,
-                                          image: DecorationImage(
-                                            image: imageProvider,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                  padding: const EdgeInsets.all(4),
-                                ),
-                                beforeLineStyle: LineStyle(
-                                  color: AppColors.timeLineBgColor,
-                                  thickness: 2,
-                                ),
-                                endChild: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: RichText(
-                                    text: TextSpan(
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: 'Movie name \n',
-                                          style: TextStyle(
-                                            fontFamily: "Poppins",
-                                            color: AppColors.subTitleColor,
-                                            fontSize: size.width * 0.040,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text: movie.title ?? "Releasing soon",
-                                          style: TextStyle(
-                                            fontFamily: "Poppins",
-                                            color: AppColors.secondaryColor,
-                                            fontSize: size.width * 0.064,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                            /// watch trailer btn
+                            Container(
+                              margin: const EdgeInsets.only(
+                                top: 30,
+                                left: 20,
+                                bottom: 30,
+                                right: 20,
                               ),
+                              child: CustomNeoPopButton(
+                                buttonColor: AppColors.secondaryColor,
+                                svgColor: AppColors.primaryColor,
+                                svgAssetPath: "assets/images/svg/play-icon.svg",
+                                buttonText: "Play trailer",
+                                onTapUp: () async {
+                                  final String? trailerUrl = movie.trailerUrl;
 
-                              /// infinity saga
-                              CustomMovieTimelineTile(
-                                title: 'Saga',
-                                subtitle: movie.saga ?? "Releasing soon",
+                                  /// Check if the trailer URL is valid
+                                  urlLauncherProvider.launchUrlInBrowser(
+                                      Uri.parse(trailerUrl ?? "No Url Found"),
+                                      context);
+                                },
                               ),
-
-                              ///movie duration
-                              CustomMovieTimelineTile(
-                                title: 'Duration',
-                                subtitle: conversionProvider
-                                    .formatDuration(movie.duration),
-                              ),
-
-                              /// release date
-                              CustomMovieTimelineTile(
-                                title: 'Release Date',
-                                subtitle: conversionProvider
-                                    .formatDate(movie.releaseDate),
-                              ),
-
-                              /// directed by
-                              CustomMovieTimelineTile(
-                                title: 'Directed by',
-                                subtitle: (movie.directedBy != null &&
-                                        movie.directedBy!.isNotEmpty)
-                                    ? movie.directedBy!
-                                    : "Releasing soon",
-                              ),
-
-                              /// overview of movie
-                              CustomMovieTimelineTile(
-                                title: 'Overview',
-                                subtitle: movie.overview ?? "Releasing soon",
-                              ),
-
-                              /// box office
-                              CustomMovieTimelineTile(
-                                isLast: true,
-                                title: 'Box office collection',
-                                subtitle: conversionProvider
-                                    .formatBoxOffice(movie.boxOffice),
-                              ),
-
-                              /// watch trailer btn
-                              Container(
-                                margin: const EdgeInsets.only(
-                                  top: 30,
-                                  left: 20,
-                                  bottom: 30,
-                                  right: 20,
-                                ),
-                                child: CustomNeoPopButton(
-                                  buttonColor: AppColors.secondaryColor,
-                                  svgColor: AppColors.primaryColor,
-                                  svgAssetPath:
-                                      "assets/images/svg/play-icon.svg",
-                                  buttonText: "Play trailer",
-                                  onTapUp: () async {
-                                    final String? trailerUrl = movie.trailerUrl;
-
-                                    /// Check if the trailer URL is valid
-                                    urlLauncherProvider.launchUrlInBrowser(
-                                        Uri.parse(trailerUrl ?? "No Url Found"),
-                                        context);
-                                  },
-                                ),
-                              ),
-                            ],
-                          )),
-                    ),
+                            ),
+                          ],
+                        )),
                   ),
                 ),
               );
