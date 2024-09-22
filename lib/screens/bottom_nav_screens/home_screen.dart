@@ -35,9 +35,7 @@ class HomeScreen extends StatelessWidget {
                 await marvelMoviesProvider.getMarvelMovies();
               },
               color: AppColors.timeLineBgColor,
-              // The color of the refresh indicator
               backgroundColor: AppColors.pullToRefreshBgColor,
-              // The background color of the refresh area
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 // Ensure scroll is always enabled
@@ -123,9 +121,36 @@ class HomeScreen extends StatelessWidget {
                                             imageUrl: movie.coverUrl.toString(),
                                             fit: BoxFit.cover,
                                             height: 150,
-                                            // Ensure size consistency
                                             width: 100,
-                                          )
+                                            placeholder: (context, url) {
+                                              return Container(
+                                                height: 150,
+                                                width: 100,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  image: const DecorationImage(
+                                                    image: AssetImage(
+                                                      "assets/images/jpg/super-hero-placeholder.jpg",
+                                                    ),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            errorWidget: (context, url, error) {
+                                              return Container(
+                                                height: 150,
+                                                width: 100,
+                                                color: AppColors.primaryColor,
+                                                // Background color for the error widget
+                                                child: Icon(
+                                                  Icons.error,
+                                                  color:
+                                                      AppColors.secondaryColor,
+                                                ),
+                                              );
+                                            })
                                         : SvgPicture.asset(
                                             "assets/images/svg/marvel-placeholder.svg",
                                             fit: BoxFit.cover,

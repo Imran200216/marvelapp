@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:marvelapp/constants/colors.dart';
-import 'package:marvelapp/widgets/custom_photo_details.dart';
+import 'package:marvelapp/widgets/person_details_listile.dart';
 
 class AboutAppDetailsScreen extends StatelessWidget {
   const AboutAppDetailsScreen({super.key});
@@ -115,18 +115,51 @@ class AboutAppDetailsScreen extends StatelessWidget {
                       fontSize: size.width * 0.038,
                     ),
                   ),
+
                   SizedBox(
-                    height: size.height * 0.04,
+                    height: size.height * 0.01,
                   ),
 
-                  /// imran
-                  const CustomPhotoDetails(
-                    placeHolderUrl: "assets/images/jpg/marvel-placeholder.jpg",
-                    imageUrl:
-                        "https://firebasestorage.googleapis.com/v0/b/marvelapp-ba95e.appspot.com/o/supporters%2Fimran-full-photo.jpg?alt=media&token=32d9cd33-44bd-4639-acd7-dd539f18930d",
+                  Text(
+                    "App Credits",
+                    style: TextStyle(
+                      fontFamily: "Poppins",
+                      fontSize: size.width * 0.06,
+                      color: AppColors.secondaryColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+
+                  SizedBox(
+                    height: size.height * 0.02,
+                  ),
+
+                  /// developer
+                  const PersonDetailsListTile(
+                    svgPath: "flutter-logo-icon",
                     personName: "Imran B",
-                    personDesignation: "Mobile Developer & UI/UX Designer",
-                    skills: ["flutter", "figma"],
+                    personDesignation: "Flutter Developer & UI/UX Designer",
+                  ),
+
+                  /// UI/Ux Designer
+                  const PersonDetailsListTile(
+                    svgPath: "figma-logo-icon",
+                    personName: "NandhaKumar",
+                    personDesignation: "UI/UX Designer & Video Editor",
+                  ),
+
+                  /// search engineer
+                  const PersonDetailsListTile(
+                    svgPath: "content-logo-icon",
+                    personName: "Ragunath",
+                    personDesignation: "App Content Researcher",
+                  ),
+
+                  /// search engineer
+                  const PersonDetailsListTile(
+                    svgPath: "video-editor-logo-icon",
+                    personName: "Prasanth",
+                    personDesignation: "Video Editor",
                   ),
                 ],
               ),

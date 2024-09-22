@@ -83,9 +83,9 @@ class ProfileScreen extends StatelessWidget {
                         ? AvatarGlow(
                             startDelay: const Duration(microseconds: 1000),
                             repeat: true,
-                            glowRadiusFactor: 0.2,
+                            glowRadiusFactor: 0.12,
                             child: Material(
-                              elevation: 0.4,
+                              elevation: 0.1,
                               shape: const CircleBorder(),
                               color: AppColors.avatarGlowColor,
                               child: Container(
@@ -119,9 +119,9 @@ class ProfileScreen extends StatelessWidget {
                         : AvatarGlow(
                             startDelay: const Duration(microseconds: 1000),
                             repeat: true,
-                            glowRadiusFactor: 0.2,
+                            glowRadiusFactor: 0.12,
                             child: Material(
-                              elevation: 0.4,
+                              elevation: 0.1,
                               shape: const CircleBorder(),
                               color: AppColors.avatarGlowColor,
                               child: Container(
