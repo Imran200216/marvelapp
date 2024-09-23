@@ -69,25 +69,49 @@ class VideoPlayerScreen extends StatelessWidget {
                     SizedBox(
                       height: size.height * 0.03,
                     ),
-                    // Handle network check
-                    !internetCheckerProvider.isNetworkConnected
-                        ? const InternetCheckerContent()
-                        : videoPlayerProvider.isInitialized &&
-                                videoPlayerProvider.chewieController != null
-                            ? AspectRatio(
-                                aspectRatio: isPortrait ? 16 / 9 : 16 / 10,
-                                child: Chewie(
-                                  controller:
-                                      videoPlayerProvider.chewieController!,
-                                ),
-                              )
-                            : Center(
-                                child: Lottie.asset(
-                                  "assets/images/animation/video-loading-animation.json",
+                    // Check if videoUrl is empty
+                    videoUrl.isEmpty
+                        ? Center(
+                            child: Column(
+                              children: [
+                                Lottie.asset(
+                                  "assets/images/animation/update-animation.json",
                                   height: size.height * 0.3,
                                   fit: BoxFit.cover,
                                 ),
-                              ),
+                                SizedBox(
+                                  height: size.height * 0.03,
+                                ),
+                                Text(
+                                  "Video will be updated soon!",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.secondaryColor,
+                                    fontSize: size.width * 0.042,
+                                    fontFamily: "Poppins",
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        : !internetCheckerProvider.isNetworkConnected
+                            ? const InternetCheckerContent()
+                            : videoPlayerProvider.isInitialized &&
+                                    videoPlayerProvider.chewieController != null
+                                ? AspectRatio(
+                                    aspectRatio: isPortrait ? 16 / 9 : 16 / 10,
+                                    child: Chewie(
+                                      controller:
+                                          videoPlayerProvider.chewieController!,
+                                    ),
+                                  )
+                                : Center(
+                                    child: Lottie.asset(
+                                      "assets/images/animation/video-loading-animation.json",
+                                      height: size.height * 0.3,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                   ],
                 ),
               ),
