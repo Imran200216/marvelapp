@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:marvelapp/screens/bottom_nav.dart';
-
 import 'package:marvelapp/widgets/toast_helper.dart';
 
 class EmailUserDetailsProvider extends ChangeNotifier {
@@ -21,15 +20,20 @@ class EmailUserDetailsProvider extends ChangeNotifier {
 
   String? get avatarPhotoURL => _avatarPhotoURL;
 
-  bool _isAvatarUpdated = false; // Add this flag to track avatar update
-  bool get isAvatarUpdated => _isAvatarUpdated; // Expose this flag to UI
+  bool _isAvatarUpdated = false; // Flag to track avatar update
+  bool get isAvatarUpdated => _isAvatarUpdated;
 
   bool _isLoading = false; // Loading state flag
-  bool get isLoading => _isLoading; // Expose loading state
+  bool get isLoading => _isLoading;
 
-  // Fetch avatars from Firebase Storage
+  // Flag to check if avatars have already been loaded
+  bool _avatarsFetched = false;
 
+  // Fetch avatars from Firebase Storage (only once)
   Future<void> fetchAvatars() async {
+    // Check if avatars have already been fetched to prevent multiple fetches
+    if (_avatarsFetched) return; // Return early if avatars are already cached
+
     try {
       final storageRef = FirebaseStorage.instance.ref().child('avatars');
       final listResult = await storageRef.listAll();
@@ -38,6 +42,7 @@ class EmailUserDetailsProvider extends ChangeNotifier {
       );
 
       _imageUrls = urls;
+      _avatarsFetched = true; // Mark avatars as fetched
       notifyListeners();
     } catch (e) {
       print('Failed to load avatars: $e');
@@ -45,7 +50,6 @@ class EmailUserDetailsProvider extends ChangeNotifier {
   }
 
   // Set and update selected avatar in Firestore
-
   Future<void> setSelectedAvatar(String avatarUrl, BuildContext context) async {
     selectedAvatarURL = avatarUrl;
     notifyListeners(); // Notify UI about avatar change immediately

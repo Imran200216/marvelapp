@@ -32,18 +32,20 @@ class EmailAuthenticationProvider extends ChangeNotifier {
 
   User? get emailUser => _auth.currentUser;
 
+  /// save the login state
   Future<void> _saveLoginState(bool isLoggedIn) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLoggedIn', isLoggedIn);
   }
 
+  /// function to check whether the email is valid or not
   bool isValidEmail(String email) {
     String pattern = r'^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$';
     RegExp regex = RegExp(pattern);
     return regex.hasMatch(email);
   }
 
-  // Function to register with email and password
+  ///  register with email and password
   Future<void> registerWithEmailPassword(BuildContext context) async {
     final String name = nameController.text.trim();
     final String email = registerEmailController.text.trim();
@@ -112,10 +114,11 @@ class EmailAuthenticationProvider extends ChangeNotifier {
         ToastHelper.showSuccessToast(
             context: context, message: "Registration Successful!");
 
-        Navigator.pushReplacement(
+        Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-                builder: (context) => const UserEmailAvatarDetailsScreen()));
+                builder: (context) => const UserEmailAvatarDetailsScreen()),
+            (Route<dynamic> route) => false);
       }
     } on FirebaseAuthException catch (e) {
       _errorMessage = e.message ?? "An error occurred";
@@ -126,6 +129,7 @@ class EmailAuthenticationProvider extends ChangeNotifier {
     }
   }
 
+  /// login with email and password
   Future<void> loginWithEmailPassword(BuildContext context) async {
     final String email = loginEmailController.text.trim();
     final String password = loginPasswordController.text.trim();
@@ -161,8 +165,10 @@ class EmailAuthenticationProvider extends ChangeNotifier {
         ToastHelper.showSuccessToast(
             context: context, message: "Login Successful!");
 
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => BottomNavBar()));
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => BottomNavBar()),
+            (Route<dynamic> route) => false);
       }
     } on FirebaseAuthException catch (e) {
       _errorMessage = e.message ?? "An error occurred";
@@ -173,6 +179,7 @@ class EmailAuthenticationProvider extends ChangeNotifier {
     }
   }
 
+  /// sign out functionality
   Future<void> signOut(BuildContext context) async {
     try {
       await _auth.signOut();
@@ -190,6 +197,7 @@ class EmailAuthenticationProvider extends ChangeNotifier {
   final TextEditingController forgetPasswordEmailController =
       TextEditingController();
 
+  /// reset password functionality
   Future<void> resetPassword(BuildContext context) async {
     try {
       await FirebaseAuth.instance
