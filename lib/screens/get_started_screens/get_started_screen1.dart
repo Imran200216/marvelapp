@@ -21,7 +21,7 @@ class GetStartedScreen1 extends StatelessWidget {
           ),
           child: CachedNetworkImage(
             imageUrl:
-                'https://images.unsplash.com/photo-1601645191163-3fc0d5d64e35?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                'https://images.unsplash.com/photo-1620075267033-09d12ec75b40?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
             placeholder: (context, url) => Center(
               child: LoadingAnimationWidget.dotsTriangle(
                 color: AppColors.primaryColor,

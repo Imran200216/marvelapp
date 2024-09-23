@@ -37,47 +37,6 @@ class EmailAuthenticationProvider extends ChangeNotifier {
     await prefs.setBool('isLoggedIn', isLoggedIn);
   }
 
-  // Update review status in Firestore
-  Future<void> updateReviewStatus() async {
-    User? user = _auth.currentUser;
-    if (user != null) {
-      await _firestore.collection('userByEmailAuth').doc(user.uid).update({
-        'hasReviewed': true,
-      });
-
-      notifyListeners();
-    }
-  }
-
-  // Submit a review for the app
-  Future<void> submitReview(BuildContext context) async {
-    User? user = _auth.currentUser;
-
-    if (user != null) {
-      try {
-        // Update hasReviewed field in Firestore
-        await _firestore
-            .collection('userByEmailAuth')
-            .doc(user.uid)
-            .update({'hasReviewed': true});
-
-        notifyListeners();
-
-        // Show success toast
-        ToastHelper.showSuccessToast(
-          context: context,
-          message: "Thank you for your review!",
-        );
-      } catch (e) {
-        // Handle error
-        ToastHelper.showErrorToast(
-          context: context,
-          message: "Failed to submit your review. Please try again.",
-        );
-      }
-    }
-  }
-
   bool isValidEmail(String email) {
     String pattern = r'^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$';
     RegExp regex = RegExp(pattern);
@@ -241,6 +200,9 @@ class EmailAuthenticationProvider extends ChangeNotifier {
         ToastHelper.showSuccessToast(
             context: context,
             message: "Password reset link sent! Check your email");
+
+        /// pushing back
+        Navigator.pop(context);
       });
     } catch (e) {
       ToastHelper.showErrorToast(

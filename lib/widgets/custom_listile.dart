@@ -7,7 +7,7 @@ class CustomListTile extends StatelessWidget {
   final String title;
   final String subTitle;
   final VoidCallback? onTap;
-  final Widget? trailing; // Optional trailing widget
+  final Widget? trailing;
 
   const CustomListTile({
     super.key,
@@ -15,7 +15,7 @@ class CustomListTile extends StatelessWidget {
     required this.title,
     required this.subTitle,
     this.onTap,
-    this.trailing, // Pass optional trailing widget here
+    this.trailing,
   });
 
   @override
@@ -24,39 +24,41 @@ class CustomListTile extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    return ListTile(
+    return InkWell(
       onTap: onTap,
-      leading: SvgPicture.asset(
-        svgAssetLeading,
-        height: screenHeight * 0.03,
-        width: screenWidth * 0.06,
-        color: AppColors.secondaryColor,
-      ),
-      title: Text(
-        title,
-        style: TextStyle(
-          fontFamily: "Poppins",
-          fontSize: screenWidth * 0.032,
+      child: ListTile(
+        leading: SvgPicture.asset(
+          svgAssetLeading,
+          height: screenHeight * 0.03,
+          width: screenWidth * 0.06,
           color: AppColors.secondaryColor,
-          fontWeight: FontWeight.w500,
         ),
-      ),
-      subtitle: Text(
-        subTitle,
-        style: TextStyle(
-          fontFamily: "Poppins",
-          fontSize: screenWidth * 0.040,
-          color: AppColors.secondaryColor,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-      // Use the trailing widget if provided, otherwise default to an Icon
-      trailing: trailing ??
-          Icon(
-            Icons.arrow_forward_ios,
-            size: screenWidth * 0.045,
+        title: Text(
+          title,
+          style: TextStyle(
+            fontFamily: "Poppins",
+            fontSize: screenWidth * 0.032,
             color: AppColors.secondaryColor,
+            fontWeight: FontWeight.w500,
           ),
+        ),
+        subtitle: Text(
+          subTitle,
+          style: TextStyle(
+            fontFamily: "Poppins",
+            fontSize: screenWidth * 0.040,
+            color: AppColors.secondaryColor,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        // Use the trailing widget if provided, otherwise default to an Icon
+        trailing: trailing ??
+            Icon(
+              Icons.arrow_forward_ios,
+              size: screenWidth * 0.045,
+              color: AppColors.secondaryColor,
+            ),
+      ),
     );
   }
 }
