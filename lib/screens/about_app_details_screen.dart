@@ -144,22 +144,22 @@ class AboutAppDetailsScreen extends StatelessWidget {
                   /// UI/Ux Designer
                   const PersonDetailsListTile(
                     svgPath: "figma-logo-icon",
-                    personName: "NandhaKumar",
+                    personName: "NandhaKumar C",
                     personDesignation: "UI/UX Designer & Video Editor",
                   ),
 
                   /// search engineer
                   const PersonDetailsListTile(
                     svgPath: "content-logo-icon",
-                    personName: "Ragunath",
+                    personName: "Ragunath M",
                     personDesignation: "App Content Researcher",
                   ),
 
                   /// search engineer
                   const PersonDetailsListTile(
                     svgPath: "video-editor-logo-icon",
-                    personName: "Prasanth",
-                    personDesignation: "Video Editor",
+                    personName: "Prasanth C",
+                    personDesignation: "App Content Researcher & Video Editor",
                   ),
                 ],
               ),

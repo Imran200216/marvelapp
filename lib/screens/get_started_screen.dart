@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:marvelapp/constants/colors.dart';
 import 'package:marvelapp/provider/screens_providers/get_started_provider.dart';
 import 'package:marvelapp/screens/auth_selection_screen.dart';
-
 import 'package:marvelapp/screens/get_started_screens/get_started_screen1.dart';
 import 'package:marvelapp/screens/get_started_screens/get_started_screen2.dart';
 import 'package:marvelapp/screens/get_started_screens/get_started_screen3.dart';

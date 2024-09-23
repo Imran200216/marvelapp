@@ -172,18 +172,37 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
                                 width: size.width * 0.9,
                                 // Adjust width as needed
                                 child: DefaultTextStyle(
+                                  textAlign: TextAlign.start,
                                   style: TextStyle(
                                     fontSize: size.width * 0.07,
                                     fontWeight: FontWeight.w600,
                                     color: AppColors.secondaryColor,
                                     fontFamily: 'Poppins',
                                   ),
-                                  child: AnimatedTextKit(
-                                    isRepeatingAnimation: false,
-                                    repeatForever: false,
-                                    animatedTexts: [
-                                      TypewriterAnimatedText(
-                                        widget.characterQuotes,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/images/svg/quotes-start-icon.svg",
+                                        height: size.height * 0.04,
+                                        color: AppColors.secondaryColor,
+                                        fit: BoxFit.cover,
+                                      ),
+                                      AnimatedTextKit(
+                                        isRepeatingAnimation: false,
+                                        repeatForever: true,
+                                        animatedTexts: [
+                                          TypewriterAnimatedText(
+                                            widget.characterQuotes,
+                                          ),
+                                        ],
+                                      ),
+                                      SvgPicture.asset(
+                                        "assets/images/svg/quotes-end-icon.svg",
+                                        height: size.height * 0.04,
+                                        color: AppColors.secondaryColor,
+                                        fit: BoxFit.cover,
                                       ),
                                     ],
                                   ),

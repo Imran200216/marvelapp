@@ -15,9 +15,9 @@ class UrlLauncherProvider with ChangeNotifier {
       }
     } catch (e) {
       // Handle any unexpected exceptions
-      ToastHelper.showErrorToast(
+      ToastHelper.showSuccessToast(
         context: context,
-        message: "Something went wrong. Please try again.",
+        message: "Soon it will be updated!",
       );
     }
   }

@@ -61,7 +61,7 @@ class GetStartedScreen2 extends StatelessWidget {
               /// subtitle
               Text(
                 textAlign: TextAlign.start,
-                "Get ready to experience the Marvel Universe like never before. Whether you're a longtime fan or new to the world of superheroes, your adventure is just beginning—start now!",
+                "Whether you're a longtime fan or new to the world of superheroes, your adventure is just beginning—start now!",
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: AppColors.subTitleColor,

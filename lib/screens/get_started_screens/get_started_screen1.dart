@@ -64,7 +64,7 @@ class GetStartedScreen1 extends StatelessWidget {
               /// subtitle
               Text(
                 textAlign: TextAlign.start,
-                "Embark on an epic journey through the Marvel Universe, where you'll meet iconic superheroes, terrifying villains, and witness legendary battles. Dive in and unleash your inner hero.",
+                "Embark on an epic journey through the Marvel Universe, where you'll meet iconic superheroes, terrifying villains, and witness legendary battles.",
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: AppColors.subTitleColor,
