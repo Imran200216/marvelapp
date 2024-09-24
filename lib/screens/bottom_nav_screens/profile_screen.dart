@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:marvelapp/constants/colors.dart';
+import 'package:marvelapp/constants/debounce_helper.dart';
 import 'package:marvelapp/provider/app_required_providers/app_version_provider.dart';
 import 'package:marvelapp/provider/app_required_providers/in_app_review_provider.dart';
 import 'package:marvelapp/provider/authentication_providers/email_auth_provider.dart';
@@ -31,6 +32,8 @@ class ProfileScreen extends StatelessWidget {
       Provider.of<EmailUserDetailsProvider>(context, listen: false)
           .fetchEmailUserDetails();
     }
+
+    final DebounceHelper debounceHelper = DebounceHelper();
 
     return SafeArea(
       child: Scaffold(
@@ -279,7 +282,14 @@ class ProfileScreen extends StatelessWidget {
                                 title: "Share app",
                                 subTitle: "Share app to your marvel fans",
                                 onTap: () async {
-                                  /// share functionality
+                                  /// Check if debounce is active to prevent multiple taps
+                                  if (debounceHelper.isDebounced()) return;
+
+                                  /// Activate debounce for 2 seconds
+                                  debounceHelper.activateDebounce(
+                                      duration: const Duration(seconds: 2));
+
+                                  /// Share functionality
                                   final result = await Share.share(
                                       'https://play.google.com/store/apps/details?id=com.example.marvelapp');
 
@@ -374,7 +384,7 @@ class ProfileScreen extends StatelessWidget {
                                               EmailAuthenticationProvider>(
                                           context,
                                           listen: false);
-                                      await emailProvider.signOut(context);
+                                      await emailProvider.signOutWithEmail(context);
                                     }
                                   } else {
                                     // No user is signed in

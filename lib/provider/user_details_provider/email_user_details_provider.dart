@@ -2,10 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:marvelapp/constants/debounce_helper.dart';
 import 'package:marvelapp/screens/bottom_nav.dart';
 import 'package:marvelapp/widgets/toast_helper.dart';
 
 class EmailUserDetailsProvider extends ChangeNotifier {
+  /// debounce mechanism
+  final DebounceHelper debounceHelper = DebounceHelper();
+
   List<String> _imageUrls = [];
   String? selectedAvatarURL;
 
@@ -68,24 +72,36 @@ class EmailUserDetailsProvider extends ChangeNotifier {
         // Wait until the avatar is updated and the details are fetched before notifying the UI
         await fetchEmailUserDetails();
 
-        // Display the success toast after everything is done
-        ToastHelper.showSuccessToast(
-          context: context,
-          message: "Avatar added successfully!",
-        );
+        // Check for debouncing
+        if (!debounceHelper.isDebounced()) {
+          debounceHelper.activateDebounce(duration: const Duration(seconds: 2));
+          // Display the success toast after everything is done
+          ToastHelper.showSuccessToast(
+            context: context,
+            message: "Avatar added successfully!",
+          );
+        }
 
         notifyListeners(); // Now notify UI about avatar update
       }).catchError((error) {
-        ToastHelper.showErrorToast(
-          context: context,
-          message: "Failed to update avatar: $error",
-        );
+        // Check for debouncing for error toast as well
+        if (!debounceHelper.isDebounced()) {
+          debounceHelper.activateDebounce(duration: const Duration(seconds: 2));
+          ToastHelper.showErrorToast(
+            context: context,
+            message: "Failed to update avatar: $error",
+          );
+        }
       });
     } else {
-      ToastHelper.showErrorToast(
-        context: context,
-        message: "No user signed in.",
-      );
+      // Check for debouncing for error toast
+      if (!debounceHelper.isDebounced()) {
+        debounceHelper.activateDebounce(duration: const Duration(seconds: 2));
+        ToastHelper.showErrorToast(
+          context: context,
+          message: "No user signed in.",
+        );
+      }
     }
   }
 
@@ -108,12 +124,19 @@ class EmailUserDetailsProvider extends ChangeNotifier {
 
         try {
           // Update the nickname in Firestore
-          await _firestore
-              .collection('userByEmailAuth')
-              .doc(uid)
-              .update({'nickName': nickName});
-          ToastHelper.showSuccessToast(
-              context: context, message: "Nickname updated successfully!");
+          await _firestore.collection('userByEmailAuth').doc(uid).update({
+            'nickName': nickName,
+          });
+
+          // Check for debouncing
+          if (!debounceHelper.isDebounced()) {
+            debounceHelper.activateDebounce(
+                duration: const Duration(seconds: 2));
+            ToastHelper.showSuccessToast(
+              context: context,
+              message: "Nickname updated successfully!",
+            );
+          }
 
           // Navigate to BottomNavBar
           Navigator.pushReplacement(context,
@@ -121,20 +144,39 @@ class EmailUserDetailsProvider extends ChangeNotifier {
             return BottomNavBar();
           }));
         } catch (e) {
-          ToastHelper.showErrorToast(
-              context: context, message: "Failed to update nickname.");
+          // Check for debouncing for error toast
+          if (!debounceHelper.isDebounced()) {
+            debounceHelper.activateDebounce(
+                duration: const Duration(seconds: 2));
+            ToastHelper.showErrorToast(
+              context: context,
+              message: "Failed to update nickname.",
+            );
+          }
         } finally {
           // Set loading state to false after the operation completes
           _isLoading = false;
           notifyListeners();
         }
       } else {
-        ToastHelper.showErrorToast(
-            context: context, message: "No user signed in.");
+        // Check for debouncing for error toast
+        if (!debounceHelper.isDebounced()) {
+          debounceHelper.activateDebounce(duration: const Duration(seconds: 2));
+          ToastHelper.showErrorToast(
+            context: context,
+            message: "No user signed in.",
+          );
+        }
       }
     } else {
-      ToastHelper.showErrorToast(
-          context: context, message: "Nickname cannot be empty!");
+      // Check for debouncing for error toast
+      if (!debounceHelper.isDebounced()) {
+        debounceHelper.activateDebounce(duration: const Duration(seconds: 2));
+        ToastHelper.showErrorToast(
+          context: context,
+          message: "Nickname cannot be empty!",
+        );
+      }
     }
   }
 

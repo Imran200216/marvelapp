@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:marvelapp/widgets/toast_helper.dart';
@@ -7,6 +8,9 @@ class InAppReviewProvider with ChangeNotifier {
   bool _hasReviewed = false;
   String? _email;
 
+  /// Timer for debouncing to prevent multiple toasts
+  Timer? _debounceTimer;
+
   bool get hasReviewed => _hasReviewed;
 
   String? get email => _email;
@@ -15,6 +19,9 @@ class InAppReviewProvider with ChangeNotifier {
 
   /// Trigger the in-app review if eligible (only for guest users or if not yet reviewed by email users)
   Future<void> triggerInAppReview(BuildContext context) async {
+    if (_debounceTimer != null && _debounceTimer!.isActive)
+      return; // Debounce logic
+
     if (_email != null) {
       // Registered user: show review only if they haven't reviewed yet
       if (!_hasReviewed) {
@@ -26,6 +33,9 @@ class InAppReviewProvider with ChangeNotifier {
       // Guest user: always allow the review since they don't persist
       await _showReview(context);
     }
+
+    // Activate the debounce timer for 2 seconds
+    _debounceTimer = Timer(const Duration(seconds: 2), () {});
   }
 
   /// Show the in-app review and mark it as done

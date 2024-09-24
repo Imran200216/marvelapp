@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:marvelapp/constants/debounce_helper.dart';
 import 'package:marvelapp/modals/user_modal.dart';
 import 'package:marvelapp/screens/bottom_nav.dart';
 import 'package:marvelapp/screens/details_screens/user_guest_avatar_details_screen.dart';
@@ -9,6 +10,9 @@ import 'package:marvelapp/widgets/toast_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GuestAuthenticationProvider extends ChangeNotifier {
+  /// debounce helper
+  final DebounceHelper debounceHelper = DebounceHelper();
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool _isLoading = false;
 
@@ -19,7 +23,10 @@ class GuestAuthenticationProvider extends ChangeNotifier {
   UserModal? get guestUser => _guestUser;
 
   /// Sign in with guest and add to db
+  /// Sign in with guest using debounce mechanism
   Future<void> signInWithGuest(BuildContext context) async {
+    if (debounceHelper.isDebounced()) return; // Prevent multiple triggers
+
     try {
       _isLoading = true;
       notifyListeners();
@@ -29,13 +36,15 @@ class GuestAuthenticationProvider extends ChangeNotifier {
       User? user = userCredential.user;
 
       if (user != null) {
-        /// Create a UserModal instance with hasReviewed defaulting to false
+        /// Create a UserModal instance
         _guestUser = UserModal(
           uid: user.uid,
-
         );
 
-        /// showing success toast
+        /// Debounce activated for 2 seconds
+        debounceHelper.activateDebounce(duration: Duration(seconds: 2));
+
+        /// Showing success toast
         ToastHelper.showSuccessToast(
           context: context,
           message: "Authentication Success as Guest!",
@@ -60,19 +69,26 @@ class GuestAuthenticationProvider extends ChangeNotifier {
         );
       }
     } catch (e) {
-      /// showing failure toast
-      ToastHelper.showErrorToast(
-        context: context,
-        message: "Failed to authenticate as Guest!",
-      );
+      /// Prevent multiple error toasts with debounce check
+      if (!debounceHelper.isDebounced()) {
+        debounceHelper.activateDebounce(duration: Duration(seconds: 2));
+
+        /// Showing failure toast
+        ToastHelper.showErrorToast(
+          context: context,
+          message: "Failed to authenticate as Guest!",
+        );
+      }
     } finally {
       _isLoading = false;
       notifyListeners();
     }
   }
 
-  /// Sign out with guest and delete their data
+  /// Sign out with guest and delete their data with debounce mechanism
   Future<void> signOutWithGuest(BuildContext context) async {
+    if (debounceHelper.isDebounced()) return;
+
     _isLoading = true;
     notifyListeners();
 
@@ -89,6 +105,9 @@ class GuestAuthenticationProvider extends ChangeNotifier {
 
         // Sign the user out
         await _auth.signOut().then((value) async {
+          /// Debounce mechanism activated for 2 seconds to avoid multiple toasts
+          debounceHelper.activateDebounce(duration: Duration(seconds: 2));
+
           /// Showing success toast
           ToastHelper.showSuccessToast(
             context: context,
@@ -109,11 +128,16 @@ class GuestAuthenticationProvider extends ChangeNotifier {
         });
       }
     } catch (e) {
-      /// Showing failure toast
-      ToastHelper.showErrorToast(
-        context: context,
-        message: "Failed to sign out or delete data. Please try again.",
-      );
+      /// Debounce mechanism to avoid multiple error toasts
+      if (!debounceHelper.isDebounced()) {
+        debounceHelper.activateDebounce(duration: Duration(seconds: 2));
+
+        /// Showing failure toast
+        ToastHelper.showErrorToast(
+          context: context,
+          message: "Failed to sign out or delete data. Please try again.",
+        );
+      }
     } finally {
       _isLoading = false;
       notifyListeners();
