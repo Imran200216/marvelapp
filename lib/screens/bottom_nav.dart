@@ -13,13 +13,8 @@ class BottomNavBar extends StatelessWidget {
 
   /// Bottom navigation bar screens
   final List<Widget> widgetList = [
-    /// Chat screen
     const HomeScreen(),
-
-    /// super hero screen
     const SuperHeroScreen(),
-
-    /// Profile Screen
     const ProfileScreen(),
   ];
 
@@ -28,83 +23,95 @@ class BottomNavBar extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Consumer<BottomNavProvider>(
       builder: (context, bottomNavProvider, child) {
-        return DoubleTapToExit(
-          snackBar: SnackBar(
-            backgroundColor: AppColors.timeLineBgColor,
-            content: Text(
-              "Tap again to exit!",
-              style: TextStyle(
-                fontFamily: "Poppins",
-                fontSize: size.width * 0.040,
-                color: AppColors.secondaryColor,
-                fontWeight: FontWeight.w500,
+        return WillPopScope(
+          onWillPop: () async {
+            if (bottomNavProvider.currentIndex != 0) {
+              // If not on the first screen, go to the previous screen
+              bottomNavProvider.setIndex(0);
+              return false;
+            } else {
+              // Allow the app to be popped (exit) if already on the first screen
+              return true;
+            }
+          },
+          child: DoubleTapToExit(
+            snackBar: SnackBar(
+              backgroundColor: AppColors.timeLineBgColor,
+              content: Text(
+                "Tap again to exit!",
+                style: TextStyle(
+                  fontFamily: "Poppins",
+                  fontSize: size.width * 0.040,
+                  color: AppColors.secondaryColor,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
-          ),
-          child: SafeArea(
-            child: Scaffold(
-              backgroundColor: AppColors.primaryColor,
-
-              /// Bottom navigation bar
-              bottomNavigationBar: BottomNavigationBar(
-                onTap: (index) {
-                  bottomNavProvider.setIndex(index);
-                },
+            child: SafeArea(
+              child: Scaffold(
                 backgroundColor: AppColors.primaryColor,
-                currentIndex: bottomNavProvider.currentIndex,
-                selectedItemColor: AppColors.secondaryColor,
-                unselectedItemColor: AppColors.subTitleColor,
-                unselectedLabelStyle: TextStyle(
-                  fontFamily: "Poppins",
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.subTitleColor,
-                ),
-                selectedLabelStyle: TextStyle(
-                  fontFamily: "Poppins",
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.secondaryColor,
-                ),
-                items: <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
-                      'assets/images/svg/movie-icon.svg',
-                      color: bottomNavProvider.currentIndex == 0
-                          ? AppColors.secondaryColor
-                          : AppColors.subTitleColor,
-                      height: 24,
-                      width: 24,
-                    ),
-                    label: 'Movies',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
-                      'assets/images/svg/super-hero-icon.svg',
-                      color: bottomNavProvider.currentIndex == 1
-                          ? AppColors.secondaryColor
-                          : AppColors.subTitleColor,
-                      height: 24,
-                      width: 24,
-                    ),
-                    label: 'Super Heros',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
-                      'assets/images/svg/profile-icon.svg',
-                      color: bottomNavProvider.currentIndex == 2
-                          ? AppColors.secondaryColor
-                          : AppColors.subTitleColor,
-                      height: 24,
-                      width: 24,
-                    ),
-                    label: 'Profile',
-                  ),
-                ],
-              ),
 
-              body: IndexedStack(
-                index: bottomNavProvider.currentIndex,
-                children: widgetList,
+                /// Bottom navigation bar
+                bottomNavigationBar: BottomNavigationBar(
+                  onTap: (index) {
+                    bottomNavProvider.setIndex(index);
+                  },
+                  backgroundColor: AppColors.primaryColor,
+                  currentIndex: bottomNavProvider.currentIndex,
+                  selectedItemColor: AppColors.secondaryColor,
+                  unselectedItemColor: AppColors.subTitleColor,
+                  unselectedLabelStyle: TextStyle(
+                    fontFamily: "Poppins",
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.subTitleColor,
+                  ),
+                  selectedLabelStyle: TextStyle(
+                    fontFamily: "Poppins",
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.secondaryColor,
+                  ),
+                  items: <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(
+                      icon: SvgPicture.asset(
+                        'assets/images/svg/movie-icon.svg',
+                        color: bottomNavProvider.currentIndex == 0
+                            ? AppColors.secondaryColor
+                            : AppColors.subTitleColor,
+                        height: 24,
+                        width: 24,
+                      ),
+                      label: 'Movies',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: SvgPicture.asset(
+                        'assets/images/svg/super-hero-icon.svg',
+                        color: bottomNavProvider.currentIndex == 1
+                            ? AppColors.secondaryColor
+                            : AppColors.subTitleColor,
+                        height: 24,
+                        width: 24,
+                      ),
+                      label: 'Super Heros',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: SvgPicture.asset(
+                        'assets/images/svg/profile-icon.svg',
+                        color: bottomNavProvider.currentIndex == 2
+                            ? AppColors.secondaryColor
+                            : AppColors.subTitleColor,
+                        height: 24,
+                        width: 24,
+                      ),
+                      label: 'Profile',
+                    ),
+                  ],
+                ),
+
+                body: IndexedStack(
+                  index: bottomNavProvider.currentIndex,
+                  children: widgetList,
+                ),
               ),
             ),
           ),

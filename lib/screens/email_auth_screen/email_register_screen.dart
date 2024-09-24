@@ -103,7 +103,7 @@ class EmailRegisterScreen extends StatelessWidget {
                           emailAuthProvider.registerConfirmPasswordController,
                       keyboardType: TextInputType.visiblePassword,
                       hintText: "Confirm Password",
-                      fieldKey: "passwordFieldRegister",
+                      fieldKey: "passwordConfirmFieldRegister",
                       prefixIcon: Icons.password,
                     ),
                     SizedBox(

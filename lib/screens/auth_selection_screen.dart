@@ -97,7 +97,7 @@ class AuthSelectionScreen extends StatelessWidget {
                           svgAssetPath: "assets/images/svg/mail-auth-icon.svg",
                           buttonText: "Sign in with Email",
                           onTapUp: () {
-                            Navigator.pushReplacement(context,
+                            Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
                               return const EmailLoginScreen();
                             }));

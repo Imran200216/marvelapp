@@ -1,5 +1,6 @@
 import 'package:double_tap_to_exit/double_tap_to_exit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:marvelapp/constants/colors.dart';
@@ -50,6 +51,22 @@ class EmailLoginScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: SvgPicture.asset(
+                        "assets/images/svg/back-icon.svg",
+                        height: size.height * 0.05,
+                        width: size.width * 0.05,
+                        fit: BoxFit.cover,
+                        color: AppColors.secondaryColor,
+                      ),
+                    ),
+                    SizedBox(
+                      height: size.height * 0.02,
+                    ),
+
                     Text(
                       "Login your account!",
                       style: TextStyle(
