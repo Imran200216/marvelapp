@@ -384,7 +384,8 @@ class ProfileScreen extends StatelessWidget {
                                               EmailAuthenticationProvider>(
                                           context,
                                           listen: false);
-                                      await emailProvider.signOutWithEmail(context);
+                                      await emailProvider
+                                          .signOutWithEmail(context);
                                     }
                                   } else {
                                     // No user is signed in

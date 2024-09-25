@@ -179,6 +179,10 @@ class GuestUserDetailsProvider extends ChangeNotifier {
     }
   }
 
+  GuestUserDetailsProvider() {
+    fetchGuestUserDetails();
+  }
+
   // Fetch guest user details from Firestore
   Future<void> fetchGuestUserDetails() async {
     final User? user = FirebaseAuth.instance.currentUser;
@@ -191,10 +195,16 @@ class GuestUserDetailsProvider extends ChangeNotifier {
             await _firestore.collection('userByGuestAuth').doc(uid).get();
 
         if (userDoc.exists) {
-          _nickname = userDoc['nickName'] ?? 'No nickname';
-          _avatarPhotoURL = userDoc['avatarPhotoURL'] ??
+          String newNickname = userDoc['nickName'] ?? 'No nickname';
+          String newAvatarURL = userDoc['avatarPhotoURL'] ??
               'https://example.com/default-avatar.png'; // Fallback URL
-          notifyListeners(); // Notify UI of data change
+
+          // Only notify listeners if there is a change
+          if (newNickname != _nickname || newAvatarURL != _avatarPhotoURL) {
+            _nickname = newNickname;
+            _avatarPhotoURL = newAvatarURL;
+            notifyListeners(); // Notify UI of data change
+          }
         } else {
           print('Guest user document does not exist');
         }
