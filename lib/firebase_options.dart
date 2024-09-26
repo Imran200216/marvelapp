@@ -52,7 +52,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBotHiBBB5OjjcgedZc8pFl9uWhtM7P850',
-    appId: '1:963869250426:android:af13546935dfc95af67cc3',
+    appId: '1:963869250426:android:2f6f70d0ec3091cbf67cc3',
     messagingSenderId: '963869250426',
     projectId: 'marvelapp-ba95e',
     storageBucket: 'marvelapp-ba95e.appspot.com',
@@ -60,11 +60,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCH7ESxQA0JzJ3-n23Liq-0LM4ZjxbreJQ',
-    appId: '1:963869250426:ios:650cc5a49ac58f2cf67cc3',
+    appId: '1:963869250426:ios:b468fa051fb62542f67cc3',
     messagingSenderId: '963869250426',
     projectId: 'marvelapp-ba95e',
     storageBucket: 'marvelapp-ba95e.appspot.com',
-    iosBundleId: 'com.example.marvelapp',
+    iosBundleId: 'com.marvel.marvelapp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'marvelapp-ba95e.appspot.com',
     measurementId: 'G-P9M3R6PGSV',
   );
+
 }
