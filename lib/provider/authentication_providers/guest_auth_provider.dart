@@ -42,7 +42,7 @@ class GuestAuthenticationProvider extends ChangeNotifier {
         );
 
         /// Debounce activated for 2 seconds
-        debounceHelper.activateDebounce(duration: Duration(seconds: 2));
+        debounceHelper.activateDebounce(duration: const Duration(seconds: 2));
 
         /// Showing success toast
         ToastHelper.showSuccessToast(
@@ -71,7 +71,7 @@ class GuestAuthenticationProvider extends ChangeNotifier {
     } catch (e) {
       /// Prevent multiple error toasts with debounce check
       if (!debounceHelper.isDebounced()) {
-        debounceHelper.activateDebounce(duration: Duration(seconds: 2));
+        debounceHelper.activateDebounce(duration: const Duration(seconds: 2));
 
         /// Showing failure toast
         ToastHelper.showErrorToast(
@@ -106,7 +106,7 @@ class GuestAuthenticationProvider extends ChangeNotifier {
         // Sign the user out
         await _auth.signOut().then((value) async {
           /// Debounce mechanism activated for 2 seconds to avoid multiple toasts
-          debounceHelper.activateDebounce(duration: Duration(seconds: 2));
+          debounceHelper.activateDebounce(duration: const Duration(seconds: 2));
 
           /// Showing success toast
           ToastHelper.showSuccessToast(
@@ -130,7 +130,7 @@ class GuestAuthenticationProvider extends ChangeNotifier {
     } catch (e) {
       /// Debounce mechanism to avoid multiple error toasts
       if (!debounceHelper.isDebounced()) {
-        debounceHelper.activateDebounce(duration: Duration(seconds: 2));
+        debounceHelper.activateDebounce(duration: const Duration(seconds: 2));
 
         /// Showing failure toast
         ToastHelper.showErrorToast(
