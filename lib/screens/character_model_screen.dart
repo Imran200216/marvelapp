@@ -163,8 +163,7 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(
-                                height:
-                                    size.height * 0.01,
+                                height: size.height * 0.01,
                               ),
 
                               /// Character quotes
@@ -287,6 +286,9 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
                                   ),
                                 ),
                               ),
+                              SizedBox(
+                                height: size.height * 0.02,
+                              ),
 
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
@@ -295,6 +297,9 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
                                     onTap: _scrollToTop,
                                     // Call the scroll method
                                     child: Container(
+                                      margin: const EdgeInsets.only(
+                                        right: 20,
+                                      ),
                                       height: size.height * 0.07,
                                       // Container height
                                       width: size.width * 0.09,
