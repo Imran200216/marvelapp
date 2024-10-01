@@ -142,7 +142,7 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
                           ],
                         ),
                         SizedBox(
-                          height: size.height * 0.02, // Reduced space
+                          height: size.height * 0.02,
                         ),
 
                         /// character name
@@ -164,7 +164,7 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
                             children: [
                               SizedBox(
                                 height:
-                                    size.height * 0.01, // Further reduced space
+                                    size.height * 0.01,
                               ),
 
                               /// Character quotes
@@ -270,6 +270,7 @@ class _CharacterModelScreenState extends State<CharacterModelScreen>
 
                                       /// 3D model
                                       return ModelViewer(
+                                        ar: true,
                                         alt: "No modal found!",
                                         loading: Loading.eager,
                                         autoPlay: false,
