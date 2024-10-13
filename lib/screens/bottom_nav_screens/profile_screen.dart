@@ -291,7 +291,7 @@ class ProfileScreen extends StatelessWidget {
 
                                   /// Share functionality
                                   final result = await Share.share(
-                                      'https://play.google.com/store/apps/details?id=com.example.marvelapp');
+                                      'https://play.google.com/store/apps/details?id=com.marvel.marvelapp');
 
                                   if (result.status ==
                                       ShareResultStatus.success) {

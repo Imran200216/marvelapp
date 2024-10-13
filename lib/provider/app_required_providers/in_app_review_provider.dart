@@ -42,8 +42,7 @@ class InAppReviewProvider with ChangeNotifier {
   Future<void> _showReview(BuildContext context) async {
     if (await _inAppReview.isAvailable()) {
       try {
-        await _inAppReview.openStoreListing(
-            appStoreId: "com.example.marvelapp");
+        await _inAppReview.openStoreListing(appStoreId: "com.marvel.marvelapp");
 
         // After successful review, mark as reviewed
         _hasReviewed = true;
